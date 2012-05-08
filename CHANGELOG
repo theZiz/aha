@@ -1,0 +1,10 @@
+Version 0.4.4:
+
+- Fixed Bug: Command \e24m (underline off) didn't work
+- Fixed Bug: Command \e7m (inverted) didn't work
+- Fixed Bug: Command \e27m (inverted off) didn't work
+
+Version 0.4.3:
+
+- new option "--title" for an alternative title in the html file
+- Fixed Bug 624233 (typo in manpage -color -> --color)

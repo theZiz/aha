@@ -1,4 +1,0 @@
-aha
-===
-
-Ansi HTML Adapter

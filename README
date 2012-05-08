@@ -1,0 +1,10 @@
+aha
+===
+
+Ansi HTML Adapter
+
+To compile just type
+:make
+To "install" aha move it to your bin-Directory or create a package by
+yourself. :-P
+All files are subjects to the LGPL or the MPL. (Dual licensed).

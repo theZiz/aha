@@ -1,0 +1,59 @@
+.TH aha 1 "August 31, 2011" "" "Ansi HTML Adapter"
+
+.SH NAME
+
+ aha - Ansi HTML Adapter
+
+.SH SYNOPSIS
+
+\fBaha\fP [\fIoptions\fP] [\-f \fIdatei\fP]  
+
+.SH DESCRIPTION
+.B aha
+takes SGR-colored Input and prints W3C conform HTML-Code.
+.br
+.B aha
+reads the Input from a file or stdin and writes HTML-Code to stdout.
+.SH OPTIONS
+.TP
+\fB\-\-help , \-h , \-?\fP
+A help like this
+.TP
+\fB\-\-black , \-b\fP
+Black Background and white "standard color"
+.TP
+\fB\-\-pink , \-p\fP
+Pink Background
+.TP
+\fB\-\-iso X , \-i X
+Uses ISO 8859-X instead of utf-8. X must be 1..16
+.TP
+\fB\-\-title X , \-t X
+Gives the html output the title \"X\" instead of stdin or the filename
+.TP
+\fB\-\-line\-fix , \-l
+Uses a fix for inputs using control sequences to change the cursor position like htop. It's a hot fix, it may not work with any program like htop. (See \fBEXAMPLE\fP)
+
+
+.SH EXAMPLE
+.TP
+\fBaha\fP \-\-help | \fBaha\fP \-\-black --title "the awesome aha help"> aha-help.htm
+Creates an HTML file with the help of aha with black background
+.TP
+\fBcolordiff\fP oldfile.c newfile.c | \fBaha\fP > colordiff.htm
+Creates an HTML file with a colorful diff-output of two files "oldfile.c" and "newfile.c" with white background
+.TP
+\fBls\fP \--color=always | \fBaha\fP \-\-pink > ls.htm
+Creates an HTML file with a colorful ls-output with pink background.
+.TP
+\fBecho\fP q | \fBhtop\fP | \fBaha\fP \-\-black \-\-line\-fix > htop.htm
+Creates an HTML file with the output of htop. You have to use \fB\-\-line\-fix\fP due the other new-line-commands htop uses.
+
+.SH AUTHOR
+Copyleft Alexander Matthes aka Ziz 2011
+.br
+zizsdl@googlemail.com
+
+.SH SEE ALSO
+http://ziz.delphigl.com/tool_aha.php
+
