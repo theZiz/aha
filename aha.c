@@ -17,7 +17,7 @@
  For feedback and questions about my Files and Projects please mail me,     
  Alexander Matthes (Ziz) , zizsdl_at_googlemail.com                         
 */
-#define AHA_VERSION "0.4.4"
+#define AHA_VERSION "0.4.5"
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -124,6 +124,7 @@ int main(int argc,char* args[])
   char htop_fix=0;
   char line_break=0;
   char* title=NULL;
+  char word_wrap=0;
   //Searching Parameters
   for (int p = 1;p<argc;p++)
   {
@@ -142,7 +143,8 @@ int main(int argc,char* args[])
       printf("                          change the cursor position like htop. It's a hot fix,\n");
       printf("                          it may not work with any program like htop. Example:\n");
       printf("                          \033[1mecho\033[0m q | \033[1mhtop\033[0m | \033[1maha\033[0m -l > htop.htm\n");
-      printf("\033[1maha\033[0m reads the Input from a file or stdin and writes HTML-Code to stdout\n");
+      printf("         --word-wrap, -w: Wrap long lines in the html file. This works with\n");
+      printf("                          CSS3 supporting browsers as well as many older ones.\n");      printf("\033[1maha\033[0m reads the Input from a file or stdin and writes HTML-Code to stdout\n");
       printf("Example: \033[1maha\033[0m --help | \033[1maha\033[0m --black > aha-help.htm\n");
       printf("         Writes this help text to the file aha-help.htm\n\n");
       printf("Copyleft \033[1;32mAlexander Matthes\033[0m aka \033[4mZiz\033[0m 2011\n");
@@ -173,6 +175,9 @@ int main(int argc,char* args[])
     {
       htop_fix=1;
     }
+    else
+    if ((strcmp(args[p],"--word-wrap")==0) || (strcmp(args[p],"-w")==0))
+      word_wrap=1;
     else
     if ((strcmp(args[p],"--black")==0) || (strcmp(args[p],"-b")==0))
       colorshema=1;
@@ -235,6 +240,11 @@ int main(int argc,char* args[])
       printf("<title>stdin</title>\n");
     else
       printf("<title>%s</title>\n",filename);
+  }
+  if (word_wrap) 
+  {
+    printf("<style type=\"text/css\">pre {white-space: pre-wrap; white-space: -moz-pre-wrap !important;\n");
+    printf("white-space: -pre-wrap; white-space: -o-pre-wrap; word-wrap: break-word;}</style>\n");
   }
   printf("</head>\n");
   switch (colorshema)

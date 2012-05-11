@@ -1,3 +1,6 @@
+Version 0.4.5:
+- Added Feature for word wrap (thanks to Jussi Leinonen)
+
 Version 0.4.4:
 
 - Fixed Bug: Command \e24m (underline off) didn't work

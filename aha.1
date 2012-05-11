@@ -1,4 +1,4 @@
-.TH aha 1 "August 31, 2011" "" "Ansi HTML Adapter"
+.TH aha 1 "May 08, 2012" "" "Ansi HTML Adapter"
 
 .SH NAME
 
@@ -6,7 +6,7 @@
 
 .SH SYNOPSIS
 
-\fBaha\fP [\fIoptions\fP] [\-f \fIdatei\fP]  
+\fBaha\fP [\fIoptions\fP] [\-f \fIfile\fP]  
 
 .SH DESCRIPTION
 .B aha
@@ -33,6 +33,9 @@ Gives the html output the title \"X\" instead of stdin or the filename
 .TP
 \fB\-\-line\-fix , \-l
 Uses a fix for inputs using control sequences to change the cursor position like htop. It's a hot fix, it may not work with any program like htop. (See \fBEXAMPLE\fP)
+.TP
+\fB\-\-word\-wrap , \-w
+Wrap long lines in the html file. This works with CSS3 supporting browsers as well as many older ones.
 
 
 .SH EXAMPLE
@@ -50,7 +53,7 @@ Creates an HTML file with a colorful ls-output with pink background.
 Creates an HTML file with the output of htop. You have to use \fB\-\-line\-fix\fP due the other new-line-commands htop uses.
 
 .SH AUTHOR
-Copyleft Alexander Matthes aka Ziz 2011
+Copyleft Alexander Matthes aka Ziz 2012
 .br
 zizsdl@googlemail.com
 
