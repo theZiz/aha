@@ -1,3 +1,5 @@
+- Honor common compiler and linker flags
+
 Version 0.4.6:
 - Added Feature for not creating a header e.g. for already existing HTML-files (thanks to Nicolas Zagulajew)
 

@@ -1,4 +1,4 @@
 all: aha
 
 aha: aha.c
-	gcc -std=c99 aha.c -o aha
+	gcc -std=c99 $(CFLAGS) $(LDFLAGS) $(CPPFLAGS) aha.c -o aha
