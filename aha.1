@@ -43,13 +43,13 @@ Don't include header into generated HTML, useful for inclusion in full HTML file
 
 .SH EXAMPLE
 .TP
-\fBaha\fP \-\-help | \fBaha\fP \-\-black --title "the awesome aha help"> aha-help.htm
+\fBaha\fP \-\-help | \fBaha\fP \-\-black \-\-title "the awesome aha help"> aha\-help.htm
 Creates an HTML file with the help of aha with black background
 .TP
 \fBcolordiff\fP oldfile.c newfile.c | \fBaha\fP > colordiff.htm
 Creates an HTML file with a colorful diff-output of two files "oldfile.c" and "newfile.c" with white background
 .TP
-\fBls\fP \--color=always | \fBaha\fP \-\-pink > ls.htm
+\fBls\fP \-\-color=always | \fBaha\fP \-\-pink > ls.htm
 Creates an HTML file with a colorful ls-output with pink background.
 .TP
 \fBecho\fP q | \fBhtop\fP | \fBaha\fP \-\-black \-\-line\-fix > htop.htm
