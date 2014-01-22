@@ -1,3 +1,7 @@
+Version 0.4.7 (recent):
+- stylesheet support (thanks to Andrew Kvalheim)
+
+Version 0.4.6.1:
 - Honor common compiler and linker flags
 
 Version 0.4.6:

@@ -17,7 +17,7 @@
  For feedback and questions about my Files and Projects please mail me,		 
  Alexander Matthes (Ziz) , zizsdl_at_googlemail.com												 
 */
-#define AHA_VERSION "0.4.6.1"
+#define AHA_VERSION "0.4.7.0"
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -139,7 +139,7 @@ int main(int argc,char* args[])
 			printf("\033[1maha\033[0m reads the Input from a file or stdin and writes HTML-Code to stdout\n");
 			printf("\033[4moptions\033[0m: --black,      -b: \033[1;30m\033[1;47mBlack\033[0m Background and \033[1;37mWhite\033[0m \"standard color\"\n");
 			printf("         --pink,       -p: \033[1;35mPink\033[0m Background\n");
-			printf("         --stylesheet, -s: Use a stylesheet instead of inline styles.\n");
+			printf("         --stylesheet, -s: Use a stylesheet instead of inline styles\n");
 			printf("         --iso X,    -i X: Uses ISO 8859-X instead of utf-8. X must be 1..16\n");
 			printf("         --title X,  -t X: Gives the html output the title \"X\" instead of\n");
 			printf("                           \"stdin\" or the filename\n");
