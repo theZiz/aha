@@ -121,6 +121,7 @@ int main(int argc,char* args[])
 	register FILE *fp = stdin;
 	int colorshema=0; //0:normal, 1:black, 2:pink
 	int iso=-1; //utf8
+	char stylesheet=0;
 	char htop_fix=0;
 	char line_break=0;
 	char* title=NULL;
@@ -136,19 +137,20 @@ int main(int argc,char* args[])
 			printf("use: \033[1maha\033[0m <\033[4moptions\033[0m> [\033[4m-f file\033[0m]\n");
 			printf("     \033[1maha\033[0m (\033[4m--help\033[0m|\033[4m-h\033[0m|\033[4m-?\033[0m)\n");
 			printf("\033[1maha\033[0m reads the Input from a file or stdin and writes HTML-Code to stdout\n");
-			printf("\033[4moptions\033[0m: --black,     -b: \033[1;30m\033[1;47mBlack\033[0m Background and \033[1;37mWhite\033[0m \"standard color\"\n");
-			printf("         --pink,      -p: \033[1;35mPink\033[0m Background\n");
-			printf("         --iso X,   -i X: Uses ISO 8859-X instead of utf-8. X must be 1..16\n");
-			printf("         --title X, -t X: Gives the html output the title \"X\" instead of \"stdin\"\n");
-			printf("                          or the filename\n");
-			printf("         --line-fix,  -l: Uses a fix for inputs using control sequences to\n");
-			printf("                          change the cursor position like htop. It's a hot fix,\n");
-			printf("                          it may not work with any program like htop. Example:\n");
-			printf("                          \033[1mecho\033[0m q | \033[1mhtop\033[0m | \033[1maha\033[0m -l > htop.htm\n");
-			printf("         --word-wrap, -w: Wrap long lines in the html file. This works with\n");
-			printf("                          CSS3 supporting browsers as well as many older ones.\n");
-			printf("         --no-header, -n: Don't include header into generated HTML,\n");
-			printf("                          useful for inclusion in full HTML files.\n");
+			printf("\033[4moptions\033[0m: --black,      -b: \033[1;30m\033[1;47mBlack\033[0m Background and \033[1;37mWhite\033[0m \"standard color\"\n");
+			printf("         --pink,       -p: \033[1;35mPink\033[0m Background\n");
+			printf("         --stylesheet, -s: Use a stylesheet instead of inline styles.\n");
+			printf("         --iso X,    -i X: Uses ISO 8859-X instead of utf-8. X must be 1..16\n");
+			printf("         --title X,  -t X: Gives the html output the title \"X\" instead of\n");
+			printf("                           \"stdin\" or the filename\n");
+			printf("         --line-fix,   -l: Uses a fix for inputs using control sequences to\n");
+			printf("                           change the cursor position like htop. It's a hot fix,\n");
+			printf("                           it may not work with any program like htop. Example:\n");
+			printf("                           \033[1mecho\033[0m q | \033[1mhtop\033[0m | \033[1maha\033[0m -l > htop.htm\n");
+			printf("         --word-wrap,  -w: Wrap long lines in the html file. This works with\n");
+			printf("                           CSS3 supporting browsers as well as many older ones.\n");
+			printf("         --no-header,  -n: Don't include header into generated HTML,\n");
+			printf("                           useful for inclusion in full HTML files.\n");
 			printf("Example: \033[1maha\033[0m --help | \033[1maha\033[0m --black > aha-help.htm\n");
 			printf("         Writes this help text to the file aha-help.htm\n\n");
 			printf("Copyleft \033[1;32mAlexander Matthes\033[0m aka \033[4mZiz\033[0m 2012\n");
@@ -193,6 +195,9 @@ int main(int argc,char* args[])
 		else
 		if ((strcmp(args[p],"--pink")==0) || (strcmp(args[p],"-p")==0))
 			colorshema=2;
+		else
+		if ((strcmp(args[p],"--stylesheet")==0) || (strcmp(args[p],"-s")==0))
+			stylesheet=1;
 		else
 		if ((strcmp(args[p],"--iso")==0) || (strcmp(args[p],"-i")==0))
 		{
@@ -252,17 +257,80 @@ int main(int argc,char* args[])
 			else
 				printf("<title>%s</title>\n",filename);
 		}
-		if (word_wrap) 
+		if (stylesheet)
+		{
+			printf("<style type=\"text/css\">\n");
+			switch (colorshema)
+			{
+				case 1:  printf("body       {color: white; background-color: black;}\n");
+								 printf(".reset     {color: white;}\n");
+								 printf(".bg-reset  {background-color: black;}\n");
+								 break;
+				case 2:  printf("body       {background-color: pink;}\n");
+								 printf(".reset     {color: black;}\n");
+								 printf(".bg-reset  {background-color: pink;}\n");
+								 break;
+				default: printf(".reset     {color: black;}\n");
+				         printf(".bg-reset  {background-color: white;}\n");
+			}
+			if (colorshema!=1)
+			{
+				printf(".black     {color: black;}\n");
+				printf(".red       {color: red;}\n");
+				printf(".green     {color: green;}\n");
+				printf(".yellow    {color: olive;}\n");
+				printf(".blue      {color: blue;}\n");
+				printf(".purple    {color: purple;}\n");
+				printf(".cyan      {color: teal;}\n");
+				printf(".white     {color: gray;}\n");
+				printf(".bg-black  {background-color: black;}\n");
+				printf(".bg-red    {background-color: red;}\n");
+				printf(".bg-green  {background-color: green;}\n");
+				printf(".bg-yellow {background-color: olive;}\n");
+				printf(".bg-blue   {background-color: blue;}\n");
+				printf(".bg-purple {background-color: purple;}\n");
+				printf(".bg-cyan   {background-color: teal;}\n");
+				printf(".bg-white  {background-color: gray;}\n");
+			}
+			else
+			{
+				printf(".black     {color: black;}\n");
+				printf(".red       {color: red;}\n");
+				printf(".green     {color: lime;}\n");
+				printf(".yellow    {color: yellow;}\n");
+				printf(".blue      {color: #3333FF;}\n");
+				printf(".purple    {color: fuchsia;}\n");
+				printf(".cyan      {color: aqua;}\n");
+				printf(".white     {color: white;}\n");
+				printf(".bg-black  {background-color: black;}\n");
+				printf(".bg-red    {background-color: red;}\n");
+				printf(".bg-green  {background-color: lime;}\n");
+				printf(".bg-yellow {background-color: yellow;}\n");
+				printf(".bg-blue   {background-color: #3333FF;}\n");
+				printf(".bg-purple {background-color: fuchsia;}\n");
+				printf(".bg-cyan   {background-color: aqua;}\n");
+				printf(".bg-white  {background-color: white;}\n");
+			}
+			printf(".underline {text-decoration: underline;}\n");
+			printf(".bold      {font-weight: bold;}\n");
+			printf(".blink     {text-decoration: blink;}\n");
+			printf("</style>\n");
+		}
+		if (word_wrap)
 		{
 			printf("<style type=\"text/css\">pre {white-space: pre-wrap; white-space: -moz-pre-wrap !important;\n");
 			printf("white-space: -pre-wrap; white-space: -o-pre-wrap; word-wrap: break-word;}</style>\n");
 		}
 		printf("</head>\n");
-		switch (colorshema)
+		if (stylesheet || ! colorshema)
+			printf("<body>\n");
+		else
 		{
-			case 1: printf("<body style=\"color:white; background-color:black\">\n"); break;
-			case 2: printf("<body style=\"background-color:pink\">\n");	break;
-			default: printf("<body>\n");
+			switch (colorshema)
+			{
+				case 1: printf("<body style=\"color:white; background-color:black\">\n"); break;
+				case 2: printf("<body style=\"background-color:pink\">\n");	break;
+			}
 		}
 		
 		//Standardwerte:
@@ -429,42 +497,67 @@ int main(int argc,char* args[])
 					printf("</span>");
 				if ((fc!=-1) || (bc!=-1) || (ul!=0) || (bo!=0) || (bl!=0))
 				{
-					printf("<span style=\"");
+					if (stylesheet)
+						printf("<span class=\"");
+					else
+						printf("<span style=\"");
 					switch (fc)
 					{
-						case	0: printf("color:black;"); break; //Black				
-						case	1: printf("color:red;"); break; //Red
-						case	2: if (colorshema!=1) 
+						case	0: if (stylesheet)
+											 printf("black ");
+										 else
+											 printf("color:black;");
+										 break; //Black
+						case	1: if (stylesheet)
+											 printf("red ");
+										 else
+											 printf("color:red;");
+										 break; //Red
+						case	2: if (stylesheet)
+											 printf("green ");
+										 else if (colorshema!=1)
 											 printf("color:green;");
 										 else
 											 printf("color:lime;");
 										 break; //Green
-						case	3: if (colorshema!=1) 
+						case	3: if (stylesheet)
+											 printf("yellow ");
+										 else if (colorshema!=1)
 											 printf("color:olive;");
 										 else
 											 printf("color:yellow;");
 										 break; //Yellow
-						case	4: if (colorshema!=1) 
+						case	4: if (stylesheet)
+											 printf("blue ");
+										 else if (colorshema!=1)
 											 printf("color:blue;");
 										 else
 											 printf("color:#3333FF;");
 										 break; //Blue
-						case	5: if (colorshema!=1) 
+						case	5: if (stylesheet)
+											 printf("purple ");
+										 else if (colorshema!=1)
 											 printf("color:purple;");
 										 else
 											 printf("color:fuchsia;");
 										 break; //Purple
-						case	6: if (colorshema!=1) 
+						case	6: if (stylesheet)
+											 printf("cyan ");
+										 else if (colorshema!=1)
 											 printf("color:teal;");
 										 else
 											 printf("color:aqua;");
 										 break; //Cyan
-						case	7: if (colorshema!=1) 
+						case	7: if (stylesheet)
+											 printf("white ");
+										 else if (colorshema!=1)
 											 printf("color:gray;");
 										 else
 											 printf("color:white;");
 										 break; //White
-						case	9: if (colorshema!=1)
+						case	9: if (stylesheet)
+											 printf("reset ");
+										 else if (colorshema!=1)
 											 printf("color:black;");
 										 else
 											 printf("color:white;");
@@ -472,40 +565,61 @@ int main(int argc,char* args[])
 					}
 					switch (bc)
 					{
-						//case -1: printf("background-color:white; "); break; //StandardColor				
-						case	0: printf("background-color:black;"); break; //Black				
-						case	1: printf("background-color:red;"); break; //Red
-						case	2: if (colorshema!=1) 
+						case	0: if (stylesheet)
+											 printf("bg-black ");
+										 else
+											 printf("background-color:black;");
+										 break; //Black
+						case	1: if (stylesheet)
+											 printf("bg-red ");
+										 else
+											 printf("background-color:red;");
+										 break; //Red
+						case	2: if (stylesheet)
+											 printf("bg-green ");
+										 else if (colorshema!=1)
 											 printf("background-color:green;");
 										 else
 											 printf("background-color:lime;");
 										 break; //Green
-						case	3: if (colorshema!=1) 
+						case	3: if (stylesheet)
+											 printf("bg-yellow ");
+										 else if (colorshema!=1)
 											 printf("background-color:olive;");
 										 else
 											 printf("background-color:yellow;");
 										 break; //Yellow
-						case	4: if (colorshema!=1) 
+						case	4: if (stylesheet)
+											 printf("bg-blue ");
+										 else if (colorshema!=1)
 											 printf("background-color:blue;");
 										 else
 											 printf("background-color:#3333FF;");
 										 break; //Blue
-						case	5: if (colorshema!=1) 
+						case	5: if (stylesheet)
+											 printf("bg-purple ");
+										 else if (colorshema!=1)
 											 printf("background-color:purple;");
 										 else
 											 printf("background-color:fuchsia;");
 										 break; //Purple
-						case	6: if (colorshema!=1) 
+						case	6: if (stylesheet)
+											 printf("bg-cyan ");
+										 else if (colorshema!=1)
 											 printf("background-color:teal;");
 										 else
 											 printf("background-color:aqua;");
 										 break; //Cyan
-						case	7: if (colorshema!=1) 
+						case	7: if (stylesheet)
+											 printf("bg-white ");
+										 else if (colorshema!=1)
 											 printf("background-color:gray;");
 										 else
 											 printf("background-color:white;");
 										 break; break; //White
-						case	9: if (colorshema==1)
+						case	9: if (stylesheet)
+											 printf("bg-reset ");
+										 else if (colorshema==1)
 											 printf("background-color:black;");
 										 else if (colorshema==2)
 											 printf("background-color:pink;");
@@ -514,12 +628,21 @@ int main(int argc,char* args[])
 										 break; //Reset
 					}
 					if (ul)
-						printf("text-decoration:underline;");
+						if (stylesheet)
+							printf("underline ");
+						else
+							printf("text-decoration:underline;");
 					if (bo)
-						printf("font-weight:bold;");
+						if (stylesheet)
+							printf("bold ");
+						else
+							printf("font-weight:bold;");
 					if (bl)
-						printf("text-decoration:blink;");
-					
+						if (stylesheet)
+							printf("blink ");
+						else
+							printf("text-decoration:blink;");
+
 					printf("\">");
 				}
 			}			
