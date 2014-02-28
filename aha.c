@@ -39,21 +39,6 @@ int getNextChar(register FILE* fp)
 	exit(1);
 }
 
-int getFutureChar(register FILE* fp)
-{
-	int c;
-	if (future)
-		return future_char;
-	if ((c = fgetc(fp)) != EOF)
-	{
-		future=1;
-		future_char=c;
-		return c;
-	}
-	fprintf(stderr,"Unknown Error in File Parsing!\n");
-	exit(1);
-}
-
 typedef struct selem *pelem;
 typedef struct selem {
 	unsigned char digit[8];
