@@ -616,7 +616,7 @@ int main(int argc,char* args[])
 											 printf("background-color:gray;");
 										 else
 											 printf("background-color:white;");
-										 break; break; //White
+										 break; //White
 						case	9: if (stylesheet)
 											 printf("bg-reset ");
 										 else if (colorshema==1)
