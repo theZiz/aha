@@ -74,7 +74,7 @@ pelem parseInsert(char* s)
 			continue;
 		if (s[pos]==';' || s[pos]==0)
 		{
-			if (digitcount<=0)
+			if (digitcount==0)
 			{
 				digit[0]=0;
 				digitcount=1;
