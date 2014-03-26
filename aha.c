@@ -17,7 +17,7 @@
  For feedback and questions about my Files and Projects please mail me,		 
  Alexander Matthes (Ziz) , zizsdl_at_googlemail.com												 
 */
-#define AHA_VERSION "0.4.7.0"
+#define AHA_VERSION "0.4.7.1"
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>

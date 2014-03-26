@@ -1,4 +1,8 @@
-Version 0.4.7 (recent):
+Version 0.4.7.1 (recent):
+- Improve the install process (thanks to Richard Quirk)
+- Fix a few warnings raised by cppcheck (thanks to Richard Quirk)
+
+Version 0.4.7:
 - stylesheet support (thanks to Andrew Kvalheim)
 
 Version 0.4.6.1:
