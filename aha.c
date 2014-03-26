@@ -39,21 +39,6 @@ int getNextChar(register FILE* fp)
 	exit(1);
 }
 
-int getFutureChar(register FILE* fp)
-{
-	int c;
-	if (future)
-		return future_char;
-	if ((c = fgetc(fp)) != EOF)
-	{
-		future=1;
-		future_char=c;
-		return c;
-	}
-	fprintf(stderr,"Unknown Error in File Parsing!\n");
-	exit(1);
-}
-
 typedef struct selem *pelem;
 typedef struct selem {
 	unsigned char digit[8];
@@ -74,7 +59,7 @@ pelem parseInsert(char* s)
 			continue;
 		if (s[pos]==';' || s[pos]==0)
 		{
-			if (digitcount<=0)
+			if (digitcount==0)
 			{
 				digit[0]=0;
 				digitcount=1;
@@ -616,7 +601,7 @@ int main(int argc,char* args[])
 											 printf("background-color:gray;");
 										 else
 											 printf("background-color:white;");
-										 break; break; //White
+										 break; //White
 						case	9: if (stylesheet)
 											 printf("bg-reset ");
 										 else if (colorshema==1)
