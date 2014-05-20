@@ -318,12 +318,12 @@ int main(int argc,char* args[])
 			}
 		}
 
-		//Standardwerte:
+		//default values:
 		//printf("<div style=\"font-family:monospace; white-space:pre\">");
 		printf("<pre>\n");
 	}
 
-	//Begin of Convertion
+	//Begin of Conversion
 	unsigned int c;
 	int fc = -1; //Standard Foreground Color //IRC-Color+8
 	int bc = -1; //Standard Background Color //IRC-Color+8
@@ -452,7 +452,7 @@ int main(int argc,char* args[])
 					deleteParse(elem);
 				break;
 				case 'H':
-					if (htop_fix) //a lil dirty ...
+					if (htop_fix) //a little dirty ...
 					{
 						elem=parseInsert(buffer);
 						pelem second=elem->next;
@@ -475,7 +475,7 @@ int main(int argc,char* args[])
 					for (;line<80;line++)
 						printf(" ");
 				}
-			//Checking the differeces
+			//Checking the differences
 			if ((fc!=ofc) || (bc!=obc) || (ul!=oul) || (bo!=obo) || (bl!=obl)) //ANY Change
 			{
 				if ((ofc!=-1) || (obc!=-1) || (oul!=0) || (obo!=0) || (obl!=0))
