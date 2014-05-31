@@ -13,7 +13,7 @@ aha: aha.c
 	gcc -std=c99 $(CFLAGS) $(LDFLAGS) $(CPPFLAGS) aha.c -o aha
 
 clean:
-	rm aha
+	rm -f aha
 
 install: aha
 	install -d $(BIN)
