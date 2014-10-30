@@ -337,7 +337,7 @@ int main(int argc,char* args[])
 	int temp;
 	while ((c=fgetc(fp)) != EOF)
 	{
-		if ((c=='\033'))
+		if (c=='\033')
 		{
 			//Saving old values
 			ofc=fc;
