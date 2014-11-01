@@ -17,7 +17,8 @@
  For feedback and questions about my Files and Projects please mail me,
  Alexander Matthes (Ziz) , zizsdl_at_googlemail.com
 */
-#define AHA_VERSION "0.4.7.1"
+#define AHA_VERSION "0.4.7.3"
+#define AHA_YEAR "2014"
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -138,7 +139,7 @@ int main(int argc,char* args[])
 			printf("                           useful for inclusion in full HTML files.\n");
 			printf("Example: \033[1maha\033[0m --help | \033[1maha\033[0m --black > aha-help.htm\n");
 			printf("         Writes this help text to the file aha-help.htm\n\n");
-			printf("Copyleft \033[1;32mAlexander Matthes\033[0m aka \033[4mZiz\033[0m 2012\n");
+			printf("Copyleft \033[1;32mAlexander Matthes\033[0m aka \033[4mZiz\033[0m "AHA_YEAR"\n");
 			printf("         \033[5;36mzizsdl@googlemail.com\033[0m\n");
 			printf("         \033[5;36mhttp://ziz.delphigl.com/tool_aha.php\033[0m\n");
 			printf("This application is subject to the \033[1;34mMPL\033[0m or \033[1;34mLGPL\033[0m.\n");

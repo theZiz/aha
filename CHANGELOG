@@ -1,4 +1,7 @@
-Version 0.4.7.1 (recent):
+Version 0.4.7.3 (recent):
+- Fix some clang compiler warnings on OS X (thanks to tbb)
+
+Version 0.4.7.1:
 - Improve the install process (thanks to Richard Quirk)
 - Fix a few warnings raised by cppcheck (thanks to Richard Quirk)
 
