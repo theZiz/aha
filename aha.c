@@ -337,7 +337,7 @@ int main(int argc,char* args[])
 	int temp;
 	while ((c=fgetc(fp)) != EOF)
 	{
-		if ((c=='\033'))
+		if (c=='\033')
 		{
 			//Saving old values
 			ofc=fc;
@@ -613,20 +613,26 @@ int main(int argc,char* args[])
 										 break; //Reset
 					}
 					if (ul)
+          {
 						if (stylesheet)
 							printf("underline ");
 						else
 							printf("text-decoration:underline;");
+          }
 					if (bo)
+          {
 						if (stylesheet)
 							printf("bold ");
 						else
 							printf("font-weight:bold;");
+          }
 					if (bl)
+          {
 						if (stylesheet)
 							printf("blink ");
 						else
 							printf("text-decoration:blink;");
+          }
 
 					printf("\">");
 				}
