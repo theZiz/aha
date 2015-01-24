@@ -1,4 +1,7 @@
-Version 0.4.7.3 (recent):
+Version 0.4.8 (recent):
+- Fixed the behaviour of 1;30, which should be darkgray instead of black (thanks to Vincent Pelletier)
+
+Version 0.4.7.3:
 - Fix some clang compiler warnings on OS X (thanks to tbb)
 
 Version 0.4.7.1:
