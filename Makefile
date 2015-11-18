@@ -1,8 +1,6 @@
 .PHONY: all clean install
 
-ifndef PREFIX
-    PREFIX=/usr/local
-endif
+PREFIX?=/usr/local
 
 BIN:=$(DESTDIR)$(PREFIX)/bin
 MAN:=$(DESTDIR)$(PREFIX)/man/man1
