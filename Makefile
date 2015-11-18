@@ -1,8 +1,6 @@
 .PHONY: all clean install
 
-ifndef PREFIX
-    PREFIX=/usr/local
-endif
+PREFIX?=/usr/local
 
 BIN:=$(DESTDIR)$(PREFIX)/bin
 MAN:=$(DESTDIR)$(PREFIX)/man/man1
@@ -10,7 +8,7 @@ MAN:=$(DESTDIR)$(PREFIX)/man/man1
 all: aha
 
 aha: aha.c
-	gcc -std=c99 $(CFLAGS) $(LDFLAGS) $(CPPFLAGS) aha.c -o aha
+	$(CC) -std=c99 $(CFLAGS) $(LDFLAGS) $(CPPFLAGS) aha.c -o aha
 
 clean:
 	rm -f aha
