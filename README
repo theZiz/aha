@@ -7,4 +7,4 @@ To compile just type
 :make
 To "install" aha type (as root, or with sudo)
 :make install
-All files are subjects to the LGPL or the MPL. (Dual licensed).
+All files are subjects to the LGPL2+ or the MPL1.1 (Dual licensed).
