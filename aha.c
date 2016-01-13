@@ -10,12 +10,12 @@
  under the License.
 
  Alternatively, the contents of this file may be used under the terms
- of the GNU Lesser General Public license (the	"LGPL License"), in which case the
- provisions of LGPL License are applicable instead of those
- above.
+ of the GNU Lesser General Public license version 2 or later (LGPL2+),
+ in which case the provisions of LGPL License are applicable instead of
+ those above.
 
  For feedback and questions about my Files and Projects please mail me,
- Alexander Matthes (Ziz) , zizsdl_at_googlemail.com
+ Alexander Matthes (Ziz) , ziz_at_mailbox.org
 */
 #define AHA_VERSION "0.4.8.0"
 #define AHA_YEAR "2015"
