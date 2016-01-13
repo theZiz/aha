@@ -2,8 +2,9 @@
 
 PREFIX?=/usr/local
 
-BIN:=$(DESTDIR)$(PREFIX)/bin
-MAN:=$(DESTDIR)$(PREFIX)/man/man1
+MANDIR?=man
+BINMODE?=0755
+MANMODE?=644
 
 all: aha
 
@@ -14,7 +15,7 @@ clean:
 	rm -f aha
 
 install: aha
-	install -d $(BIN)
-	install aha $(BIN)
-	install -d $(MAN)
-	install aha.1 $(MAN)
+	install -d $(DESTDIR)$(PREFIX)/bin
+	install -m $(BINMODE) aha $(DESTDIR)$(PREFIX)/bin
+	install -d $(DESTDIR)$(PREFIX)/$(MANDIR)/man1
+	install -m $(MANMODE) aha.1 $(DESTDIR)$(PREFIX)/$(MANDIR)/man1
