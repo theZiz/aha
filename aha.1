@@ -58,7 +58,7 @@ Creates an HTML file with a colorful ls-output with pink background.
 \fBecho\fP q | \fBhtop\fP | \fBaha\fP \-\-black \-\-line\-fix > htop.htm
 Creates an HTML file with the output of htop. You have to use \fB\-\-line\-fix\fP due the other new-line-commands htop uses.
 .TP
-MAN_KEEP_FORMATTING=1 \fBman\fP aha | \fBul\fP | \fBaha\fP > man\-aha.htm
+MAN_KEEP_FORMATTING=1 COLUMNS=80 \fBman\fP aha | \fBul\fP | \fBaha\fP > man\-aha.htm
 Creates an HTML file with the man page of aha. Man uses nroff's bold and underline, which ul converts to SGR.
 
 .SH AUTHOR
