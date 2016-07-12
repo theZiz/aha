@@ -350,296 +350,306 @@ int main(int argc,char* args[])
 			obo=bo;
 			obl=bl;
 			//Searching the end (a letter) and safe the insert:
-			c='0';
-			char buffer[1024];
-			int counter=0;
-			while ((c<'A') || ((c>'Z') && (c<'a')) || (c>'z'))
+			c=getNextChar(fp);
+			if ( c == '[' ) // CSI code, see https://en.wikipedia.org/wiki/ANSI_escape_code#Colors
 			{
-				c=getNextChar(fp);
-				buffer[counter]=c;
-				if (c=='>') //end of htop
-					break;
-				counter++;
-				if (counter>1022)
-					break;
-			}
-			buffer[counter-1]=0;
-			pelem elem;
-			switch (c)
-			{
-				case 'm':
-					//printf("\n%s\n",buffer); //DEBUG
-					elem=parseInsert(buffer);
-					pelem momelem=elem;
-					while (momelem!=NULL)
-					{
-						//jump over zeros
-						int mompos=0;
-						while (mompos<momelem->digitcount && momelem->digit[mompos]==0)
-							mompos++;
-						if (mompos==momelem->digitcount) //only zeros => delete all
-						{
-							bo=0;ul=0;bl=0;fc=-1;bc=-1;
-						}
-						else
-						{
-							switch (momelem->digit[mompos])
-							{
-								case 1: bo=1; break;
-								case 2: if (mompos+1<momelem->digitcount)
-												switch (momelem->digit[mompos+1])
-												{
-													case 1: //Reset blink and bold
-														bo=0;
-														bl=0;
-														break;
-													case 4: //Reset underline
-														ul=0;
-														break;
-														case 7: //Reset Inverted
-														temp = bc;
-														if (fc == -1 || fc == 9)
-														{
-															if (colorshema!=1)
-																bc = 0;
-															else
-																bc = 7;
-														}
-														else
-															bc = fc;
-														if (temp == -1 || temp == 9)
-														{
-															if (colorshema!=1)
-																fc = 7;
-															else
-																fc = 0;
-														}
-														else
-															fc = temp;
-														break;
-												}
-												break;
-						case 3: if (mompos+1<momelem->digitcount)
-											fc=momelem->digit[mompos+1];
-										break;
-						case 4: if (mompos+1==momelem->digitcount)
-											ul=1;
-										else
-											bc=momelem->digit[mompos+1];
-										break;
-						case 5: bl=1; break;
-						case 7: //TODO: Inverse
-										temp = bc;
-										if (fc == -1 || fc == 9)
-										{
-											if (colorshema!=1)
-												bc = 0;
-											else
-												bc = 7;
-										}
-										else
-											bc = fc;
-										if (temp == -1 || temp == 9)
-										{
-											if (colorshema!=1)
-												fc = 7;
-											else
-												fc = 0;
-										}
-										else
-											fc = temp;
-										break;
-							}
-						}
-						momelem=momelem->next;
-					}
-					deleteParse(elem);
-				break;
-				case 'H':
-					if (htop_fix) //a little dirty ...
-					{
+				char buffer[1024];
+				buffer[0] = '[';
+				int counter=1;
+				while ((c<'A') || ((c>'Z') && (c<'a')) || (c>'z'))
+				{
+					c=getNextChar(fp);
+					buffer[counter]=c;
+					if (c=='>') //end of htop
+						break;
+					counter++;
+					if (counter>1022)
+						break;
+				}
+				buffer[counter-1]=0;
+				pelem elem;
+				switch (c)
+				{
+					case 'm':
+						//printf("\n%s\n",buffer); //DEBUG
 						elem=parseInsert(buffer);
-						pelem second=elem->next;
-						if (second==NULL)
-							second=elem;
-						newline=second->digit[0]-1;
-						if (second->digitcount>1)
-							newline=(newline+1)*10+second->digit[1]-1;
-						if (second->digitcount>2)
-							newline=(newline+1)*10+second->digit[2]-1;
+						pelem momelem=elem;
+						while (momelem!=NULL)
+						{
+							//jump over zeros
+							int mompos=0;
+							while (mompos<momelem->digitcount && momelem->digit[mompos]==0)
+								mompos++;
+							if (mompos==momelem->digitcount) //only zeros => delete all
+							{
+								bo=0;ul=0;bl=0;fc=-1;bc=-1;
+							}
+							else
+							{
+								switch (momelem->digit[mompos])
+								{
+									case 1: bo=1; break;
+									case 2: if (mompos+1<momelem->digitcount)
+													switch (momelem->digit[mompos+1])
+													{
+														case 1: //Reset blink and bold
+															bo=0;
+															bl=0;
+															break;
+														case 4: //Reset underline
+															ul=0;
+															break;
+															case 7: //Reset Inverted
+															temp = bc;
+															if (fc == -1 || fc == 9)
+															{
+																if (colorshema!=1)
+																	bc = 0;
+																else
+																	bc = 7;
+															}
+															else
+																bc = fc;
+															if (temp == -1 || temp == 9)
+															{
+																if (colorshema!=1)
+																	fc = 7;
+																else
+																	fc = 0;
+															}
+															else
+																fc = temp;
+															break;
+													}
+													break;
+							case 3: if (mompos+1<momelem->digitcount)
+												fc=momelem->digit[mompos+1];
+											break;
+							case 4: if (mompos+1==momelem->digitcount)
+												ul=1;
+											else
+												bc=momelem->digit[mompos+1];
+											break;
+							case 5: bl=1; break;
+							case 7: //TODO: Inverse
+											temp = bc;
+											if (fc == -1 || fc == 9)
+											{
+												if (colorshema!=1)
+													bc = 0;
+												else
+													bc = 7;
+											}
+											else
+												bc = fc;
+											if (temp == -1 || temp == 9)
+											{
+												if (colorshema!=1)
+													fc = 7;
+												else
+													fc = 0;
+											}
+											else
+												fc = temp;
+											break;
+								}
+							}
+							momelem=momelem->next;
+						}
 						deleteParse(elem);
-						if (newline<line)
-							line_break=1;
-					}
-				break;
-			}
-			if (htop_fix)
-				if (line_break)
-				{
-					for (;line<80;line++)
-						printf(" ");
+					break;
+					case 'H':
+						if (htop_fix) //a little dirty ...
+						{
+							elem=parseInsert(buffer);
+							pelem second=elem->next;
+							if (second==NULL)
+								second=elem;
+							newline=second->digit[0]-1;
+							if (second->digitcount>1)
+								newline=(newline+1)*10+second->digit[1]-1;
+							if (second->digitcount>2)
+								newline=(newline+1)*10+second->digit[2]-1;
+							deleteParse(elem);
+							if (newline<line)
+								line_break=1;
+						}
+					break;
 				}
-			//Checking the differences
-			if ((fc!=ofc) || (bc!=obc) || (ul!=oul) || (bo!=obo) || (bl!=obl)) //ANY Change
-			{
-				if ((ofc!=-1) || (obc!=-1) || (oul!=0) || (obo!=0) || (obl!=0))
-					printf("</span>");
-				if ((fc!=-1) || (bc!=-1) || (ul!=0) || (bo!=0) || (bl!=0))
+				if (htop_fix)
+					if (line_break)
+					{
+						for (;line<80;line++)
+							printf(" ");
+					}
+				//Checking the differences
+				if ((fc!=ofc) || (bc!=obc) || (ul!=oul) || (bo!=obo) || (bl!=obl)) //ANY Change
 				{
-					if (stylesheet)
-						printf("<span class=\"");
-					else
-						printf("<span style=\"");
-					switch (fc)
+					if ((ofc!=-1) || (obc!=-1) || (oul!=0) || (obo!=0) || (obl!=0))
+						printf("</span>");
+					if ((fc!=-1) || (bc!=-1) || (ul!=0) || (bo!=0) || (bl!=0))
 					{
-						case	0: if (stylesheet)
-											 printf("dimgray ");
-										 else
-											 printf("color:dimgray;");
-										 break; //Black
-						case	1: if (stylesheet)
-											 printf("red ");
-										 else
-											 printf("color:red;");
-										 break; //Red
-						case	2: if (stylesheet)
-											 printf("green ");
-										 else if (colorshema!=1)
-											 printf("color:green;");
-										 else
-											 printf("color:lime;");
-										 break; //Green
-						case	3: if (stylesheet)
-											 printf("yellow ");
-										 else if (colorshema!=1)
-											 printf("color:olive;");
-										 else
-											 printf("color:yellow;");
-										 break; //Yellow
-						case	4: if (stylesheet)
-											 printf("blue ");
-										 else if (colorshema!=1)
-											 printf("color:blue;");
-										 else
-											 printf("color:#3333FF;");
-										 break; //Blue
-						case	5: if (stylesheet)
-											 printf("purple ");
-										 else if (colorshema!=1)
-											 printf("color:purple;");
-										 else
-											 printf("color:fuchsia;");
-										 break; //Purple
-						case	6: if (stylesheet)
-											 printf("cyan ");
-										 else if (colorshema!=1)
-											 printf("color:teal;");
-										 else
-											 printf("color:aqua;");
-										 break; //Cyan
-						case	7: if (stylesheet)
-											 printf("white ");
-										 else if (colorshema!=1)
-											 printf("color:gray;");
-										 else
-											 printf("color:white;");
-										 break; //White
-						case	9: if (stylesheet)
-											 printf("reset ");
-										 else if (colorshema!=1)
-											 printf("color:black;");
-										 else
-											 printf("color:white;");
-										 break; //Reset
-					}
-					switch (bc)
-					{
-						case	0: if (stylesheet)
-											 printf("bg-black ");
-										 else
-											 printf("background-color:black;");
-										 break; //Black
-						case	1: if (stylesheet)
-											 printf("bg-red ");
-										 else
-											 printf("background-color:red;");
-										 break; //Red
-						case	2: if (stylesheet)
-											 printf("bg-green ");
-										 else if (colorshema!=1)
-											 printf("background-color:green;");
-										 else
-											 printf("background-color:lime;");
-										 break; //Green
-						case	3: if (stylesheet)
-											 printf("bg-yellow ");
-										 else if (colorshema!=1)
-											 printf("background-color:olive;");
-										 else
-											 printf("background-color:yellow;");
-										 break; //Yellow
-						case	4: if (stylesheet)
-											 printf("bg-blue ");
-										 else if (colorshema!=1)
-											 printf("background-color:blue;");
-										 else
-											 printf("background-color:#3333FF;");
-										 break; //Blue
-						case	5: if (stylesheet)
-											 printf("bg-purple ");
-										 else if (colorshema!=1)
-											 printf("background-color:purple;");
-										 else
-											 printf("background-color:fuchsia;");
-										 break; //Purple
-						case	6: if (stylesheet)
-											 printf("bg-cyan ");
-										 else if (colorshema!=1)
-											 printf("background-color:teal;");
-										 else
-											 printf("background-color:aqua;");
-										 break; //Cyan
-						case	7: if (stylesheet)
-											 printf("bg-white ");
-										 else if (colorshema!=1)
-											 printf("background-color:gray;");
-										 else
-											 printf("background-color:white;");
-										 break; //White
-						case	9: if (stylesheet)
-											 printf("bg-reset ");
-										 else if (colorshema==1)
-											 printf("background-color:black;");
-										 else if (colorshema==2)
-											 printf("background-color:pink;");
-										 else
-											 printf("background-color:white;");
-										 break; //Reset
-					}
-					if (ul)
-          {
 						if (stylesheet)
-							printf("underline ");
+							printf("<span class=\"");
 						else
-							printf("text-decoration:underline;");
-          }
-					if (bo)
-          {
-						if (stylesheet)
-							printf("bold ");
-						else
-							printf("font-weight:bold;");
-          }
-					if (bl)
-          {
-						if (stylesheet)
-							printf("blink ");
-						else
-							printf("text-decoration:blink;");
-          }
+							printf("<span style=\"");
+						switch (fc)
+						{
+							case	0: if (stylesheet)
+												 printf("dimgray ");
+											 else
+												 printf("color:dimgray;");
+											 break; //Black
+							case	1: if (stylesheet)
+												 printf("red ");
+											 else
+												 printf("color:red;");
+											 break; //Red
+							case	2: if (stylesheet)
+												 printf("green ");
+											 else if (colorshema!=1)
+												 printf("color:green;");
+											 else
+												 printf("color:lime;");
+											 break; //Green
+							case	3: if (stylesheet)
+												 printf("yellow ");
+											 else if (colorshema!=1)
+												 printf("color:olive;");
+											 else
+												 printf("color:yellow;");
+											 break; //Yellow
+							case	4: if (stylesheet)
+												 printf("blue ");
+											 else if (colorshema!=1)
+												 printf("color:blue;");
+											 else
+												 printf("color:#3333FF;");
+											 break; //Blue
+							case	5: if (stylesheet)
+												 printf("purple ");
+											 else if (colorshema!=1)
+												 printf("color:purple;");
+											 else
+												 printf("color:fuchsia;");
+											 break; //Purple
+							case	6: if (stylesheet)
+												 printf("cyan ");
+											 else if (colorshema!=1)
+												 printf("color:teal;");
+											 else
+												 printf("color:aqua;");
+											 break; //Cyan
+							case	7: if (stylesheet)
+												 printf("white ");
+											 else if (colorshema!=1)
+												 printf("color:gray;");
+											 else
+												 printf("color:white;");
+											 break; //White
+							case	9: if (stylesheet)
+												 printf("reset ");
+											 else if (colorshema!=1)
+												 printf("color:black;");
+											 else
+												 printf("color:white;");
+											 break; //Reset
+						}
+						switch (bc)
+						{
+							case	0: if (stylesheet)
+												 printf("bg-black ");
+											 else
+												 printf("background-color:black;");
+											 break; //Black
+							case	1: if (stylesheet)
+												 printf("bg-red ");
+											 else
+												 printf("background-color:red;");
+											 break; //Red
+							case	2: if (stylesheet)
+												 printf("bg-green ");
+											 else if (colorshema!=1)
+												 printf("background-color:green;");
+											 else
+												 printf("background-color:lime;");
+											 break; //Green
+							case	3: if (stylesheet)
+												 printf("bg-yellow ");
+											 else if (colorshema!=1)
+												 printf("background-color:olive;");
+											 else
+												 printf("background-color:yellow;");
+											 break; //Yellow
+							case	4: if (stylesheet)
+												 printf("bg-blue ");
+											 else if (colorshema!=1)
+												 printf("background-color:blue;");
+											 else
+												 printf("background-color:#3333FF;");
+											 break; //Blue
+							case	5: if (stylesheet)
+												 printf("bg-purple ");
+											 else if (colorshema!=1)
+												 printf("background-color:purple;");
+											 else
+												 printf("background-color:fuchsia;");
+											 break; //Purple
+							case	6: if (stylesheet)
+												 printf("bg-cyan ");
+											 else if (colorshema!=1)
+												 printf("background-color:teal;");
+											 else
+												 printf("background-color:aqua;");
+											 break; //Cyan
+							case	7: if (stylesheet)
+												 printf("bg-white ");
+											 else if (colorshema!=1)
+												 printf("background-color:gray;");
+											 else
+												 printf("background-color:white;");
+											 break; //White
+							case	9: if (stylesheet)
+												 printf("bg-reset ");
+											 else if (colorshema==1)
+												 printf("background-color:black;");
+											 else if (colorshema==2)
+												 printf("background-color:pink;");
+											 else
+												 printf("background-color:white;");
+											 break; //Reset
+						}
+						if (ul)
+						{
+							if (stylesheet)
+								printf("underline ");
+							else
+								printf("text-decoration:underline;");
+						}
+						if (bo)
+						{
+							if (stylesheet)
+								printf("bold ");
+							else
+								printf("font-weight:bold;");
+						}
+						if (bl)
+						{
+							if (stylesheet)
+								printf("blink ");
+							else
+								printf("text-decoration:blink;");
+						}
 
-					printf("\">");
+						printf("\">");
+					}
 				}
+			}
+			else
+			if ( c == ']' ) //Operating System Command (OSC), ignoring for now
+			{
+				while (c != 2 && c != 7) //STX and BEL end a OSC.
+					c = getNextChar(fp);
 			}
 		}
 		else
