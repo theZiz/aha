@@ -17,8 +17,8 @@
  For feedback and questions about my Files and Projects please mail me,
  Alexander Matthes (Ziz) , ziz_at_mailbox.org
 */
-#define AHA_VERSION "0.4.8.0"
-#define AHA_YEAR "2015"
+#define AHA_VERSION "0.4.9.0"
+#define AHA_YEAR "2016"
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>

@@ -1,3 +1,7 @@
+Version 0.4.9 (recent):
+- Fixed urls (thanks to Jeroen Wiert Pluimers)
+- Fixed behaviour for non CSI codes (thanks to Jack Brear)
+
 Version 0.4.8 (recent):
 - Fixed the behaviour of 1;30, which should be darkgray instead of black (thanks to Vincent Pelletier)
 
