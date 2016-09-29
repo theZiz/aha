@@ -251,58 +251,64 @@ int main(int argc,char* args[])
 			printf("<style type=\"text/css\">\n");
 			switch (colorshema)
 			{
-				case 1:  printf("body       {color: white; background-color: black;}\n");
-								 printf(".reset     {color: white;}\n");
-								 printf(".bg-reset  {background-color: black;}\n");
+				case 1:  printf("body         {color: white; background-color: black;}\n");
+								 printf(".reset       {color: white;}\n");
+								 printf(".bg-reset    {background-color: black;}\n");
+								 printf(".inverted    {color: black;}\n");
+								 printf(".bg-inverted {background-color: white;}\n");
 								 break;
-				case 2:  printf("body       {background-color: pink;}\n");
-								 printf(".reset     {color: black;}\n");
-								 printf(".bg-reset  {background-color: pink;}\n");
+				case 2:  printf("body         {background-color: pink;}\n");
+								 printf(".reset       {color: black;}\n");
+								 printf(".bg-reset    {background-color: pink;}\n");
+								 printf(".inverted    {color: pink;}\n");
+								 printf(".bg-inverted {background-color: black;}\n");
 								 break;
-				default: printf(".reset     {color: black;}\n");
-				         printf(".bg-reset  {background-color: white;}\n");
+				default: printf(".reset       {color: black;}\n");
+				         printf(".bg-reset    {background-color: white;}\n");
+				         printf(".inverted    {color: white;}\n");
+				         printf(".bg-inverted {background-color: black;}\n");
 			}
 			if (colorshema!=1)
 			{
 				printf(".dimgray     {color: dimgray;}\n");
-				printf(".red       {color: red;}\n");
-				printf(".green     {color: green;}\n");
-				printf(".yellow    {color: olive;}\n");
-				printf(".blue      {color: blue;}\n");
-				printf(".purple    {color: purple;}\n");
-				printf(".cyan      {color: teal;}\n");
-				printf(".white     {color: gray;}\n");
-				printf(".bg-black  {background-color: black;}\n");
-				printf(".bg-red    {background-color: red;}\n");
-				printf(".bg-green  {background-color: green;}\n");
-				printf(".bg-yellow {background-color: olive;}\n");
-				printf(".bg-blue   {background-color: blue;}\n");
-				printf(".bg-purple {background-color: purple;}\n");
-				printf(".bg-cyan   {background-color: teal;}\n");
-				printf(".bg-white  {background-color: gray;}\n");
+				printf(".red         {color: red;}\n");
+				printf(".green       {color: green;}\n");
+				printf(".yellow      {color: olive;}\n");
+				printf(".blue        {color: blue;}\n");
+				printf(".purple      {color: purple;}\n");
+				printf(".cyan        {color: teal;}\n");
+				printf(".white       {color: gray;}\n");
+				printf(".bg-black    {background-color: black;}\n");
+				printf(".bg-red      {background-color: red;}\n");
+				printf(".bg-green    {background-color: green;}\n");
+				printf(".bg-yellow   {background-color: olive;}\n");
+				printf(".bg-blue     {background-color: blue;}\n");
+				printf(".bg-purple   {background-color: purple;}\n");
+				printf(".bg-cyan     {background-color: teal;}\n");
+				printf(".bg-white    {background-color: gray;}\n");
 			}
 			else
 			{
 				printf(".dimgray     {color: dimgray;}\n");
-				printf(".red       {color: red;}\n");
-				printf(".green     {color: lime;}\n");
-				printf(".yellow    {color: yellow;}\n");
-				printf(".blue      {color: #3333FF;}\n");
-				printf(".purple    {color: fuchsia;}\n");
-				printf(".cyan      {color: aqua;}\n");
-				printf(".white     {color: white;}\n");
-				printf(".bg-black  {background-color: black;}\n");
-				printf(".bg-red    {background-color: red;}\n");
-				printf(".bg-green  {background-color: lime;}\n");
-				printf(".bg-yellow {background-color: yellow;}\n");
-				printf(".bg-blue   {background-color: #3333FF;}\n");
-				printf(".bg-purple {background-color: fuchsia;}\n");
-				printf(".bg-cyan   {background-color: aqua;}\n");
-				printf(".bg-white  {background-color: white;}\n");
+				printf(".red         {color: red;}\n");
+				printf(".green       {color: lime;}\n");
+				printf(".yellow      {color: yellow;}\n");
+				printf(".blue        {color: #3333FF;}\n");
+				printf(".purple      {color: fuchsia;}\n");
+				printf(".cyan        {color: aqua;}\n");
+				printf(".white       {color: white;}\n");
+				printf(".bg-black    {background-color: black;}\n");
+				printf(".bg-red      {background-color: red;}\n");
+				printf(".bg-green    {background-color: lime;}\n");
+				printf(".bg-yellow   {background-color: yellow;}\n");
+				printf(".bg-blue     {background-color: #3333FF;}\n");
+				printf(".bg-purple   {background-color: fuchsia;}\n");
+				printf(".bg-cyan     {background-color: aqua;}\n");
+				printf(".bg-white    {background-color: white;}\n");
 			}
-			printf(".underline {text-decoration: underline;}\n");
-			printf(".bold      {font-weight: bold;}\n");
-			printf(".blink     {text-decoration: blink;}\n");
+			printf(".underline   {text-decoration: underline;}\n");
+			printf(".bold        {font-weight: bold;}\n");
+			printf(".blink       {text-decoration: blink;}\n");
 			printf("</style>\n");
 		}
 		if (word_wrap)
@@ -399,26 +405,15 @@ int main(int argc,char* args[])
 														case 4: //Reset underline
 															ul=0;
 															break;
-															case 7: //Reset Inverted
+														case 7: //Reset Inverted
+															if (bc == -1)
+																bc = 8;
+															if (fc == -1)
+																fc = 9;
 															temp = bc;
-															if (fc == -1 || fc == 9)
-															{
-																if (colorshema!=1)
-																	bc = 0;
-																else
-																	bc = 7;
-															}
-															else
-																bc = fc;
-															if (temp == -1 || temp == 9)
-															{
-																if (colorshema!=1)
-																	fc = 7;
-																else
-																	fc = 0;
-															}
-															else
-																fc = temp;
+															bc = fc;
+															fc = temp;
+															fprintf(stderr,"R %i %i\n",fc,bc);
 															break;
 													}
 													break;
@@ -431,27 +426,16 @@ int main(int argc,char* args[])
 												bc=momelem->digit[mompos+1];
 											break;
 							case 5: bl=1; break;
-							case 7: //TODO: Inverse
-											temp = bc;
-											if (fc == -1 || fc == 9)
-											{
-												if (colorshema!=1)
-													bc = 0;
-												else
-													bc = 7;
-											}
-											else
-												bc = fc;
-											if (temp == -1 || temp == 9)
-											{
-												if (colorshema!=1)
-													fc = 7;
-												else
-													fc = 0;
-											}
-											else
-												fc = temp;
-											break;
+							case 7:
+								if (bc == -1)
+									bc = 8;
+								if (fc == -1)
+									fc = 9;
+								temp = bc;
+								bc = fc;
+								fc = temp;
+								fprintf(stderr,"S %i %i\n",fc,bc);
+								break;
 								}
 							}
 							momelem=momelem->next;
@@ -547,13 +531,22 @@ int main(int argc,char* args[])
 											 else
 												 printf("color:white;");
 											 break; //White
+							case	8: if (stylesheet)
+												 printf("inverted ");
+											 else if (colorshema==1)
+												 printf("color:black;");
+											 else if (colorshema==2)
+												 printf("color:pink;");
+											 else
+												 printf("color:white;");
+											 break; //Background Colour
 							case	9: if (stylesheet)
 												 printf("reset ");
 											 else if (colorshema!=1)
 												 printf("color:black;");
 											 else
 												 printf("color:white;");
-											 break; //Reset
+											 break; //Foreground Color
 						}
 						switch (bc)
 						{
@@ -609,7 +602,7 @@ int main(int argc,char* args[])
 											 else
 												 printf("background-color:white;");
 											 break; //White
-							case	9: if (stylesheet)
+							case	8: if (stylesheet)
 												 printf("bg-reset ");
 											 else if (colorshema==1)
 												 printf("background-color:black;");
@@ -617,7 +610,14 @@ int main(int argc,char* args[])
 												 printf("background-color:pink;");
 											 else
 												 printf("background-color:white;");
-											 break; //Reset
+											 break; //Background Colour
+							case	9: if (stylesheet)
+												 printf("bg-inverted ");
+											 else if (colorshema!=1)
+												 printf("background-color:black;");
+											 else
+												 printf("background-color:white;");
+											 break; //Foreground Colour
 						}
 						if (ul)
 						{
