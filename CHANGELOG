@@ -1,4 +1,8 @@
-Version 0.4.9 (recent):
+Version 0.4.10 (recent):
+- Fixed inverted colours (thanks to Norman Rasmussen)
+- Changed contact email address in help and manpage
+
+Version 0.4.9:
 - Fixed urls (thanks to Jeroen Wiert Pluimers)
 - Fixed behaviour for non CSI codes (thanks to Jack Brear)
 

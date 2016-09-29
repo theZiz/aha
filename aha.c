@@ -17,7 +17,7 @@
  For feedback and questions about my Files and Projects please mail me,
  Alexander Matthes (Ziz) , ziz_at_mailbox.org
 */
-#define AHA_VERSION "0.4.9.0"
+#define AHA_VERSION "0.4.10.0"
 #define AHA_YEAR "2016"
 #include <stdlib.h>
 #include <stdio.h>
@@ -143,7 +143,7 @@ int main(int argc,char* args[])
 			printf("Example: \033[1maha\033[0m --help | \033[1maha\033[0m --black > aha-help.htm\n");
 			printf("         Writes this help text to the file aha-help.htm\n\n");
 			printf("Copyleft \033[1;32mAlexander Matthes\033[0m aka \033[4mZiz\033[0m "AHA_YEAR"\n");
-			printf("         \033[5;36mzizsdl@googlemail.com\033[0m\n");
+			printf("         \033[5;36mziz@mailbox.org\033[0m\n");
 			printf("         \033[5;36mhttps://github.com/theZiz/aha\033[0m\n");
 			printf("This application is subject to the \033[1;34mMPL\033[0m or \033[1;34mLGPL\033[0m.\n");
 			return 0;
