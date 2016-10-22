@@ -413,7 +413,6 @@ int main(int argc,char* args[])
 															temp = bc;
 															bc = fc;
 															fc = temp;
-															fprintf(stderr,"R %i %i\n",fc,bc);
 															break;
 													}
 													break;
@@ -434,7 +433,6 @@ int main(int argc,char* args[])
 								temp = bc;
 								bc = fc;
 								fc = temp;
-								fprintf(stderr,"S %i %i\n",fc,bc);
 								break;
 								}
 							}
