@@ -1,4 +1,7 @@
-Version 0.4.10 (recent):
+Version 0.4.10.1 (recent):
+- Fixed bug with "tput sgr0" (thanks to Hervé Renault)
+
+Version 0.4.10:
 - Fixed inverted colours (thanks to Norman Rasmussen)
 - Changed contact email address in help and manpage
 
