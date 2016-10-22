@@ -649,6 +649,14 @@ int main(int argc,char* args[])
 				while (c != 2 && c != 7) //STX and BEL end a OSC.
 					c = getNextChar(fp);
 			}
+			else
+			if ( c == '(' ) //Some VT100 ESC sequences, which should be ignored
+			{
+				//Reading (and ignoring!) one character should work for "(B"
+				//(US ASCII character set), "(A" (UK ASCII character set) and
+				//"(0" (Graphic). This whole "standard" is fucked up. Really...
+				c = getNextChar(fp);
+			}
 		}
 		else
 		if (c==13 && htop_fix)
