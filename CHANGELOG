@@ -1,4 +1,7 @@
-Version 0.4.10.1 (recent):
+Version 0.4.10.2 (recent):
+- Improved README and added screenshot
+
+Version 0.4.10.1:
 - Fixed bug with "tput sgr0" (thanks to Hervé Renault)
 
 Version 0.4.10:
