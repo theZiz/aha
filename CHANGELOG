@@ -1,4 +1,7 @@
-Version 0.4.10.2 (recent):
+Version 0.4.10.3 (recent):
+- Removed two unused variables (thanks to Anthony "Pi" Martinez)
+
+Version 0.4.10.2:
 - Improved README and added screenshot
 
 Version 0.4.10.1:
