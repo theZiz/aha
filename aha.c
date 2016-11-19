@@ -23,17 +23,9 @@
 #include <stdio.h>
 #include <string.h>
 
-int future=0;
-int future_char=0;
-
 int getNextChar(register FILE* fp)
 {
 	int c;
-	if (future)
-	{
-		future=0;
-		return future_char;
-	}
 	if ((c = fgetc(fp)) != EOF)
 		return c;
 	fprintf(stderr,"Unknown Error in File Parsing!\n");
