@@ -1,4 +1,8 @@
-Version 0.4.10.3 (recent):
+Version 0.4.10.4 (recent):
+- Fixed reset of bold text (thanks to Eric Anderson)
+- Improved handling of some rare, but not supported border cases like font changing
+
+Version 0.4.10.3:
 - Removed two unused variables (thanks to Anthony "Pi" Martinez)
 
 Version 0.4.10.2:

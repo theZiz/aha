@@ -1,4 +1,4 @@
-.TH aha 1 "November 19, 2016" "" "Ansi HTML Adapter"
+.TH aha 1 "February 21, 2017" "" "Ansi HTML Adapter"
 
 .SH NAME
 
@@ -43,7 +43,6 @@ Wrap long lines in the html file. This works with CSS3 supporting browsers as we
 \fB\-\-no\-header , \-n
 Don't include header into generated HTML, useful for inclusion in full HTML files.
 
-
 .SH EXAMPLE
 .TP
 \fBaha\fP \-\-help | \fBaha\fP \-\-black \-\-title "the awesome aha help"> aha\-help.htm
@@ -61,8 +60,12 @@ Creates an HTML file with the output of htop. You have to use \fB\-\-line\-fix\f
 MAN_KEEP_FORMATTING=1 COLUMNS=80 \fBman\fP aha | \fBul\fP | \fBaha\fP > man\-aha.htm
 Creates an HTML file with the man page of aha. Man uses nroff's bold and underline, which ul converts to SGR.
 
+.SH KNOWN BUGS
+.TP
+This is not really a bug, but neither \fB<blink>\fP nor the css setting \fBtext-decoration:blink\fP work on modern browsers, so if one wants to see blinking text one has to use \fB\-\-stylesheet\fP and to redefine \fB.blink\fP to make it visible. But maybe we should just accept the death of blinking text...
+
 .SH AUTHOR
-Copyleft Alexander Matthes aka Ziz 2016
+Copyleft Alexander Matthes aka Ziz 2017
 .br
 ziz@mailbox.org
 
