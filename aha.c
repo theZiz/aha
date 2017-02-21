@@ -386,46 +386,54 @@ int main(int argc,char* args[])
 							{
 								switch (momelem->digit[mompos])
 								{
-									case 1: bo=1; break;
-									case 2: if (mompos+1<momelem->digitcount)
-													switch (momelem->digit[mompos+1])
-													{
-														case 1: //Reset blink and bold
-															bo=0;
-															bl=0;
-															break;
-														case 4: //Reset underline
-															ul=0;
-															break;
-														case 7: //Reset Inverted
-															if (bc == -1)
-																bc = 8;
-															if (fc == -1)
-																fc = 9;
-															temp = bc;
-															bc = fc;
-															fc = temp;
-															break;
-													}
-													break;
-							case 3: if (mompos+1<momelem->digitcount)
+									case 1: if (mompos+1==momelem->digitcount)  // 1, 1X not supported
+												bo=1;
+											break;
+									case 2: if (mompos+1<momelem->digitcount) // 2X, 2 not supported
+												switch (momelem->digit[mompos+1])
+												{
+													case 1: //Reset blink and bold
+														bo=0;
+														bl=0;
+														break;
+													case 2: //Reset bold
+														bo=0;
+														break;
+													case 4: //Reset underline
+														ul=0;
+														break;
+													case 7: //Reset Inverted
+														if (bc == -1)
+															bc = 8;
+														if (fc == -1)
+															fc = 9;
+														temp = bc;
+														bc = fc;
+														fc = temp;
+														break;
+												}
+											break;
+									case 3: if (mompos+1<momelem->digitcount)  // 3X, 3 not supported
 												fc=momelem->digit[mompos+1];
 											break;
-							case 4: if (mompos+1==momelem->digitcount)
+									case 4: if (mompos+1==momelem->digitcount)  // 4
 												ul=1;
-											else
+											else // 4X
 												bc=momelem->digit[mompos+1];
 											break;
-							case 5: bl=1; break;
-							case 7:
-								if (bc == -1)
-									bc = 8;
-								if (fc == -1)
-									fc = 9;
-								temp = bc;
-								bc = fc;
-								fc = temp;
-								break;
+									case 5: if (mompos+1==momelem->digitcount) //5, 5X not supported
+												bl=1;
+											break;
+									//6 and 6X not supported at all
+									case 7: if (bc == -1) //7, 7X is mot defined (and supported)
+												bc = 8;
+											if (fc == -1)
+												fc = 9;
+											temp = bc;
+											bc = fc;
+											fc = temp;
+											break;
+									//8 and 9 not supported
 								}
 							}
 							momelem=momelem->next;
