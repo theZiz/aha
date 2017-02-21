@@ -392,15 +392,15 @@ int main(int argc,char* args[])
 									case 2: if (mompos+1<momelem->digitcount) // 2X, 2 not supported
 												switch (momelem->digit[mompos+1])
 												{
-													case 1: //Reset blink and bold
-														bo=0;
-														bl=0;
-														break;
+													case 1: //Reset and double underline (which aha doesn't support)
 													case 2: //Reset bold
 														bo=0;
 														break;
 													case 4: //Reset underline
 														ul=0;
+														break;
+													case 5: //Reset blink
+														bl=0;
 														break;
 													case 7: //Reset Inverted
 														if (bc == -1)
