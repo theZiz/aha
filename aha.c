@@ -17,7 +17,7 @@
  For feedback and questions about my Files and Projects please mail me,
  Alexander Matthes (Ziz) , ziz_at_mailbox.org
 */
-#define AHA_VERSION "0.4.10.4"
+#define AHA_VERSION "0.4.10.5"
 #define AHA_YEAR "2017"
 #include <stdlib.h>
 #include <stdio.h>

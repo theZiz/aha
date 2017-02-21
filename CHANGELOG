@@ -1,4 +1,7 @@
-Version 0.4.10.4 (recent):
+Version 0.4.10.5 (recent):
+- Fixed reset of blinking text
+
+Version 0.4.10.4:
 - Fixed reset of bold text (thanks to Eric Anderson)
 - Improved handling of some rare, but not supported border cases like font changing
 
