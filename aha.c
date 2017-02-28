@@ -646,7 +646,7 @@ int main(int argc,char* args[])
 			else
 			if ( c == ']' ) //Operating System Command (OSC), ignoring for now
 			{
-				while (c != 2 && c != 7) //STX and BEL end a OSC.
+				while (c != 2 && c != 7) //STX and BEL end an OSC.
 					c = getNextChar(fp);
 			}
 			else
