@@ -2,7 +2,7 @@
 
 PREFIX?=/usr/local
 
-MANDIR?=$(PREFIX)/share/man
+MANDIR?=$(PREFIX)/man
 BINMODE?=0755
 MANMODE?=644
 
