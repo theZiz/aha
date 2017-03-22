@@ -2,7 +2,7 @@
 
 PREFIX?=/usr/local
 
-MANDIR?=man
+MANDIR?=$(PREFIX)/man
 BINMODE?=0755
 MANMODE?=644
 
@@ -17,5 +17,5 @@ clean:
 install: aha
 	install -d $(DESTDIR)$(PREFIX)/bin
 	install -m $(BINMODE) aha $(DESTDIR)$(PREFIX)/bin
-	install -d $(DESTDIR)$(PREFIX)/$(MANDIR)/man1
-	install -m $(MANMODE) aha.1 $(DESTDIR)$(PREFIX)/$(MANDIR)/man1
+	install -d $(DESTDIR)$(MANDIR)/man1
+	install -m $(MANMODE) aha.1 $(DESTDIR)$(MANDIR)/man1
