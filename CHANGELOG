@@ -1,3 +1,6 @@
+Version 0.4.10.6 (recent):
+- Fixed MANDIR according to the GNU Coding standards, the man file is now installed to $(PREFIX)/share/man instead of $(PREFIX)/man (thanks to Eddie Antonio Santos)
+
 Version 0.4.10.5 (recent):
 - Fixed reset of blinking text
 
