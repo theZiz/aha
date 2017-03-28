@@ -25,8 +25,9 @@ Compilation / Installation
 Aha has no dependencies except for a C compiler and `make`.
 
 To compile just type `make`.
-To install aha type `make install`.
+To install aha to `/usr/local/` type `make install`.
 You can change the installation directory with `make install PREFIX=/your/path`.
+You can override the man directory with `make install MANDIR=/your/path/man`
 
 Licensing
 =========

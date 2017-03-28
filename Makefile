@@ -2,7 +2,9 @@
 
 PREFIX?=/usr/local
 
-MANDIR?=$(PREFIX)/man
+DATAROOTDIR?=$(PREFIX)/share
+MANDIR?=$(DATAROOTDIR)/man
+
 BINMODE?=0755
 MANMODE?=644
 
