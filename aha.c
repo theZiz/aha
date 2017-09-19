@@ -18,6 +18,7 @@
  Alexander Matthes (Ziz) , ziz_at_mailbox.org
 */
 #define AHA_VERSION "0.4.10.6"
+#define TEST
 #define AHA_YEAR "2017"
 #include <stdlib.h>
 #include <stdio.h>
@@ -332,6 +333,7 @@ int main(int argc,char* args[])
 	int ul = 0; //Not underlined
 	int bo = 0; //Not bold
 	int bl = 0; //No Blinking
+	int negative = 0; //No negative image
 	int ofc,obc,oul,obo,obl; //old values
 	int line=0;
 	int momline=0;
@@ -369,7 +371,7 @@ int main(int argc,char* args[])
 				switch (c)
 				{
 					case 'm':
-						//printf("\n%s\n",buffer); //DEBUG
+						//fprintf(stderr,"\n%s\n",buffer); //DEBUG
 						elem=parseInsert(buffer);
 						pelem momelem=elem;
 						while (momelem!=NULL)
@@ -380,7 +382,7 @@ int main(int argc,char* args[])
 								mompos++;
 							if (mompos==momelem->digitcount) //only zeros => delete all
 							{
-								bo=0;ul=0;bl=0;fc=-1;bc=-1;
+								bo=0;ul=0;bl=0;fc=-1;bc=-1;negative=0;
 							}
 							else
 							{
@@ -410,16 +412,27 @@ int main(int argc,char* args[])
 														temp = bc;
 														bc = fc;
 														fc = temp;
+														negative = 0;
 														break;
 												}
 											break;
 									case 3: if (mompos+1<momelem->digitcount)  // 3X, 3 not supported
-												fc=momelem->digit[mompos+1];
+											{
+												if (negative == 0)
+													fc=momelem->digit[mompos+1];
+												else
+													bc=momelem->digit[mompos+1];
+											}
 											break;
 									case 4: if (mompos+1==momelem->digitcount)  // 4
 												ul=1;
 											else // 4X
-												bc=momelem->digit[mompos+1];
+											{
+												if (negative == 0)
+													bc=momelem->digit[mompos+1];
+												else
+													fc=momelem->digit[mompos+1];
+											}
 											break;
 									case 5: if (mompos+1==momelem->digitcount) //5, 5X not supported
 												bl=1;
@@ -432,6 +445,7 @@ int main(int argc,char* args[])
 											temp = bc;
 											bc = fc;
 											fc = temp;
+											negative = 1-negative;
 											break;
 									//8 and 9 not supported
 								}
