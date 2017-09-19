@@ -24,6 +24,45 @@
 #include <stdio.h>
 #include <string.h>
 
+// table for vt220 character set, see also
+// https://whitefiles.org/b1_s/1_free_guides/fg2cd/pgs/c03b.htm
+const char ansi_vt220_character_set[256][16] =
+{
+	"&#x2400;","&#x2401;","&#x2402;","&#x2403;","&#x2404;","&#x2405;","&#x2406;","&#x2407;", //00..07
+	"&#x2408;","&#x2409;","&#x240a;","&#x240b;","&#x240c;","&#x240d;","&#x240e;","&#x240f;", //08..0f
+	"&#x2410;","&#x2411;","&#x2412;","&#x2413;","&#x2414;","&#x2415;","&#x2416;","&#x2417;", //10..17
+	"&#x2418;","&#x2419;","&#x241a;","&#x241b;","&#x241c;","&#x241d;","&#x241e;","&#x241f;", //18..1f
+	" "       ,"!"       ,"\""      ,"#"       ,"$"       ,"%"       ,"&"       ,"'"       , //20..27
+	"("       ,")"       ,"*"       ,"+"       ,","       ,"-"       ,"."       ,"/"       , //28..2f
+	"0"       ,"1"       ,"2"       ,"3"       ,"4"       ,"5"       ,"6"       ,"7"       , //30..37
+	"8"       ,"9"       ,":"       ,";"       ,"&lt;"    ,"="       ,"&gt;"    ,"?"       , //38..3f
+	"@"       ,"A"       ,"B"       ,"C"       ,"D"       ,"E"       ,"F"       ,"G"       , //40..47
+	"H"       ,"I"       ,"J"       ,"K"       ,"L"       ,"M"       ,"N"       ,"O"       , //48..4f
+	"P"       ,"Q"       ,"R"       ,"S"       ,"T"       ,"U"       ,"V"       ,"W"       , //50..57
+	"X"       ,"Y"       ,"Z"       ,"["       ,"\\"      ,"]"       ,"^"       ,"_"       , //58..5f
+	"`"       ,"a"       ,"b"       ,"c"       ,"d"       ,"e"       ,"f"       ,"g"       , //60..67
+	"h"       ,"i"       ,"j"       ,"k"       ,"l"       ,"m"       ,"n"       ,"o"       , //68..6f
+	"p"       ,"q"       ,"r"       ,"s"       ,"t"       ,"u"       ,"v"       ,"w"       , //70..77
+	"x"       ,"y"       ,"z"       ,"{"       ,"|"       ,"}"       ,"~"       ,"&#x2421;", //78..7f
+	"&#x25c6;","&#x2592;","&#x2409;","&#x240c;","&#x240d;","&#x240a;","&#x00b0;","&#x00b1;", //80..87
+	"&#x2400;","&#x240b;","&#x2518;","&#x2510;","&#x250c;","&#x2514;","&#x253c;","&#x23ba;", //88..8f
+	"&#x23bb;","&#x2500;","&#x23bc;","&#x23bd;","&#x251c;","&#x2524;","&#x2534;","&#x252c;", //90..97
+	"&#x2502;","&#x2264;","&#x2265;","&pi;    ","&#x2260;","&pound;" ,"&#x0095;","&#x2421;", //98..9f
+	//TODO:
+	"&#x2400;","&#x2400;","&#x2400;","&#x2400;","&#x2400;","&#x2400;","&#x2400;","&#x2400;", //a0..a7
+	"&#x2400;","&#x2400;","&#x2400;","&#x2400;","&#x2400;","&#x2400;","&#x2400;","&#x2400;", //a8..af
+	"&#x2400;","&#x2400;","&#x2400;","&#x2400;","&#x2400;","&#x2400;","&#x2400;","&#x2400;", //b0..b7
+	"&#x2400;","&#x2400;","&#x2400;","&#x2400;","&#x2400;","&#x2400;","&#x2400;","&#x2400;", //b8..bf
+	"&#x2400;","&#x2400;","&#x2400;","&#x2400;","&#x2400;","&#x2400;","&#x2400;","&#x2400;", //c0..c7
+	"&#x2400;","&#x2400;","&#x2400;","&#x2400;","&#x2400;","&#x2400;","&#x2400;","&#x2400;", //c8..cf
+	"&#x2400;","&#x2400;","&#x2400;","&#x2400;","&#x2400;","&#x2400;","&#x2400;","&#x2400;", //d0..d7
+	"&#x2400;","&#x2400;","&#x2400;","&#x2400;","&#x2400;","&#x2400;","&#x2400;","&#x2400;", //d8..df
+	"&#x2400;","&#x2400;","&#x2400;","&#x2400;","&#x2400;","&#x2400;","&#x2400;","&#x2400;", //e0..e7
+	"&#x2400;","&#x2400;","&#x2400;","&#x2400;","&#x2400;","&#x2400;","&#x2400;","&#x2400;", //e8..ef
+	"&#x2400;","&#x2400;","&#x2400;","&#x2400;","&#x2400;","&#x2400;","&#x2400;","&#x2400;", //f0..f7
+	"&#x2400;","&#x2400;","&#x2400;","&#x2400;","&#x2400;","&#x2400;","&#x2400;","&#x2400;"  //f8..ff
+};
+
 int getNextChar(register FILE* fp)
 {
 	int c;
@@ -334,6 +373,7 @@ int main(int argc,char* args[])
 	int bo = 0; //Not bold
 	int bl = 0; //No Blinking
 	int negative = 0; //No negative image
+	int special_char = 0; //No special characters
 	int ofc,obc,oul,obo,obl; //old values
 	int line=0;
 	int momline=0;
@@ -382,7 +422,7 @@ int main(int argc,char* args[])
 								mompos++;
 							if (mompos==momelem->digitcount) //only zeros => delete all
 							{
-								bo=0;ul=0;bl=0;fc=-1;bc=-1;negative=0;
+								bo=0;ul=0;bl=0;fc=-1;bc=-1;negative=0;special_char=0;
 							}
 							else
 							{
@@ -670,6 +710,10 @@ int main(int argc,char* args[])
 				//(US ASCII character set), "(A" (UK ASCII character set) and
 				//"(0" (Graphic). This whole "standard" is fucked up. Really...
 				c = getNextChar(fp);
+				if (c == '0') //we do not ignore ESC(0 ;)
+					special_char=1;
+				else
+					special_char=0;
 			}
 		}
 		else
@@ -700,6 +744,7 @@ int main(int argc,char* args[])
 				}
 				newline=-1;
 			}
+			char temp_buffer[2];
 			switch (c)
 			{
 				case '&':	printf("&amp;"); break;
@@ -708,7 +753,11 @@ int main(int argc,char* args[])
 				case '>':	printf("&gt;"); break;
 				case '\n':case 13: momline++;
 									 line=0;
-				default:	 printf("%c",c);
+				default:
+					if (special_char)
+						printf("%s",ansi_vt220_character_set[((int)c+32) & 255]);
+					else
+						printf("%c",c);
 			}
 			if (iso>0) //only at ISOS
 				if ((c & 128)==128) //first bit set => there must be followbytes
