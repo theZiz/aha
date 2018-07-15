@@ -132,6 +132,23 @@ void deleteParse(pelem elem)
 	}
 }
 
+void printHtml(char *text) {
+	while(1) {
+		switch(*text) {
+			case '\0': return;
+			
+			case '"': printf("&quot;"); break;
+			case '&': printf("&amp;"); break;
+			case '<': printf("&lt;"); break;
+			case '>': printf("&gt;"); break;
+			
+			default:
+				putc(*text, stdout);
+		}
+		++text;
+	}
+}
+
 #define VERSION_PRINTF_MAKRO \
 	printf("\033[1;31mAnsi Html Adapter\033[0m Version "AHA_VERSION"\n");
 
@@ -268,15 +285,11 @@ int main(int argc,char* args[])
 		printf("<!-- This file was created with the aha Ansi HTML Adapter. https://github.com/theZiz/aha -->\n");
 		printf("<html xmlns=\"http://www.w3.org/1999/xhtml\">\n");
 		printf("<head>\n<meta http-equiv=\"Content-Type\" content=\"application/xml+xhtml; charset=UTF-8\" />\n");
-		if (title)
-			printf("<title>%s</title>\n",title);
-		else
-		{
-			if (filename==NULL)
-				printf("<title>stdin</title>\n");
-			else
-				printf("<title>%s</title>\n",filename);
-		}
+		
+		printf("<title>");
+		printHtml(title ? title : filename ? filename : "stdin");
+		printf("</title>");
+		
 		if (stylesheet)
 		{
 			printf("<style type=\"text/css\">\n");
