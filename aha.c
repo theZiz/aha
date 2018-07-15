@@ -68,7 +68,7 @@ int getNextChar(register FILE* fp)
 	if ((c = fgetc(fp)) != EOF)
 		return c;
 	fprintf(stderr,"Unknown Error in File Parsing!\n");
-	exit(1);
+	exit(EXIT_FAILURE);
 }
 
 typedef struct selem *pelem;
