@@ -145,7 +145,7 @@ int main(int argc,char* args[])
 {
 	char* filename=NULL;
 	register FILE *fp = stdin;
-	enum ColorScheme colorshema=SCHEME_WHITE;
+	enum ColorScheme colorscheme=SCHEME_WHITE;
 	int iso=-1; //utf8
 	char stylesheet=0;
 	char htop_fix=0;
@@ -217,10 +217,10 @@ int main(int argc,char* args[])
 			word_wrap=1;
 		else
 		if ((strcmp(args[p],"--black")==0) || (strcmp(args[p],"-b")==0))
-			colorshema=SCHEME_BLACK;
+			colorscheme=SCHEME_BLACK;
 		else
 		if ((strcmp(args[p],"--pink")==0) || (strcmp(args[p],"-p")==0))
-			colorshema=SCHEME_PINK;
+			colorscheme=SCHEME_PINK;
 		else
 		if ((strcmp(args[p],"--stylesheet")==0) || (strcmp(args[p],"-s")==0))
 			stylesheet=1;
@@ -286,7 +286,7 @@ int main(int argc,char* args[])
 		if (stylesheet)
 		{
 			printf("<style type=\"text/css\">\n");
-			switch (colorshema)
+			switch (colorscheme)
 			{
 				case SCHEME_BLACK:  printf("body         {color: white; background-color: black;}\n");
 								 printf(".reset       {color: white;}\n");
@@ -305,7 +305,7 @@ int main(int argc,char* args[])
 				         printf(".inverted    {color: white;}\n");
 				         printf(".bg-inverted {background-color: black;}\n");
 			}
-			if (colorshema != SCHEME_BLACK)
+			if (colorscheme != SCHEME_BLACK)
 			{
 				printf(".dimgray     {color: dimgray;}\n");
 				printf(".red         {color: red;}\n");
@@ -354,11 +354,11 @@ int main(int argc,char* args[])
 			printf("white-space: -pre-wrap; white-space: -o-pre-wrap; word-wrap: break-word;}</style>\n");
 		}
 		printf("</head>\n");
-		if (stylesheet || ! colorshema)
+		if (stylesheet || ! colorscheme)
 			printf("<body>\n");
 		else
 		{
-			switch (colorshema)
+			switch (colorscheme)
 			{
 				case SCHEME_BLACK: printf("<body style=\"color:white; background-color:black\">\n"); break;
 				case SCHEME_PINK: printf("<body style=\"background-color:pink\">\n");	break;
@@ -548,58 +548,58 @@ int main(int argc,char* args[])
 											 break; //Red
 							case	2: if (stylesheet)
 												 printf("green ");
-											 else if (colorshema!=SCHEME_BLACK)
+											 else if (colorscheme!=SCHEME_BLACK)
 												 printf("color:green;");
 											 else
 												 printf("color:lime;");
 											 break; //Green
 							case	3: if (stylesheet)
 												 printf("yellow ");
-											 else if (colorshema!=SCHEME_BLACK)
+											 else if (colorscheme!=SCHEME_BLACK)
 												 printf("color:olive;");
 											 else
 												 printf("color:yellow;");
 											 break; //Yellow
 							case	4: if (stylesheet)
 												 printf("blue ");
-											 else if (colorshema!=SCHEME_BLACK)
+											 else if (colorscheme!=SCHEME_BLACK)
 												 printf("color:blue;");
 											 else
 												 printf("color:#3333FF;");
 											 break; //Blue
 							case	5: if (stylesheet)
 												 printf("purple ");
-											 else if (colorshema!=SCHEME_BLACK)
+											 else if (colorscheme!=SCHEME_BLACK)
 												 printf("color:purple;");
 											 else
 												 printf("color:fuchsia;");
 											 break; //Purple
 							case	6: if (stylesheet)
 												 printf("cyan ");
-											 else if (colorshema!=SCHEME_BLACK)
+											 else if (colorscheme!=SCHEME_BLACK)
 												 printf("color:teal;");
 											 else
 												 printf("color:aqua;");
 											 break; //Cyan
 							case	7: if (stylesheet)
 												 printf("white ");
-											 else if (colorshema!=SCHEME_BLACK)
+											 else if (colorscheme!=SCHEME_BLACK)
 												 printf("color:gray;");
 											 else
 												 printf("color:white;");
 											 break; //White
 							case	8: if (stylesheet)
 												 printf("inverted ");
-											 else if (colorshema==SCHEME_BLACK)
+											 else if (colorscheme==SCHEME_BLACK)
 												 printf("color:black;");
-											 else if (colorshema==SCHEME_PINK)
+											 else if (colorscheme==SCHEME_PINK)
 												 printf("color:pink;");
 											 else
 												 printf("color:white;");
 											 break; //Background Colour
 							case	9: if (stylesheet)
 												 printf("reset ");
-											 else if (colorshema!=SCHEME_BLACK)
+											 else if (colorscheme!=SCHEME_BLACK)
 												 printf("color:black;");
 											 else
 												 printf("color:white;");
@@ -619,58 +619,58 @@ int main(int argc,char* args[])
 											 break; //Red
 							case	2: if (stylesheet)
 												 printf("bg-green ");
-											 else if (colorshema!=SCHEME_BLACK)
+											 else if (colorscheme!=SCHEME_BLACK)
 												 printf("background-color:green;");
 											 else
 												 printf("background-color:lime;");
 											 break; //Green
 							case	3: if (stylesheet)
 												 printf("bg-yellow ");
-											 else if (colorshema!=SCHEME_BLACK)
+											 else if (colorscheme!=SCHEME_BLACK)
 												 printf("background-color:olive;");
 											 else
 												 printf("background-color:yellow;");
 											 break; //Yellow
 							case	4: if (stylesheet)
 												 printf("bg-blue ");
-											 else if (colorshema!=SCHEME_BLACK)
+											 else if (colorscheme!=SCHEME_BLACK)
 												 printf("background-color:blue;");
 											 else
 												 printf("background-color:#3333FF;");
 											 break; //Blue
 							case	5: if (stylesheet)
 												 printf("bg-purple ");
-											 else if (colorshema!=SCHEME_BLACK)
+											 else if (colorscheme!=SCHEME_BLACK)
 												 printf("background-color:purple;");
 											 else
 												 printf("background-color:fuchsia;");
 											 break; //Purple
 							case	6: if (stylesheet)
 												 printf("bg-cyan ");
-											 else if (colorshema!=SCHEME_BLACK)
+											 else if (colorscheme!=SCHEME_BLACK)
 												 printf("background-color:teal;");
 											 else
 												 printf("background-color:aqua;");
 											 break; //Cyan
 							case	7: if (stylesheet)
 												 printf("bg-white ");
-											 else if (colorshema!=SCHEME_BLACK)
+											 else if (colorscheme!=SCHEME_BLACK)
 												 printf("background-color:gray;");
 											 else
 												 printf("background-color:white;");
 											 break; //White
 							case	8: if (stylesheet)
 												 printf("bg-reset ");
-											 else if (colorshema==SCHEME_BLACK)
+											 else if (colorscheme==SCHEME_BLACK)
 												 printf("background-color:black;");
-											 else if (colorshema==SCHEME_PINK)
+											 else if (colorscheme==SCHEME_PINK)
 												 printf("background-color:pink;");
 											 else
 												 printf("background-color:white;");
 											 break; //Background Colour
 							case	9: if (stylesheet)
 												 printf("bg-inverted ");
-											 else if (colorshema!=SCHEME_BLACK)
+											 else if (colorscheme!=SCHEME_BLACK)
 												 printf("background-color:black;");
 											 else
 												 printf("background-color:white;");
