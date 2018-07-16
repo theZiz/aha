@@ -354,7 +354,7 @@ int main(int argc,char* args[])
 			printf("white-space: -pre-wrap; white-space: -o-pre-wrap; word-wrap: break-word;}</style>\n");
 		}
 		printf("</head>\n");
-		if (stylesheet || ! colorscheme)
+		if (stylesheet || colorscheme==SCHEME_WHITE)
 			printf("<body>\n");
 		else
 		{
