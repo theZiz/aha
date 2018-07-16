@@ -73,7 +73,8 @@ int getNextChar(register FILE* fp)
 	int c;
 	if ((c = fgetc(fp)) != EOF)
 		return c;
-	fprintf(stderr,"Unknown Error in File Parsing!\n");
+		
+	perror("Error while parsing input");
 	exit(EXIT_FAILURE);
 }
 
