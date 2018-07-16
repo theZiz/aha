@@ -20,6 +20,7 @@
 #define AHA_VERSION "0.4.10.6"
 #define TEST
 #define AHA_YEAR "2017"
+#include <errno.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -269,7 +270,8 @@ int main(int argc,char* args[])
 			fp = fopen(args[p+1],"r");
 			if (fp==NULL)
 			{
-				fprintf(stderr,"file \"%s\" not found!\n",args[p+1]);
+				char *errstr = strerror(errno);
+				fprintf(stderr,"Failed to open file \"%s\": %s\n",args[p+1],errstr);
 				exit(EXIT_FAILURE);
 			}
 			p++;
