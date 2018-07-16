@@ -68,7 +68,7 @@ int getNextChar(register FILE* fp)
 	if ((c = fgetc(fp)) != EOF)
 		return c;
 	fprintf(stderr,"Unknown Error in File Parsing!\n");
-	exit(1);
+	exit(EXIT_FAILURE);
 }
 
 typedef struct selem *pelem;
@@ -208,7 +208,7 @@ int main(int argc,char* args[])
 			if (p+1>=argc)
 			{
 				fprintf(stderr,"No title given!\n");
-				return 0;
+				exit(EXIT_FAILURE);
 			}
 			title=args[p+1];
 			p++;
@@ -241,13 +241,13 @@ int main(int argc,char* args[])
 			if (p+1>=argc)
 			{
 				fprintf(stderr,"No ISO code given!\n");
-				return 0;
+				exit(EXIT_FAILURE);
 			}
 			iso = atoi(args[p+1]);
 			if (iso<1 || iso>16)
 			{
 				fprintf(stderr,"not a valid ISO code: ISO 8859-%s\n",args[p+1]);
-				return 0;
+				exit(EXIT_FAILURE);
 			}
 			p++;
 		}
@@ -257,13 +257,13 @@ int main(int argc,char* args[])
 			if (p+1>=argc)
 			{
 				fprintf(stderr,"no file to read given after \"-f\"!\n");
-				return 0;
+				return 1;
 			}
 			fp = fopen(args[p+1],"r");
 			if (fp==NULL)
 			{
 				fprintf(stderr,"file \"%s\" not found!\n",args[p+1]);
-				return 0;
+				exit(EXIT_FAILURE);
 			}
 			p++;
 			filename=args[p];
@@ -271,7 +271,7 @@ int main(int argc,char* args[])
 		else
 		{
 			fprintf(stderr,"Unknown parameter \"%s\"\n",args[p]);
-			return 0;
+			exit(EXIT_FAILURE);
 		}
 	}
 
