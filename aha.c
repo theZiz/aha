@@ -598,8 +598,8 @@ int main(int argc,char* args[])
 						else
 							printf("<span style=\"");
 						
-						if(fc>=0) printf("%s", fcstyle[fc]);
-						if(bc>=0) printf("%s", bcstyle[bc]);
+						if(fc>=0 && fc<=9) printf("%s", fcstyle[fc]);
+						if(bc>=0 && bc<=9) printf("%s", bcstyle[bc]);
 						
 						if (ul)
 						{
