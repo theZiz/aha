@@ -20,6 +20,7 @@
 #define AHA_VERSION "0.4.10.6"
 #define TEST
 #define AHA_YEAR "2017"
+#include <errno.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -73,7 +74,8 @@ int getNextChar(register FILE* fp)
 	int c;
 	if ((c = fgetc(fp)) != EOF)
 		return c;
-	fprintf(stderr,"Unknown Error in File Parsing!\n");
+		
+	perror("Error while parsing input");
 	exit(EXIT_FAILURE);
 }
 
@@ -268,7 +270,8 @@ int main(int argc,char* args[])
 			fp = fopen(args[p+1],"r");
 			if (fp==NULL)
 			{
-				fprintf(stderr,"file \"%s\" not found!\n",args[p+1]);
+				char *errstr = strerror(errno);
+				fprintf(stderr,"Failed to open file \"%s\": %s\n",args[p+1],errstr);
 				exit(EXIT_FAILURE);
 			}
 			p++;
@@ -283,14 +286,13 @@ int main(int argc,char* args[])
 
 	if (no_header == 0)
 	{
-		//Header:
-		if (iso<0)
-			printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n");
-		else
-			printf("<?xml version=\"1.0\" encoding=\"ISO-8859-%i\" ?><!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n",iso);
+		char encoding[16] = "UTF-8";
+		if(iso>0) snprintf(encoding, sizeof(encoding), "ISO-8859-%i", iso);
+		
+		printf("<?xml version=\"1.0\" encoding=\"%s\" ?>\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n", encoding);
 		printf("<!-- This file was created with the aha Ansi HTML Adapter. https://github.com/theZiz/aha -->\n");
 		printf("<html xmlns=\"http://www.w3.org/1999/xhtml\">\n");
-		printf("<head>\n<meta http-equiv=\"Content-Type\" content=\"application/xml+xhtml; charset=UTF-8\" />\n");
+		printf("<head>\n<meta http-equiv=\"Content-Type\" content=\"application/xml+xhtml; charset=%s\" />\n", encoding);
 		
 		printf("<title>");
 		printHtml(title ? title : filename ? filename : "stdin");
