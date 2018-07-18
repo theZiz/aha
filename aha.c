@@ -63,12 +63,6 @@ const char ansi_vt220_character_set[256][16] =
 	"&#x00f8;","&#x00f9;","&#x00fa;","&#x00fb;","&#x00fc;","&#x00ff;"," "       ,"&#x2588;", //f8..ff
 };
 
-enum ColorScheme {
-	SCHEME_WHITE,
-	SCHEME_BLACK,
-	SCHEME_PINK
-};
-
 int getNextChar(register FILE* fp)
 {
 	int c;
@@ -157,21 +151,42 @@ void printHtml(char *text) {
 	}
 }
 
+enum ColorScheme {
+	SCHEME_WHITE,
+	SCHEME_BLACK,
+	SCHEME_PINK
+};
+
+struct Options {
+	enum ColorScheme colorscheme;
+	char* filename;
+	int htop_fix;
+	int iso;
+	int line_break;
+	int no_header;
+	int stylesheet;
+	char *title;
+	int word_wrap;
+};
+
 #define VERSION_PRINTF_MAKRO \
 	printf("\033[1;31mAnsi Html Adapter\033[0m Version "AHA_VERSION"\n");
 
 int main(int argc,char* args[])
 {
-	char* filename=NULL;
+	struct Options opts = (struct Options){
+		.colorscheme = SCHEME_WHITE,
+		.filename = NULL,
+		.htop_fix = 0,
+		.iso = -1,
+		.line_break = 0,
+		.no_header = 0,
+		.stylesheet = 0,
+		.title = NULL,
+		.word_wrap = 0
+	};
 	register FILE *fp = stdin;
-	enum ColorScheme colorscheme=SCHEME_WHITE;
-	int iso=-1; //utf8
-	char stylesheet=0;
-	char htop_fix=0;
-	char line_break=0;
-	char* title=NULL;
-	char word_wrap=0;
-	char no_header=0;
+	
 	//Searching Parameters
 	for (int p = 1;p<argc;p++)
 	{
@@ -218,31 +233,31 @@ int main(int argc,char* args[])
 				fprintf(stderr,"No title given!\n");
 				exit(EXIT_FAILURE);
 			}
-			title=args[p+1];
+			opts.title=args[p+1];
 			p++;
 		}
 		else
 		if ((strcmp(args[p],"--line-fix")==0) || (strcmp(args[p],"-l")==0))
 		{
-			htop_fix=1;
+			opts.htop_fix=1;
 		}
 		else
 		if ((strcmp(args[p],"--no-header")==0) || (strcmp(args[p],"-n")==0))
 		{
-			no_header=1;
+			opts.no_header=1;
 		}
 		else
 		if ((strcmp(args[p],"--word-wrap")==0) || (strcmp(args[p],"-w")==0))
-			word_wrap=1;
+			opts.word_wrap=1;
 		else
 		if ((strcmp(args[p],"--black")==0) || (strcmp(args[p],"-b")==0))
-			colorscheme=SCHEME_BLACK;
+			opts.colorscheme=SCHEME_BLACK;
 		else
 		if ((strcmp(args[p],"--pink")==0) || (strcmp(args[p],"-p")==0))
-			colorscheme=SCHEME_PINK;
+			opts.colorscheme=SCHEME_PINK;
 		else
 		if ((strcmp(args[p],"--stylesheet")==0) || (strcmp(args[p],"-s")==0))
-			stylesheet=1;
+			opts.stylesheet=1;
 		else
 		if ((strcmp(args[p],"--iso")==0) || (strcmp(args[p],"-i")==0))
 		{
@@ -251,8 +266,8 @@ int main(int argc,char* args[])
 				fprintf(stderr,"No ISO code given!\n");
 				exit(EXIT_FAILURE);
 			}
-			iso = atoi(args[p+1]);
-			if (iso<1 || iso>16)
+			opts.iso = atoi(args[p+1]);
+			if (opts.iso<1 || opts.iso>16)
 			{
 				fprintf(stderr,"not a valid ISO code: ISO 8859-%s\n",args[p+1]);
 				exit(EXIT_FAILURE);
@@ -275,7 +290,7 @@ int main(int argc,char* args[])
 				exit(EXIT_FAILURE);
 			}
 			p++;
-			filename=args[p];
+			opts.filename=args[p];
 		}
 		else
 		{
@@ -284,10 +299,10 @@ int main(int argc,char* args[])
 		}
 	}
 
-	if (no_header == 0)
+	if (opts.no_header == 0)
 	{
 		char encoding[16] = "UTF-8";
-		if(iso>0) snprintf(encoding, sizeof(encoding), "ISO-8859-%i", iso);
+		if(opts.iso>0) snprintf(encoding, sizeof(encoding), "ISO-8859-%i", opts.iso);
 		
 		printf("<?xml version=\"1.0\" encoding=\"%s\" ?>\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n", encoding);
 		printf("<!-- This file was created with the aha Ansi HTML Adapter. https://github.com/theZiz/aha -->\n");
@@ -295,13 +310,13 @@ int main(int argc,char* args[])
 		printf("<head>\n<meta http-equiv=\"Content-Type\" content=\"application/xml+xhtml; charset=%s\" />\n", encoding);
 		
 		printf("<title>");
-		printHtml(title ? title : filename ? filename : "stdin");
+		printHtml(opts.title ? opts.title : opts.filename ? opts.filename : "stdin");
 		printf("</title>");
 		
-		if (stylesheet)
+		if (opts.stylesheet)
 		{
 			printf("<style type=\"text/css\">\n");
-			switch (colorscheme)
+			switch (opts.colorscheme)
 			{
 				case SCHEME_BLACK:  printf("body         {color: white; background-color: black;}\n");
 								 printf(".reset       {color: white;}\n");
@@ -320,7 +335,7 @@ int main(int argc,char* args[])
 				         printf(".inverted    {color: white;}\n");
 				         printf(".bg-inverted {background-color: black;}\n");
 			}
-			if (colorscheme != SCHEME_BLACK)
+			if (opts.colorscheme != SCHEME_BLACK)
 			{
 				printf(".dimgray     {color: dimgray;}\n");
 				printf(".red         {color: red;}\n");
@@ -363,17 +378,17 @@ int main(int argc,char* args[])
 			printf(".blink       {text-decoration: blink;}\n");
 			printf("</style>\n");
 		}
-		if (word_wrap)
+		if (opts.word_wrap)
 		{
 			printf("<style type=\"text/css\">pre {white-space: pre-wrap; white-space: -moz-pre-wrap !important;\n");
 			printf("white-space: -pre-wrap; white-space: -o-pre-wrap; word-wrap: break-word;}</style>\n");
 		}
 		printf("</head>\n");
-		if (stylesheet || colorscheme==SCHEME_WHITE)
+		if (opts.stylesheet || opts.colorscheme==SCHEME_WHITE)
 			printf("<body>\n");
 		else
 		{
-			switch (colorscheme)
+			switch (opts.colorscheme)
 			{
 				case SCHEME_BLACK: printf("<body style=\"color:white; background-color:black\">\n"); break;
 				case SCHEME_PINK: printf("<body style=\"background-color:pink\">\n");	break;
@@ -515,7 +530,7 @@ int main(int argc,char* args[])
 						deleteParse(elem);
 					break;
 					case 'H':
-						if (htop_fix) //a little dirty ...
+						if (opts.htop_fix) //a little dirty ...
 						{
 							elem=parseInsert(buffer);
 							pelem second=elem->next;
@@ -528,12 +543,12 @@ int main(int argc,char* args[])
 								newline=(newline+1)*10+second->digit[2]-1;
 							deleteParse(elem);
 							if (newline<line)
-								line_break=1;
+								opts.line_break=1;
 						}
 					break;
 				}
-				if (htop_fix)
-					if (line_break)
+				if (opts.htop_fix)
+					if (opts.line_break)
 					{
 						for (;line<80;line++)
 							printf(" ");
@@ -545,76 +560,76 @@ int main(int argc,char* args[])
 						printf("</span>");
 					if ((fc!=-1) || (bc!=-1) || (ul!=0) || (bo!=0) || (bl!=0))
 					{
-						if (stylesheet)
+						if (opts.stylesheet)
 							printf("<span class=\"");
 						else
 							printf("<span style=\"");
 						switch (fc)
 						{
-							case	0: if (stylesheet)
+							case	0: if (opts.stylesheet)
 												 printf("dimgray ");
 											 else
 												 printf("color:dimgray;");
 											 break; //Black
-							case	1: if (stylesheet)
+							case	1: if (opts.stylesheet)
 												 printf("red ");
 											 else
 												 printf("color:red;");
 											 break; //Red
-							case	2: if (stylesheet)
+							case	2: if (opts.stylesheet)
 												 printf("green ");
-											 else if (colorscheme!=SCHEME_BLACK)
+											 else if (opts.colorscheme!=SCHEME_BLACK)
 												 printf("color:green;");
 											 else
 												 printf("color:lime;");
 											 break; //Green
-							case	3: if (stylesheet)
+							case	3: if (opts.stylesheet)
 												 printf("yellow ");
-											 else if (colorscheme!=SCHEME_BLACK)
+											 else if (opts.colorscheme!=SCHEME_BLACK)
 												 printf("color:olive;");
 											 else
 												 printf("color:yellow;");
 											 break; //Yellow
-							case	4: if (stylesheet)
+							case	4: if (opts.stylesheet)
 												 printf("blue ");
-											 else if (colorscheme!=SCHEME_BLACK)
+											 else if (opts.colorscheme!=SCHEME_BLACK)
 												 printf("color:blue;");
 											 else
 												 printf("color:#3333FF;");
 											 break; //Blue
-							case	5: if (stylesheet)
+							case	5: if (opts.stylesheet)
 												 printf("purple ");
-											 else if (colorscheme!=SCHEME_BLACK)
+											 else if (opts.colorscheme!=SCHEME_BLACK)
 												 printf("color:purple;");
 											 else
 												 printf("color:fuchsia;");
 											 break; //Purple
-							case	6: if (stylesheet)
+							case	6: if (opts.stylesheet)
 												 printf("cyan ");
-											 else if (colorscheme!=SCHEME_BLACK)
+											 else if (opts.colorscheme!=SCHEME_BLACK)
 												 printf("color:teal;");
 											 else
 												 printf("color:aqua;");
 											 break; //Cyan
-							case	7: if (stylesheet)
+							case	7: if (opts.stylesheet)
 												 printf("white ");
-											 else if (colorscheme!=SCHEME_BLACK)
+											 else if (opts.colorscheme!=SCHEME_BLACK)
 												 printf("color:gray;");
 											 else
 												 printf("color:white;");
 											 break; //White
-							case	8: if (stylesheet)
+							case	8: if (opts.stylesheet)
 												 printf("inverted ");
-											 else if (colorscheme==SCHEME_BLACK)
+											 else if (opts.colorscheme==SCHEME_BLACK)
 												 printf("color:black;");
-											 else if (colorscheme==SCHEME_PINK)
+											 else if (opts.colorscheme==SCHEME_PINK)
 												 printf("color:pink;");
 											 else
 												 printf("color:white;");
 											 break; //Background Colour
-							case	9: if (stylesheet)
+							case	9: if (opts.stylesheet)
 												 printf("reset ");
-											 else if (colorscheme!=SCHEME_BLACK)
+											 else if (opts.colorscheme!=SCHEME_BLACK)
 												 printf("color:black;");
 											 else
 												 printf("color:white;");
@@ -622,70 +637,70 @@ int main(int argc,char* args[])
 						}
 						switch (bc)
 						{
-							case	0: if (stylesheet)
+							case	0: if (opts.stylesheet)
 												 printf("bg-black ");
 											 else
 												 printf("background-color:black;");
 											 break; //Black
-							case	1: if (stylesheet)
+							case	1: if (opts.stylesheet)
 												 printf("bg-red ");
 											 else
 												 printf("background-color:red;");
 											 break; //Red
-							case	2: if (stylesheet)
+							case	2: if (opts.stylesheet)
 												 printf("bg-green ");
-											 else if (colorscheme!=SCHEME_BLACK)
+											 else if (opts.colorscheme!=SCHEME_BLACK)
 												 printf("background-color:green;");
 											 else
 												 printf("background-color:lime;");
 											 break; //Green
-							case	3: if (stylesheet)
+							case	3: if (opts.stylesheet)
 												 printf("bg-yellow ");
-											 else if (colorscheme!=SCHEME_BLACK)
+											 else if (opts.colorscheme!=SCHEME_BLACK)
 												 printf("background-color:olive;");
 											 else
 												 printf("background-color:yellow;");
 											 break; //Yellow
-							case	4: if (stylesheet)
+							case	4: if (opts.stylesheet)
 												 printf("bg-blue ");
-											 else if (colorscheme!=SCHEME_BLACK)
+											 else if (opts.colorscheme!=SCHEME_BLACK)
 												 printf("background-color:blue;");
 											 else
 												 printf("background-color:#3333FF;");
 											 break; //Blue
-							case	5: if (stylesheet)
+							case	5: if (opts.stylesheet)
 												 printf("bg-purple ");
-											 else if (colorscheme!=SCHEME_BLACK)
+											 else if (opts.colorscheme!=SCHEME_BLACK)
 												 printf("background-color:purple;");
 											 else
 												 printf("background-color:fuchsia;");
 											 break; //Purple
-							case	6: if (stylesheet)
+							case	6: if (opts.stylesheet)
 												 printf("bg-cyan ");
-											 else if (colorscheme!=SCHEME_BLACK)
+											 else if (opts.colorscheme!=SCHEME_BLACK)
 												 printf("background-color:teal;");
 											 else
 												 printf("background-color:aqua;");
 											 break; //Cyan
-							case	7: if (stylesheet)
+							case	7: if (opts.stylesheet)
 												 printf("bg-white ");
-											 else if (colorscheme!=SCHEME_BLACK)
+											 else if (opts.colorscheme!=SCHEME_BLACK)
 												 printf("background-color:gray;");
 											 else
 												 printf("background-color:white;");
 											 break; //White
-							case	8: if (stylesheet)
+							case	8: if (opts.stylesheet)
 												 printf("bg-reset ");
-											 else if (colorscheme==SCHEME_BLACK)
+											 else if (opts.colorscheme==SCHEME_BLACK)
 												 printf("background-color:black;");
-											 else if (colorscheme==SCHEME_PINK)
+											 else if (opts.colorscheme==SCHEME_PINK)
 												 printf("background-color:pink;");
 											 else
 												 printf("background-color:white;");
 											 break; //Background Colour
-							case	9: if (stylesheet)
+							case	9: if (opts.stylesheet)
 												 printf("bg-inverted ");
-											 else if (colorscheme!=SCHEME_BLACK)
+											 else if (opts.colorscheme!=SCHEME_BLACK)
 												 printf("background-color:black;");
 											 else
 												 printf("background-color:white;");
@@ -693,21 +708,21 @@ int main(int argc,char* args[])
 						}
 						if (ul)
 						{
-							if (stylesheet)
+							if (opts.stylesheet)
 								printf("underline ");
 							else
 								printf("text-decoration:underline;");
 						}
 						if (bo)
 						{
-							if (stylesheet)
+							if (opts.stylesheet)
 								printf("bold ");
 							else
 								printf("font-weight:bold;");
 						}
 						if (bl)
 						{
-							if (stylesheet)
+							if (opts.stylesheet)
 								printf("blink ");
 							else
 								printf("text-decoration:blink;");
@@ -737,7 +752,7 @@ int main(int argc,char* args[])
 			}
 		}
 		else
-		if (c==13 && htop_fix)
+		if (c==13 && opts.htop_fix)
 		{
 			for (;line<80;line++)
 				printf(" ");
@@ -748,11 +763,11 @@ int main(int argc,char* args[])
 		else if (c!=8)
 		{
 			line++;
-			if (line_break)
+			if (opts.line_break)
 			{
 				printf("\n");
 				line=0;
-				line_break=0;
+				opts.line_break=0;
 				momline++;
 			}
 			if (newline>=0)
@@ -779,7 +794,7 @@ int main(int argc,char* args[])
 					else
 						printf("%c",c);
 			}
-			if (iso>0) //only at ISOS
+			if (opts.iso>0) //only at ISOS
 				if ((c & 128)==128) //first bit set => there must be followbytes
 				{
 					int bits=2;
@@ -798,7 +813,7 @@ int main(int argc,char* args[])
 	if ((fc!=-1) || (bc!=-1) || (ul!=0) || (bo!=0) || (bl!=0))
 		printf("</span>\n");
 
-	if (no_header == 0)
+	if (opts.no_header == 0)
 	{
 		printf("</pre>\n");
 		printf("</body>\n");
