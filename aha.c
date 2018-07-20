@@ -764,7 +764,6 @@ int main(int argc,char* args[])
 				}
 				newline=-1;
 			}
-			char temp_buffer[2];
 			switch (c)
 			{
 				case '&':	printf("&amp;"); break;
