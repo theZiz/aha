@@ -302,111 +302,113 @@ struct Options parseArgs(int argc, char* args[]) {
 	return opts;
 }
 
+void printHeader(const struct Options *opts) {
+	char encoding[16] = "UTF-8";
+	if(opts->iso>0) snprintf(encoding, sizeof(encoding), "ISO-8859-%i", opts->iso);
+	
+	printf("<?xml version=\"1.0\" encoding=\"%s\" ?>\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n", encoding);
+	printf("<!-- This file was created with the aha Ansi HTML Adapter. https://github.com/theZiz/aha -->\n");
+	printf("<html xmlns=\"http://www.w3.org/1999/xhtml\">\n");
+	printf("<head>\n<meta http-equiv=\"Content-Type\" content=\"application/xml+xhtml; charset=%s\" />\n", encoding);
+	
+	printf("<title>");
+	printHtml(opts->title ? opts->title : opts->filename ? opts->filename : "stdin");
+	printf("</title>\n");
+	
+	if (opts->stylesheet)
+	{
+		printf("<style type=\"text/css\">\n");
+		switch (opts->colorscheme)
+		{
+			case SCHEME_BLACK:  printf("body         {color: white; background-color: black;}\n");
+							 printf(".reset       {color: white;}\n");
+							 printf(".bg-reset    {background-color: black;}\n");
+							 printf(".inverted    {color: black;}\n");
+							 printf(".bg-inverted {background-color: white;}\n");
+							 break;
+			case SCHEME_PINK:  printf("body         {background-color: pink;}\n");
+							 printf(".reset       {color: black;}\n");
+							 printf(".bg-reset    {background-color: pink;}\n");
+							 printf(".inverted    {color: pink;}\n");
+							 printf(".bg-inverted {background-color: black;}\n");
+							 break;
+			default: printf(".reset       {color: black;}\n");
+					 printf(".bg-reset    {background-color: white;}\n");
+					 printf(".inverted    {color: white;}\n");
+					 printf(".bg-inverted {background-color: black;}\n");
+		}
+		if (opts->colorscheme != SCHEME_BLACK)
+		{
+			printf(".dimgray     {color: dimgray;}\n");
+			printf(".red         {color: red;}\n");
+			printf(".green       {color: green;}\n");
+			printf(".yellow      {color: olive;}\n");
+			printf(".blue        {color: blue;}\n");
+			printf(".purple      {color: purple;}\n");
+			printf(".cyan        {color: teal;}\n");
+			printf(".white       {color: gray;}\n");
+			printf(".bg-black    {background-color: black;}\n");
+			printf(".bg-red      {background-color: red;}\n");
+			printf(".bg-green    {background-color: green;}\n");
+			printf(".bg-yellow   {background-color: olive;}\n");
+			printf(".bg-blue     {background-color: blue;}\n");
+			printf(".bg-purple   {background-color: purple;}\n");
+			printf(".bg-cyan     {background-color: teal;}\n");
+			printf(".bg-white    {background-color: gray;}\n");
+		}
+		else
+		{
+			printf(".dimgray     {color: dimgray;}\n");
+			printf(".red         {color: red;}\n");
+			printf(".green       {color: lime;}\n");
+			printf(".yellow      {color: yellow;}\n");
+			printf(".blue        {color: #3333FF;}\n");
+			printf(".purple      {color: fuchsia;}\n");
+			printf(".cyan        {color: aqua;}\n");
+			printf(".white       {color: white;}\n");
+			printf(".bg-black    {background-color: black;}\n");
+			printf(".bg-red      {background-color: red;}\n");
+			printf(".bg-green    {background-color: lime;}\n");
+			printf(".bg-yellow   {background-color: yellow;}\n");
+			printf(".bg-blue     {background-color: #3333FF;}\n");
+			printf(".bg-purple   {background-color: fuchsia;}\n");
+			printf(".bg-cyan     {background-color: aqua;}\n");
+			printf(".bg-white    {background-color: white;}\n");
+		}
+		printf(".underline   {text-decoration: underline;}\n");
+		printf(".bold        {font-weight: bold;}\n");
+		printf(".blink       {text-decoration: blink;}\n");
+		printf("</style>\n");
+	}
+	if (opts->word_wrap)
+	{
+		printf("<style type=\"text/css\">pre {white-space: pre-wrap; white-space: -moz-pre-wrap !important;\n");
+		printf("white-space: -pre-wrap; white-space: -o-pre-wrap; word-wrap: break-word;}</style>\n");
+	}
+	printf("</head>\n");
+	
+	if (opts->stylesheet || opts->colorscheme==SCHEME_WHITE) {
+		printf("<body>\n");
+	} 
+	else
+	{
+		switch (opts->colorscheme)
+		{
+			case SCHEME_BLACK: printf("<body style=\"color:white; background-color:black\">\n"); break;
+			case SCHEME_PINK: printf("<body style=\"background-color:pink\">\n");	break;
+		}
+	}
+}
+
 int main(int argc,char* args[])
 {
 	struct Options opts = parseArgs(argc, args);
 	register FILE* fp = opts.fp;
 
-	if (opts.no_header == 0)
-	{
-		char encoding[16] = "UTF-8";
-		if(opts.iso>0) snprintf(encoding, sizeof(encoding), "ISO-8859-%i", opts.iso);
-		
-		printf("<?xml version=\"1.0\" encoding=\"%s\" ?>\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n", encoding);
-		printf("<!-- This file was created with the aha Ansi HTML Adapter. https://github.com/theZiz/aha -->\n");
-		printf("<html xmlns=\"http://www.w3.org/1999/xhtml\">\n");
-		printf("<head>\n<meta http-equiv=\"Content-Type\" content=\"application/xml+xhtml; charset=%s\" />\n", encoding);
-		
-		printf("<title>");
-		printHtml(opts.title ? opts.title : opts.filename ? opts.filename : "stdin");
-		printf("</title>");
-		
-		if (opts.stylesheet)
-		{
-			printf("<style type=\"text/css\">\n");
-			switch (opts.colorscheme)
-			{
-				case SCHEME_BLACK:  printf("body         {color: white; background-color: black;}\n");
-								 printf(".reset       {color: white;}\n");
-								 printf(".bg-reset    {background-color: black;}\n");
-								 printf(".inverted    {color: black;}\n");
-								 printf(".bg-inverted {background-color: white;}\n");
-								 break;
-				case SCHEME_PINK:  printf("body         {background-color: pink;}\n");
-								 printf(".reset       {color: black;}\n");
-								 printf(".bg-reset    {background-color: pink;}\n");
-								 printf(".inverted    {color: pink;}\n");
-								 printf(".bg-inverted {background-color: black;}\n");
-								 break;
-				default: printf(".reset       {color: black;}\n");
-				         printf(".bg-reset    {background-color: white;}\n");
-				         printf(".inverted    {color: white;}\n");
-				         printf(".bg-inverted {background-color: black;}\n");
-			}
-			if (opts.colorscheme != SCHEME_BLACK)
-			{
-				printf(".dimgray     {color: dimgray;}\n");
-				printf(".red         {color: red;}\n");
-				printf(".green       {color: green;}\n");
-				printf(".yellow      {color: olive;}\n");
-				printf(".blue        {color: blue;}\n");
-				printf(".purple      {color: purple;}\n");
-				printf(".cyan        {color: teal;}\n");
-				printf(".white       {color: gray;}\n");
-				printf(".bg-black    {background-color: black;}\n");
-				printf(".bg-red      {background-color: red;}\n");
-				printf(".bg-green    {background-color: green;}\n");
-				printf(".bg-yellow   {background-color: olive;}\n");
-				printf(".bg-blue     {background-color: blue;}\n");
-				printf(".bg-purple   {background-color: purple;}\n");
-				printf(".bg-cyan     {background-color: teal;}\n");
-				printf(".bg-white    {background-color: gray;}\n");
-			}
-			else
-			{
-				printf(".dimgray     {color: dimgray;}\n");
-				printf(".red         {color: red;}\n");
-				printf(".green       {color: lime;}\n");
-				printf(".yellow      {color: yellow;}\n");
-				printf(".blue        {color: #3333FF;}\n");
-				printf(".purple      {color: fuchsia;}\n");
-				printf(".cyan        {color: aqua;}\n");
-				printf(".white       {color: white;}\n");
-				printf(".bg-black    {background-color: black;}\n");
-				printf(".bg-red      {background-color: red;}\n");
-				printf(".bg-green    {background-color: lime;}\n");
-				printf(".bg-yellow   {background-color: yellow;}\n");
-				printf(".bg-blue     {background-color: #3333FF;}\n");
-				printf(".bg-purple   {background-color: fuchsia;}\n");
-				printf(".bg-cyan     {background-color: aqua;}\n");
-				printf(".bg-white    {background-color: white;}\n");
-			}
-			printf(".underline   {text-decoration: underline;}\n");
-			printf(".bold        {font-weight: bold;}\n");
-			printf(".blink       {text-decoration: blink;}\n");
-			printf("</style>\n");
-		}
-		if (opts.word_wrap)
-		{
-			printf("<style type=\"text/css\">pre {white-space: pre-wrap; white-space: -moz-pre-wrap !important;\n");
-			printf("white-space: -pre-wrap; white-space: -o-pre-wrap; word-wrap: break-word;}</style>\n");
-		}
-		printf("</head>\n");
-		if (opts.stylesheet || opts.colorscheme==SCHEME_WHITE)
-			printf("<body>\n");
-		else
-		{
-			switch (opts.colorscheme)
-			{
-				case SCHEME_BLACK: printf("<body style=\"color:white; background-color:black\">\n"); break;
-				case SCHEME_PINK: printf("<body style=\"background-color:pink\">\n");	break;
-			}
-		}
+	if (!opts.no_header)
+		printHeader(&opts);
 
-		//default values:
-		//printf("<div style=\"font-family:monospace; white-space:pre\">");
-		printf("<pre>\n");
-	}
+	printf("<pre>\n");
 
 	//Begin of Conversion
 	unsigned int c;
