@@ -412,6 +412,8 @@ void printHeader(const struct Options *opts)
 			case SCHEME_PINK: printf("<body style=\"background-color:pink\">\n");	break;
 		}
 	}
+	
+	printf("<pre>\n");
 }
 
 int main(int argc,char* args[])
@@ -421,8 +423,6 @@ int main(int argc,char* args[])
 
 	if (!opts.no_header)
 		printHeader(&opts);
-
-	printf("<pre>\n");
 
 	//Begin of Conversion
 	unsigned int c;
