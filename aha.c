@@ -287,7 +287,7 @@ int main(int argc,char* args[])
 		colorscheme==SCHEME_BLACK ? "color:lime;" : "color:green;", //Green
 		colorscheme==SCHEME_BLACK ? "color:yellow;" : "color:olive;", //Yellow
 		colorscheme==SCHEME_BLACK ? "color:#3333FF;" : "color:blue;", //Blue
-		colorscheme==SCHEME_BLACK ? "color:fuschia;" : "color:purple;", //Purple
+		colorscheme==SCHEME_BLACK ? "color:fuchsia;" : "color:purple;", //Purple
 		colorscheme==SCHEME_BLACK ? "color:aqua;" : "color:teal;", //Cyan
 		colorscheme==SCHEME_BLACK ? "color:white;" : "color:gray;", //White
 		colorscheme==SCHEME_BLACK ? "color:black;" : colorscheme==SCHEME_PINK ? "color:pink;" : "color:white;", //Background
@@ -300,7 +300,7 @@ int main(int argc,char* args[])
 		colorscheme==SCHEME_BLACK ? "background-color:lime;" : "background-color:green;", //Green
 		colorscheme==SCHEME_BLACK ? "background-color:yellow;" : "background-color:olive;", //Yellow
 		colorscheme==SCHEME_BLACK ? "background-color:#3333FF;" : "background-color:blue;", //Blue
-		colorscheme==SCHEME_BLACK ? "background-color:fuschia;" : "background-color:purple;", //Purple
+		colorscheme==SCHEME_BLACK ? "background-color:fuchsia;" : "background-color:purple;", //Purple
 		colorscheme==SCHEME_BLACK ? "background-color:aqua;" : "background-color:teal;", //Cyan
 		colorscheme==SCHEME_BLACK ? "background-color:white;" : "background-color:gray;", //White
 		colorscheme==SCHEME_BLACK ? "background-color:black;" : colorscheme==SCHEME_PINK ? "background-color:pink;" : "background-color:white;", //Background
