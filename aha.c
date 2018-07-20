@@ -160,6 +160,7 @@ enum ColorScheme {
 struct Options {
 	enum ColorScheme colorscheme;
 	char* filename;
+	FILE *fp;
 	int htop_fix;
 	int iso;
 	int line_break;
@@ -172,11 +173,11 @@ struct Options {
 #define VERSION_PRINTF_MAKRO \
 	printf("\033[1;31mAnsi Html Adapter\033[0m Version "AHA_VERSION"\n");
 
-int main(int argc,char* args[])
-{
+struct Options parseArgs(int argc, char* args[]) {
 	struct Options opts = (struct Options){
 		.colorscheme = SCHEME_WHITE,
 		.filename = NULL,
+		.fp = stdin,
 		.htop_fix = 0,
 		.iso = -1,
 		.line_break = 0,
@@ -185,7 +186,6 @@ int main(int argc,char* args[])
 		.title = NULL,
 		.word_wrap = 0
 	};
-	register FILE *fp = stdin;
 	
 	//Searching Parameters
 	for (int p = 1;p<argc;p++)
@@ -217,13 +217,13 @@ int main(int argc,char* args[])
 			printf("         \033[5;36mziz@mailbox.org\033[0m\n");
 			printf("         \033[5;36mhttps://github.com/theZiz/aha\033[0m\n");
 			printf("This application is subject to the \033[1;34mMPL\033[0m or \033[1;34mLGPL\033[0m.\n");
-			return 0;
+			exit(EXIT_SUCCESS);
 		}
 		else
 		if ((strcmp(args[p],(char*)"--version")==0) || (strcmp(args[p],(char*)"-v")==0))
 		{
 			VERSION_PRINTF_MAKRO
-			return 0;
+			exit(EXIT_SUCCESS);
 		}
 		else
 		if ((strcmp(args[p],"--title")==0) || (strcmp(args[p],"-t")==0))
@@ -280,10 +280,10 @@ int main(int argc,char* args[])
 			if (p+1>=argc)
 			{
 				fprintf(stderr,"no file to read given after \"-f\"!\n");
-				return 1;
+				exit(EXIT_FAILURE);
 			}
-			fp = fopen(args[p+1],"r");
-			if (fp==NULL)
+			opts.fp = fopen(args[p+1],"r");
+			if (opts.fp==NULL)
 			{
 				char *errstr = strerror(errno);
 				fprintf(stderr,"Failed to open file \"%s\": %s\n",args[p+1],errstr);
@@ -298,6 +298,14 @@ int main(int argc,char* args[])
 			exit(EXIT_FAILURE);
 		}
 	}
+	
+	return opts;
+}
+
+int main(int argc,char* args[])
+{
+	struct Options opts = parseArgs(argc, args);
+	register FILE* fp = opts.fp;
 
 	if (opts.no_header == 0)
 	{
