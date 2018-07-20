@@ -281,29 +281,31 @@ int main(int argc,char* args[])
 		}
 	}
 
-	char* fcstyle[10];
-	fcstyle[0] = "color:dimgray;"; //Black
-	fcstyle[1] = "color:red;"; //Red
-	fcstyle[2] = colorscheme==SCHEME_BLACK ? "color:lime;" : "color:green;"; //Green
-	fcstyle[3] = colorscheme==SCHEME_BLACK ? "color:yellow;" : "color:olive;"; //Yellow
-	fcstyle[4] = colorscheme==SCHEME_BLACK ? "color:#3333FF;" : "color:blue;"; //Blue
-	fcstyle[5] = colorscheme==SCHEME_BLACK ? "color:fuschia;" : "color:purple;"; //Purple
-	fcstyle[6] = colorscheme==SCHEME_BLACK ? "color:aqua;" : "color:teal;"; //Cyan
-	fcstyle[7] = colorscheme==SCHEME_BLACK ? "color:white;" : "color:gray;"; //White
-	fcstyle[8] = colorscheme==SCHEME_BLACK ? "color:black;" : colorscheme==SCHEME_PINK ? "color:pink;" : "color:white;"; //Background
-	fcstyle[9] = colorscheme==SCHEME_BLACK ? "color:white;" : "color:black;"; //Foreground
+	char* fcstyle[10] = {
+		"color:dimgray;", //Black
+		"color:red;", //Red
+		colorscheme==SCHEME_BLACK ? "color:lime;" : "color:green;", //Green
+		colorscheme==SCHEME_BLACK ? "color:yellow;" : "color:olive;", //Yellow
+		colorscheme==SCHEME_BLACK ? "color:#3333FF;" : "color:blue;", //Blue
+		colorscheme==SCHEME_BLACK ? "color:fuschia;" : "color:purple;", //Purple
+		colorscheme==SCHEME_BLACK ? "color:aqua;" : "color:teal;", //Cyan
+		colorscheme==SCHEME_BLACK ? "color:white;" : "color:gray;", //White
+		colorscheme==SCHEME_BLACK ? "color:black;" : colorscheme==SCHEME_PINK ? "color:pink;" : "color:white;", //Background
+		colorscheme==SCHEME_BLACK ? "color:white;" : "color:black;" //Foreground
+	};
 
-	char* bcstyle[10];
-	bcstyle[0] = "background-color:black;"; //Black
-	bcstyle[1] = "background-color:red;"; //Red
-	bcstyle[2] = colorscheme==SCHEME_BLACK ? "background-color:lime;" : "background-color:green;"; //Green
-	bcstyle[3] = colorscheme==SCHEME_BLACK ? "background-color:yellow;" : "background-color:olive;"; //Yellow
-	bcstyle[4] = colorscheme==SCHEME_BLACK ? "background-color:#3333FF;" : "background-color:blue;"; //Blue
-	bcstyle[5] = colorscheme==SCHEME_BLACK ? "background-color:fuschia;" : "background-color:purple;"; //Purple
-	bcstyle[6] = colorscheme==SCHEME_BLACK ? "background-color:aqua;" : "background-color:teal;"; //Cyan
-	bcstyle[7] = colorscheme==SCHEME_BLACK ? "background-color:white;" : "background-color:gray;"; //White
-	bcstyle[8] = colorscheme==SCHEME_BLACK ? "background-color:black;" : colorscheme==SCHEME_PINK ? "background-color:pink;" : "background-color:white;"; //Background
-	bcstyle[9] = colorscheme==SCHEME_BLACK ? "background-color:white;" : "background-color:black;"; //Foreground
+	char* bcstyle[10] = {
+		"background-color:black;", //Black
+		"background-color:red;", //Red
+		colorscheme==SCHEME_BLACK ? "background-color:lime;" : "background-color:green;", //Green
+		colorscheme==SCHEME_BLACK ? "background-color:yellow;" : "background-color:olive;", //Yellow
+		colorscheme==SCHEME_BLACK ? "background-color:#3333FF;" : "background-color:blue;", //Blue
+		colorscheme==SCHEME_BLACK ? "background-color:fuschia;" : "background-color:purple;", //Purple
+		colorscheme==SCHEME_BLACK ? "background-color:aqua;" : "background-color:teal;", //Cyan
+		colorscheme==SCHEME_BLACK ? "background-color:white;" : "background-color:gray;", //White
+		colorscheme==SCHEME_BLACK ? "background-color:black;" : colorscheme==SCHEME_PINK ? "background-color:pink;" : "background-color:white;", //Background
+		colorscheme==SCHEME_BLACK ? "background-color:white;" : "background-color:black;", //Foreground
+	};
 
 	if (no_header == 0)
 	{
