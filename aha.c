@@ -173,7 +173,8 @@ struct Options {
 #define VERSION_PRINTF_MAKRO \
 	printf("\033[1;31mAnsi Html Adapter\033[0m Version "AHA_VERSION"\n");
 
-struct Options parseArgs(int argc, char* args[]) {
+struct Options parseArgs(int argc, char* args[])
+{
 	struct Options opts = (struct Options){
 		.colorscheme = SCHEME_WHITE,
 		.filename = NULL,
@@ -302,7 +303,8 @@ struct Options parseArgs(int argc, char* args[]) {
 	return opts;
 }
 
-void printHeader(const struct Options *opts) {
+void printHeader(const struct Options *opts)
+{
 	char encoding[16] = "UTF-8";
 	if(opts->iso>0) snprintf(encoding, sizeof(encoding), "ISO-8859-%i", opts->iso);
 	
@@ -315,9 +317,12 @@ void printHeader(const struct Options *opts) {
 	printHtml(opts->title ? opts->title : opts->filename ? opts->filename : "stdin");
 	printf("</title>\n");
 	
+	int style_tag = 0;
 	if (opts->stylesheet)
 	{
 		printf("<style type=\"text/css\">\n");
+		style_tag = 1;
+		
 		switch (opts->colorscheme)
 		{
 			case SCHEME_BLACK:  printf("body         {color: white; background-color: black;}\n");
@@ -378,16 +383,25 @@ void printHeader(const struct Options *opts) {
 		printf(".underline   {text-decoration: underline;}\n");
 		printf(".bold        {font-weight: bold;}\n");
 		printf(".blink       {text-decoration: blink;}\n");
-		printf("</style>\n");
 	}
+	
 	if (opts->word_wrap)
 	{
-		printf("<style type=\"text/css\">pre {white-space: pre-wrap; white-space: -moz-pre-wrap !important;\n");
-		printf("white-space: -pre-wrap; white-space: -o-pre-wrap; word-wrap: break-word;}</style>\n");
+		if (!style_tag) {
+			printf("<style type=\"text/css\">\n");
+			style_tag = 1;
+		}
+		
+		printf("pre {white-space: pre-wrap; white-space: -moz-pre-wrap !important;\n");
+		printf("white-space: -pre-wrap; white-space: -o-pre-wrap; word-wrap: break-word;}\n");
 	}
+	
+	if (style_tag)
+		printf("</style>\n");
 	printf("</head>\n");
 	
-	if (opts->stylesheet || opts->colorscheme==SCHEME_WHITE) {
+	if (opts->stylesheet || opts->colorscheme==SCHEME_WHITE)
+	{
 		printf("<body>\n");
 	} 
 	else
