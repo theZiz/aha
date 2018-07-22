@@ -481,7 +481,8 @@ int main(int argc,char* args[])
 									negative = !negative;
 									break;
 
-								case 22: // 22 - Reset bold
+								case 21: // 21 - Reset bold
+								case 22: // 22 - Not bold, not "high intensity" color
 									bo=0;
 									break;
 
