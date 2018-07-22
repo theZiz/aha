@@ -114,17 +114,19 @@ pelem parseInsert(char* s)
 				exit(EXIT_FAILURE);
 			}
 			
-			for (unsigned char a=0;a<8;a++)
-				newelem->digit[a]=digit[a];
+			memcpy(newelem->digit, digit, sizeof(digit));
 			newelem->digitcount=digitcount;
 			newelem->next=NULL;
+			
 			if (momelem==NULL)
 				firstelem=newelem;
 			else
 				momelem->next=newelem;
 			momelem=newelem;
+			
 			digitcount=0;
-			memset(digit,0,8);
+			memset(digit,0,sizeof(digit));
+			
 			if (s[pos]==0)
 				break;
 		}
