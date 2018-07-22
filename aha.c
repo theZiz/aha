@@ -83,6 +83,7 @@ typedef struct selem *pelem;
 typedef struct selem {
 	unsigned char digit[8];
 	unsigned char digitcount;
+	long int value;
 	pelem next;
 } telem;
 
@@ -93,6 +94,7 @@ pelem parseInsert(char* s)
 	
 	unsigned char digit[8];
 	unsigned char digitcount=0;
+	long int value=0;
 	
 	int pos=0;
 	for (pos=0;pos<1024;pos++)
@@ -116,6 +118,7 @@ pelem parseInsert(char* s)
 			
 			memcpy(newelem->digit, digit, sizeof(digit));
 			newelem->digitcount=digitcount;
+			newelem->value=value;
 			newelem->next=NULL;
 			
 			if (momelem==NULL)
@@ -126,6 +129,7 @@ pelem parseInsert(char* s)
 			
 			digitcount=0;
 			memset(digit,0,sizeof(digit));
+			value=0;
 			
 			if (s[pos]==0)
 				break;
@@ -134,6 +138,7 @@ pelem parseInsert(char* s)
 		if (digitcount<8)
 		{
 			digit[digitcount]=s[pos]-'0';
+			value=(value*10)+digit[digitcount];
 			digitcount++;
 		}
 	}
