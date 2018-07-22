@@ -361,6 +361,7 @@ int main(int argc,char* args[])
 			printf(".underline   {text-decoration: underline;}\n");
 			printf(".bold        {font-weight: bold;}\n");
 			printf(".blink       {text-decoration: blink;}\n");
+			printf(".crossed-out {text-decoration: line-through;}\n");
 			printf("</style>\n");
 		}
 		if (word_wrap)
@@ -391,6 +392,7 @@ int main(int argc,char* args[])
 	int bc = -1; //Standard Background Color //IRC-Color+8
 	int ul = 0; //Not underlined
 	int bo = 0; //Not bold
+	int co = 0; //Not crossed out
 	int bl = 0; //No Blinking
 	int negative = 0; //No negative image
 	int special_char = 0; //No special characters
@@ -442,7 +444,7 @@ int main(int argc,char* args[])
 								mompos++;
 							if (mompos==momelem->digitcount) //only zeros => delete all
 							{
-								bo=0;ul=0;bl=0;fc=-1;bc=-1;negative=0;special_char=0;
+								bo=0;ul=0;co=0;bl=0;fc=-1;bc=-1;negative=0;special_char=0;
 							}
 							else
 							{
@@ -473,6 +475,9 @@ int main(int argc,char* args[])
 														bc = fc;
 														fc = temp;
 														negative = 0;
+														break;
+													case 9: //Reset crossed-out
+														co=0;
 														break;
 												}
 											break;
@@ -507,7 +512,10 @@ int main(int argc,char* args[])
 											fc = temp;
 											negative = 1-negative;
 											break;
-									//8 and 9 not supported
+									//8 and 8X not supported at all
+									case 9: if (mompos+1==momelem->digitcount) //9, 9X not supported
+												co=1;
+											break;
 								}
 							}
 							momelem=momelem->next;
@@ -704,6 +712,13 @@ int main(int argc,char* args[])
 								printf("bold ");
 							else
 								printf("font-weight:bold;");
+						}
+						if (co)
+						{
+							if (stylesheet)
+								printf("crossed-out ");
+							else
+								printf("text-decoration:line-through;");
 						}
 						if (bl)
 						{
