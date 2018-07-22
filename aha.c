@@ -90,8 +90,10 @@ pelem parseInsert(char* s)
 {
 	pelem firstelem=NULL;
 	pelem momelem=NULL;
+	
 	unsigned char digit[8];
 	unsigned char digitcount=0;
+	
 	int pos=0;
 	for (pos=0;pos<1024;pos++)
 	{
@@ -106,6 +108,12 @@ pelem parseInsert(char* s)
 			}
 
 			pelem newelem=(pelem)malloc(sizeof(telem));
+			if (newelem==NULL) 
+			{
+				perror("Failed to allocate memory for parseInsert()");
+				exit(EXIT_FAILURE);
+			}
+			
 			for (unsigned char a=0;a<8;a++)
 				newelem->digit[a]=digit[a];
 			newelem->digitcount=digitcount;
