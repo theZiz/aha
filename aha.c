@@ -360,6 +360,7 @@ int main(int argc,char* args[])
 			}
 			printf(".underline   {text-decoration: underline;}\n");
 			printf(".bold        {font-weight: bold;}\n");
+			printf(".italic      {font-style: italic;}\n");
 			printf(".blink       {text-decoration: blink;}\n");
 			printf("</style>\n");
 		}
@@ -391,6 +392,7 @@ int main(int argc,char* args[])
 	int bc = -1; //Standard Background Color //IRC-Color+8
 	int ul = 0; //Not underlined
 	int bo = 0; //Not bold
+	int it = 0; //Not italic
 	int bl = 0; //No Blinking
 	int negative = 0; //No negative image
 	int special_char = 0; //No special characters
@@ -442,7 +444,7 @@ int main(int argc,char* args[])
 								mompos++;
 							if (mompos==momelem->digitcount) //only zeros => delete all
 							{
-								bo=0;ul=0;bl=0;fc=-1;bc=-1;negative=0;special_char=0;
+								bo=0;it=0;ul=0;bl=0;fc=-1;bc=-1;negative=0;special_char=0;
 							}
 							else
 							{
@@ -457,6 +459,9 @@ int main(int argc,char* args[])
 													case 1: //Reset and double underline (which aha doesn't support)
 													case 2: //Reset bold
 														bo=0;
+														break;
+													case 3: //Reset italic
+														it=0;
 														break;
 													case 4: //Reset underline
 														ul=0;
@@ -476,7 +481,9 @@ int main(int argc,char* args[])
 														break;
 												}
 											break;
-									case 3: if (mompos+1<momelem->digitcount)  // 3X, 3 not supported
+									case 3: if (mompos+1==momelem->digitcount)  // 3
+												it=1;
+											else // 3X
 											{
 												if (negative == 0)
 													fc=momelem->digit[mompos+1];
@@ -704,6 +711,13 @@ int main(int argc,char* args[])
 								printf("bold ");
 							else
 								printf("font-weight:bold;");
+						}
+						if (it)
+						{
+							if (stylesheet)
+								printf("italic ");
+							else
+								printf("font-style:italic;");
 						}
 						if (bl)
 						{
