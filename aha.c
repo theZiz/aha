@@ -446,84 +446,95 @@ int main(int argc,char* args[])
 				switch (c)
 				{
 					case 'm':
-						//fprintf(stderr,"\n%s\n",buffer); //DEBUG
 						elem=parseInsert(buffer);
 						pelem momelem=elem;
 						while (momelem!=NULL)
 						{
-							//jump over zeros
-							int mompos=0;
-							while (mompos<momelem->digitcount && momelem->digit[mompos]==0)
-								mompos++;
-							if (mompos==momelem->digitcount) //only zeros => delete all
+							switch (momelem->value)
 							{
-								bo=0;ul=0;bl=0;fc=-1;bc=-1;negative=0;special_char=0;
-							}
-							else
-							{
-								switch (momelem->digit[mompos])
-								{
-									case 1: if (mompos+1==momelem->digitcount)  // 1, 1X not supported
-												bo=1;
-											break;
-									case 2: if (mompos+1<momelem->digitcount) // 2X, 2 not supported
-												switch (momelem->digit[mompos+1])
-												{
-													case 1: //Reset and double underline (which aha doesn't support)
-													case 2: //Reset bold
-														bo=0;
-														break;
-													case 4: //Reset underline
-														ul=0;
-														break;
-													case 5: //Reset blink
-														bl=0;
-														break;
-													case 7: //Reset Inverted
-														if (bc == -1)
-															bc = 8;
-														if (fc == -1)
-															fc = 9;
-														temp = bc;
-														bc = fc;
-														fc = temp;
-														negative = 0;
-														break;
-												}
-											break;
-									case 3: if (mompos+1<momelem->digitcount)  // 3X, 3 not supported
-											{
-												if (negative == 0)
-													fc=momelem->digit[mompos+1];
-												else
-													bc=momelem->digit[mompos+1];
-											}
-											break;
-									case 4: if (mompos+1==momelem->digitcount)  // 4
-												ul=1;
-											else // 4X
-											{
-												if (negative == 0)
-													bc=momelem->digit[mompos+1];
-												else
-													fc=momelem->digit[mompos+1];
-											}
-											break;
-									case 5: if (mompos+1==momelem->digitcount) //5, 5X not supported
-												bl=1;
-											break;
-									//6 and 6X not supported at all
-									case 7: if (bc == -1) //7, 7X is mot defined (and supported)
-												bc = 8;
-											if (fc == -1)
-												fc = 9;
-											temp = bc;
-											bc = fc;
-											fc = temp;
-											negative = 1-negative;
-											break;
-									//8 and 9 not supported
-								}
+								case 0: // 0 - Reset all
+									bo=0; ul=0; bl=0;
+									fc=-1; bc=-1;
+									negative=0; special_char=0;
+									break;
+
+								case 1: // 1 - Enable Bold
+									bo=1;
+									break;
+
+								case 4: // 4 - Enable underline
+									ul=1;
+									break;
+
+								case 5: // 5 - Slow Blink
+									bl=1;
+									break;
+
+								case 7: // 7 - Inverse video
+									if (bc == -1)
+										bc = 8;
+									if (fc == -1)
+										fc = 9;
+									temp = bc;
+									bc = fc;
+									fc = temp;
+									negative = !negative;
+									break;
+
+								case 22: // 22 - Reset bold
+									bo=0;
+									break;
+
+								case 24: // 23 - Reset underline
+									ul=0;
+									break;
+
+								case 25: // 25 - Reset blink
+									bl=0;
+									break;
+
+								case 27: // 27 - Reset Inverted
+									if (bc == -1)
+										bc = 8;
+									if (fc == -1)
+										fc = 9;
+									temp = bc;
+									bc = fc;
+									fc = temp;
+									negative = 0;
+									break;
+
+								case 30:
+								case 31:
+								case 32:
+								case 33:
+								case 34:
+								case 35:
+								case 36:
+								case 37:
+								case 38:
+								case 39: // 3X - Set foreground color
+									if (negative == 0)
+										fc=momelem->value-30;
+									else
+										bc=momelem->value-30;
+									break;
+
+								case 40:
+								case 41:
+								case 42:
+								case 43:
+								case 44:
+								case 45:
+								case 46:
+								case 47:
+								case 48:
+								case 49: // 4X - Set background color
+									if (negative == 0)
+										bc=momelem->value-40;
+									else
+										fc=momelem->value-40;
+									break;
 							}
 							momelem=momelem->next;
 						}
