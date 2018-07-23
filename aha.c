@@ -386,7 +386,7 @@ int main(int argc,char* args[])
 	}
 
 	//Begin of Conversion
-	unsigned int c;
+	int c;
 	int fc = -1; //Standard Foreground Color //IRC-Color+8
 	int bc = -1; //Standard Background Color //IRC-Color+8
 	int ul = 0; //Not underlined
@@ -764,7 +764,6 @@ int main(int argc,char* args[])
 				}
 				newline=-1;
 			}
-			char temp_buffer[2];
 			switch (c)
 			{
 				case '&':	printf("&amp;"); break;
