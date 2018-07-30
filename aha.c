@@ -456,8 +456,7 @@ int main(int argc,char* args[])
 								mompos++;
 							if (mompos==momelem->digitcount) //only zeros => delete all
 							{
-								state.fc = state.bc = -1;
-								state.bold = state.underline = state.blink = 0;
+								state = default_state;
 								negative=0;special_char=0;
 							}
 							else
