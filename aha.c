@@ -396,7 +396,7 @@ int main(int argc,char* args[])
 	int bl = 0; //No Blinking
 	int negative = 0; //No negative image
 	int special_char = 0; //No special characters
-	int ofc,obc,oul,obo,obl; //old values
+	int ofc,obc,oul,obo,oco,obl; //old values
 	int line=0;
 	int momline=0;
 	int newline=-1;
@@ -410,6 +410,7 @@ int main(int argc,char* args[])
 			obc=bc;
 			oul=ul;
 			obo=bo;
+			oco=co;
 			obl=bl;
 			//Searching the end (a letter) and safe the insert:
 			c=getNextChar(fp);
@@ -547,11 +548,11 @@ int main(int argc,char* args[])
 							printf(" ");
 					}
 				//Checking the differences
-				if ((fc!=ofc) || (bc!=obc) || (ul!=oul) || (bo!=obo) || (bl!=obl)) //ANY Change
+				if ((fc!=ofc) || (bc!=obc) || (ul!=oul) || (bo!=obo) || (co!=oco) || (bl!=obl)) //ANY Change
 				{
-					if ((ofc!=-1) || (obc!=-1) || (oul!=0) || (obo!=0) || (obl!=0))
+					if ((ofc!=-1) || (obc!=-1) || (oul!=0) || (obo!=0) || (oco!=0) || (obl!=0))
 						printf("</span>");
-					if ((fc!=-1) || (bc!=-1) || (ul!=0) || (bo!=0) || (bl!=0))
+					if ((fc!=-1) || (bc!=-1) || (ul!=0) || (bo!=0) || (co!=0) || (bl!=0))
 					{
 						if (stylesheet)
 							printf("<span class=\"");
