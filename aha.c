@@ -164,6 +164,21 @@ struct State {
 	int blink;
 };
 
+const struct State default_state = {
+	.fc = -1, //Standard Foreground Color //IRC-Color+8
+	.bc = -1, //Standard Background Color //IRC-Color+8
+	.bold = 0,
+	.underline = 0,
+	.blink = 0,
+};
+
+int statesDiffer(const struct State *const old, const struct State *const new) {
+	return (old->fc != new->fc) || (old->bc != new->bc) || 
+		(old->bold != new->bold) ||
+		(old->underline != new->underline) ||
+		(old->blink != new->blink);
+}
+
 #define VERSION_PRINTF_MAKRO \
 	printf("\033[1;31mAnsi Html Adapter\033[0m Version "AHA_VERSION"\n");
 
@@ -393,13 +408,7 @@ int main(int argc,char* args[])
 	}
 
 	//Begin of Conversion
-	struct State state = {
-		.fc = -1, //Standard Foreground Color //IRC-Color+8
-		.bc = -1, //Standard Background Color //IRC-Color+8
-		.bold = 0,
-		.underline = 0,
-		.blink = 0,
-	};
+	struct State state = default_state;
 	struct State oldstate;
 	
 	int c;
@@ -413,7 +422,6 @@ int main(int argc,char* args[])
 	{
 		if (c=='\033')
 		{
-			//Saving old values
 			oldstate = state;
 			//Searching the end (a letter) and safe the insert:
 			c=getNextChar(fp);
@@ -547,11 +555,14 @@ int main(int argc,char* args[])
 							printf(" ");
 					}
 				//Checking the differences
-				if ((state.fc!=oldstate.fc) || (state.bc!=oldstate.bc) || (state.bold!=oldstate.bold) || (state.underline!=oldstate.underline) || (state.blink!=oldstate.blink)) //ANY Change
+				if (statesDiffer(&state, &oldstate)) //ANY Change
 				{
-					if ((oldstate.fc!=-1) || (oldstate.bc!=-1) || (oldstate.bold!=0) || (oldstate.underline!=0) || (oldstate.blink!=0))
+					// If old state was different than the default one, close the current <span>
+					if (statesDiffer(&oldstate, &default_state))
 						printf("</span>");
-					if ((state.fc!=-1) || (state.bc!=-1) || (state.bold!=0) || (state.underline!=0) || (state.blink!=0))
+
+					// Open new <span> if current state differs from the default je
+					if (statesDiffer(&state, &default_state))
 					{
 						if (stylesheet)
 							printf("<span class=\"");
@@ -801,8 +812,8 @@ int main(int argc,char* args[])
 		}
 	}
 
-	//Footer
-	if ((state.fc!=-1) || (state.bc!=-1) || (state.bold!=0) || (state.underline!=0) || (state.blink!=0))
+	// If current state is different than the default, there is a <span> open - close it
+	if (statesDiffer(&state, &default_state))
 		printf("</span>\n");
 
 	if (no_header == 0)
