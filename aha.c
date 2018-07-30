@@ -157,6 +157,13 @@ void printHtml(char *text) {
 	}
 }
 
+struct State {
+	int fc, bc;
+	int bold;
+	int underline;
+	int blink;
+};
+
 #define VERSION_PRINTF_MAKRO \
 	printf("\033[1;31mAnsi Html Adapter\033[0m Version "AHA_VERSION"\n");
 
@@ -386,15 +393,18 @@ int main(int argc,char* args[])
 	}
 
 	//Begin of Conversion
+	struct State state = {
+		.fc = -1, //Standard Foreground Color //IRC-Color+8
+		.bc = -1, //Standard Background Color //IRC-Color+8
+		.bold = 0,
+		.underline = 0,
+		.blink = 0,
+	};
+	struct State oldstate;
+	
 	int c;
-	int fc = -1; //Standard Foreground Color //IRC-Color+8
-	int bc = -1; //Standard Background Color //IRC-Color+8
-	int ul = 0; //Not underlined
-	int bo = 0; //Not bold
-	int bl = 0; //No Blinking
 	int negative = 0; //No negative image
 	int special_char = 0; //No special characters
-	int ofc,obc,oul,obo,obl; //old values
 	int line=0;
 	int momline=0;
 	int newline=-1;
@@ -404,11 +414,7 @@ int main(int argc,char* args[])
 		if (c=='\033')
 		{
 			//Saving old values
-			ofc=fc;
-			obc=bc;
-			oul=ul;
-			obo=bo;
-			obl=bl;
+			oldstate = state;
 			//Searching the end (a letter) and safe the insert:
 			c=getNextChar(fp);
 			if ( c == '[' ) // CSI code, see https://en.wikipedia.org/wiki/ANSI_escape_code#Colors
@@ -442,36 +448,38 @@ int main(int argc,char* args[])
 								mompos++;
 							if (mompos==momelem->digitcount) //only zeros => delete all
 							{
-								bo=0;ul=0;bl=0;fc=-1;bc=-1;negative=0;special_char=0;
+								state.fc = state.bc = -1;
+								state.bold = state.underline = state.blink = 0;
+								negative=0;special_char=0;
 							}
 							else
 							{
 								switch (momelem->digit[mompos])
 								{
 									case 1: if (mompos+1==momelem->digitcount)  // 1, 1X not supported
-												bo=1;
+												state.bold=1;
 											break;
 									case 2: if (mompos+1<momelem->digitcount) // 2X, 2 not supported
 												switch (momelem->digit[mompos+1])
 												{
 													case 1: //Reset and double underline (which aha doesn't support)
 													case 2: //Reset bold
-														bo=0;
+														state.bold=0;
 														break;
 													case 4: //Reset underline
-														ul=0;
+														state.underline=0;
 														break;
 													case 5: //Reset blink
-														bl=0;
+														state.blink=0;
 														break;
 													case 7: //Reset Inverted
-														if (bc == -1)
-															bc = 8;
-														if (fc == -1)
-															fc = 9;
-														temp = bc;
-														bc = fc;
-														fc = temp;
+														if (state.bc == -1)
+															state.bc = 8;
+														if (state.fc == -1)
+															state.fc = 9;
+														temp = state.bc;
+														state.bc = state.fc;
+														state.fc = temp;
 														negative = 0;
 														break;
 												}
@@ -479,32 +487,32 @@ int main(int argc,char* args[])
 									case 3: if (mompos+1<momelem->digitcount)  // 3X, 3 not supported
 											{
 												if (negative == 0)
-													fc=momelem->digit[mompos+1];
+													state.fc=momelem->digit[mompos+1];
 												else
-													bc=momelem->digit[mompos+1];
+													state.bc=momelem->digit[mompos+1];
 											}
 											break;
 									case 4: if (mompos+1==momelem->digitcount)  // 4
-												ul=1;
+												state.underline=1;
 											else // 4X
 											{
 												if (negative == 0)
-													bc=momelem->digit[mompos+1];
+													state.bc=momelem->digit[mompos+1];
 												else
-													fc=momelem->digit[mompos+1];
+													state.fc=momelem->digit[mompos+1];
 											}
 											break;
 									case 5: if (mompos+1==momelem->digitcount) //5, 5X not supported
-												bl=1;
+												state.blink=1;
 											break;
 									//6 and 6X not supported at all
-									case 7: if (bc == -1) //7, 7X is mot defined (and supported)
-												bc = 8;
-											if (fc == -1)
-												fc = 9;
-											temp = bc;
-											bc = fc;
-											fc = temp;
+									case 7: if (state.bc == -1) //7, 7X is mot defined (and supported)
+												state.bc = 8;
+											if (state.fc == -1)
+												state.fc = 9;
+											temp = state.bc;
+											state.bc = state.fc;
+											state.fc = temp;
 											negative = 1-negative;
 											break;
 									//8 and 9 not supported
@@ -539,17 +547,17 @@ int main(int argc,char* args[])
 							printf(" ");
 					}
 				//Checking the differences
-				if ((fc!=ofc) || (bc!=obc) || (ul!=oul) || (bo!=obo) || (bl!=obl)) //ANY Change
+				if ((state.fc!=oldstate.fc) || (state.bc!=oldstate.bc) || (state.bold!=oldstate.bold) || (state.underline!=oldstate.underline) || (state.blink!=oldstate.blink)) //ANY Change
 				{
-					if ((ofc!=-1) || (obc!=-1) || (oul!=0) || (obo!=0) || (obl!=0))
+					if ((oldstate.fc!=-1) || (oldstate.bc!=-1) || (oldstate.bold!=0) || (oldstate.underline!=0) || (oldstate.blink!=0))
 						printf("</span>");
-					if ((fc!=-1) || (bc!=-1) || (ul!=0) || (bo!=0) || (bl!=0))
+					if ((state.fc!=-1) || (state.bc!=-1) || (state.bold!=0) || (state.underline!=0) || (state.blink!=0))
 					{
 						if (stylesheet)
 							printf("<span class=\"");
 						else
 							printf("<span style=\"");
-						switch (fc)
+						switch (state.fc)
 						{
 							case	0: if (stylesheet)
 												 printf("dimgray ");
@@ -620,7 +628,7 @@ int main(int argc,char* args[])
 												 printf("color:white;");
 											 break; //Foreground Color
 						}
-						switch (bc)
+						switch (state.bc)
 						{
 							case	0: if (stylesheet)
 												 printf("bg-black ");
@@ -691,21 +699,21 @@ int main(int argc,char* args[])
 												 printf("background-color:white;");
 											 break; //Foreground Colour
 						}
-						if (ul)
+						if (state.underline)
 						{
 							if (stylesheet)
 								printf("underline ");
 							else
 								printf("text-decoration:underline;");
 						}
-						if (bo)
+						if (state.bold)
 						{
 							if (stylesheet)
 								printf("bold ");
 							else
 								printf("font-weight:bold;");
 						}
-						if (bl)
+						if (state.blink)
 						{
 							if (stylesheet)
 								printf("blink ");
@@ -794,7 +802,7 @@ int main(int argc,char* args[])
 	}
 
 	//Footer
-	if ((fc!=-1) || (bc!=-1) || (ul!=0) || (bo!=0) || (bl!=0))
+	if ((state.fc!=-1) || (state.bc!=-1) || (state.bold!=0) || (state.underline!=0) || (state.blink!=0))
 		printf("</span>\n");
 
 	if (no_header == 0)
