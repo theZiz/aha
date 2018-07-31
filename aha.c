@@ -157,6 +157,18 @@ void printHtml(char *text) {
 	}
 }
 
+void swapColors(int *const fc, int *const bc) {
+	if (*bc == -1)
+		*bc = 8;
+
+	if (*fc == -1)
+		*fc = 9;
+
+	int temp = *bc;
+	*bc = *fc;
+	*fc = temp;
+}
+
 #define VERSION_PRINTF_MAKRO \
 	printf("\033[1;31mAnsi Html Adapter\033[0m Version "AHA_VERSION"\n");
 
@@ -398,7 +410,6 @@ int main(int argc,char* args[])
 	int line=0;
 	int momline=0;
 	int newline=-1;
-	int temp;
 	while ((c=fgetc(fp)) != EOF)
 	{
 		if (c=='\033')
@@ -466,13 +477,7 @@ int main(int argc,char* args[])
 														break;
 													case 7: //Reset Inverted
 														if (negative) {
-															if (bc == -1)
-																bc = 8;
-															if (fc == -1)
-																fc = 9;
-															temp = bc;
-															bc = fc;
-															fc = temp;
+															swapColors(&fc, &bc);
 															negative = 0;
 														}
 														break;
@@ -500,14 +505,8 @@ int main(int argc,char* args[])
 												bl=1;
 											break;
 									//6 and 6X not supported at all
-									case 7: if (bc == -1) //7, 7X is mot defined (and supported)
-												bc = 8;
-											if (fc == -1)
-												fc = 9;
-											temp = bc;
-											bc = fc;
-											fc = temp;
-											negative = 1-negative;
+									case 7: swapColors(&fc, &bc); //7, 7X is mot defined (and supported)
+											negative = !negative;
 											break;
 									//8 and 9 not supported
 								}
