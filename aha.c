@@ -465,14 +465,16 @@ int main(int argc,char* args[])
 														bl=0;
 														break;
 													case 7: //Reset Inverted
-														if (bc == -1)
-															bc = 8;
-														if (fc == -1)
-															fc = 9;
-														temp = bc;
-														bc = fc;
-														fc = temp;
-														negative = 0;
+														if (negative) {
+															if (bc == -1)
+																bc = 8;
+															if (fc == -1)
+																fc = 9;
+															temp = bc;
+															bc = fc;
+															fc = temp;
+															negative = 0;
+														}
 														break;
 												}
 											break;
