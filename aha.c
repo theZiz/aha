@@ -135,7 +135,7 @@ pelem parseInsert(char* s)
 				break;
 		}
 		else
-		if (digitcount<8)
+		if (digitcount < sizeof(digit))
 		{
 			digit[digitcount]=s[pos]-'0';
 			value=(value*10)+digit[digitcount];
