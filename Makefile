@@ -8,6 +8,8 @@ MANDIR?=$(DATAROOTDIR)/man
 BINMODE?=0755
 MANMODE?=644
 
+CFLAGS += -Wall -Wextra
+
 all: aha
 
 aha: aha.c
