@@ -68,7 +68,7 @@ int getNextChar(register FILE* fp)
 	int c;
 	if ((c = fgetc(fp)) != EOF)
 		return c;
-		
+
 	perror("Error while parsing input");
 	exit(EXIT_FAILURE);
 }
@@ -138,12 +138,12 @@ void printHtml(char *text) {
 	while(1) {
 		switch(*text) {
 			case '\0': return;
-			
+
 			case '"': printf("&quot;"); break;
 			case '&': printf("&amp;"); break;
 			case '<': printf("&lt;"); break;
 			case '>': printf("&gt;"); break;
-			
+
 			default:
 				putc(*text, stdout);
 		}
@@ -187,7 +187,7 @@ struct Options parseArgs(int argc, char* args[])
 		.title = NULL,
 		.word_wrap = 0
 	};
-	
+
 	//Searching Parameters
 	for (int p = 1;p<argc;p++)
 	{
@@ -299,7 +299,7 @@ struct Options parseArgs(int argc, char* args[])
 			exit(EXIT_FAILURE);
 		}
 	}
-	
+
 	return opts;
 }
 
@@ -307,22 +307,22 @@ void printHeader(const struct Options *opts)
 {
 	char encoding[16] = "UTF-8";
 	if(opts->iso>0) snprintf(encoding, sizeof(encoding), "ISO-8859-%i", opts->iso);
-	
+
 	printf("<?xml version=\"1.0\" encoding=\"%s\" ?>\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n", encoding);
 	printf("<!-- This file was created with the aha Ansi HTML Adapter. https://github.com/theZiz/aha -->\n");
 	printf("<html xmlns=\"http://www.w3.org/1999/xhtml\">\n");
 	printf("<head>\n<meta http-equiv=\"Content-Type\" content=\"application/xml+xhtml; charset=%s\" />\n", encoding);
-	
+
 	printf("<title>");
 	printHtml(opts->title ? opts->title : opts->filename ? opts->filename : "stdin");
 	printf("</title>\n");
-	
+
 	int style_tag = 0;
 	if (opts->stylesheet)
 	{
 		printf("<style type=\"text/css\">\n");
 		style_tag = 1;
-		
+
 		switch (opts->colorscheme)
 		{
 			case SCHEME_BLACK:  printf("body         {color: white; background-color: black;}\n");
@@ -384,35 +384,36 @@ void printHeader(const struct Options *opts)
 		printf(".bold        {font-weight: bold;}\n");
 		printf(".blink       {text-decoration: blink;}\n");
 	}
-	
+
 	if (opts->word_wrap)
 	{
 		if (!style_tag) {
 			printf("<style type=\"text/css\">\n");
 			style_tag = 1;
 		}
-		
+
 		printf("pre {white-space: pre-wrap; white-space: -moz-pre-wrap !important;\n");
 		printf("white-space: -pre-wrap; white-space: -o-pre-wrap; word-wrap: break-word;}\n");
 	}
-	
+
 	if (style_tag)
 		printf("</style>\n");
 	printf("</head>\n");
-	
-	if (opts->stylesheet || opts->colorscheme==SCHEME_WHITE)
+
+	if (opts->stylesheet)
 	{
 		printf("<body>\n");
-	} 
+	}
 	else
 	{
 		switch (opts->colorscheme)
 		{
 			case SCHEME_BLACK: printf("<body style=\"color:white; background-color:black\">\n"); break;
 			case SCHEME_PINK: printf("<body style=\"background-color:pink\">\n");	break;
+			case SCHEME_WHITE: printf("<body>\n"); break;
 		}
 	}
-	
+
 	printf("<pre>\n");
 }
 
@@ -803,20 +804,25 @@ int main(int argc,char* args[])
 				}
 				newline=-1;
 			}
+			//I want fall throught, so I ignore the gcc warning for this switch
+			#pragma GCC diagnostic push
+			#pragma GCC diagnostic ignored "-Wimplicit-fallthrough="
 			switch (c)
 			{
 				case '&':	printf("&amp;"); break;
-				case '\"': printf("&quot;"); break;
+				case '\"':	printf("&quot;"); break;
 				case '<':	printf("&lt;"); break;
 				case '>':	printf("&gt;"); break;
-				case '\n':case 13: momline++;
-									 line=0;
+				case '\n':case 13:
+					momline++;
+					line=0;
 				default:
 					if (special_char)
 						printf("%s",ansi_vt220_character_set[((int)c+32) & 255]);
 					else
 						printf("%c",c);
 			}
+			#pragma GCC diagnostic pop
 			if (opts.iso>0) //only at ISOS
 				if ((c & 128)==128) //first bit set => there must be followbytes
 				{
