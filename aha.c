@@ -391,7 +391,7 @@ int main(int argc,char* args[])
 			fcstyle[1] = "red ";
 			fcstyle[2] = "green ";
 			fcstyle[3] = "yellow ";
-			fcstyle[4] = "blue";
+			fcstyle[4] = "blue ";
 			fcstyle[5] = "purple ";
 			fcstyle[6] = "cyan ";
 			fcstyle[7] = "white ";
