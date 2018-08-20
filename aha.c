@@ -318,6 +318,37 @@ struct Options parseArgs(int argc, char* args[])
 	return opts;
 }
 
+struct State {
+	int fc, bc;
+	int bold;
+	int italic;
+	int underline;
+	int blink;
+	int crossedout;
+};
+
+const struct State default_state = {
+	.fc = -1, //Standard Foreground Color //IRC-Color+8
+	.bc = -1, //Standard Background Color //IRC-Color+8
+	.bold = 0,
+	.italic = 0,
+	.underline = 0,
+	.blink = 0,
+	.crossedout = 0,
+};
+
+int statesDiffer(const struct State *const old, const struct State *const new) {
+	return
+		(old->fc != new->fc) ||
+		(old->bc != new->bc) || 
+		(old->bold != new->bold) ||
+		(old->italic != new->italic) ||
+		(old->underline != new->underline) ||
+		(old->blink != new->blink) ||
+		(old->crossedout != new->crossedout);
+}
+
+
 void printHeader(const struct Options *opts)
 {
 	char encoding[16] = "UTF-8";
@@ -469,17 +500,11 @@ int main(int argc,char* args[])
 		printHeader(&opts);
 
 	//Begin of Conversion
+	struct State state = default_state;
+	struct State oldstate;
 	int c;
-	int fc = -1; //Standard Foreground Color //IRC-Color+8
-	int bc = -1; //Standard Background Color //IRC-Color+8
-	int ul = 0; //Not underlined
-	int bo = 0; //Not bold
-	int it = 0; //Not italic
-	int bl = 0; //No Blinking
-	int co = 0; //Not crossed out
 	int negative = 0; //No negative image
 	int special_char = 0; //No special characters
-	int ofc,obc,oul,obo,oit,obl,oco; //old values
 	int line=0;
 	int momline=0;
 	int newline=-1;
@@ -488,14 +513,7 @@ int main(int argc,char* args[])
 	{
 		if (c=='\033')
 		{
-			//Saving old values
-			ofc=fc;
-			obc=bc;
-			oul=ul;
-			obo=bo;
-			oit=it;
-			obl=bl;
-			oco=co;
+			oldstate = state;
 			//Searching the end (a letter) and safe the insert:
 			c=getNextChar(fp);
 			if ( c == '[' ) // CSI code, see https://en.wikipedia.org/wiki/ANSI_escape_code#Colors
@@ -525,72 +543,71 @@ int main(int argc,char* args[])
 							switch (momelem->value)
 							{
 								case 0: // 0 - Reset all
-									bo=0; it=0; ul=0; bl=0; co=0;
-									fc=-1; bc=-1;
+									state = default_state;
 									negative=0; special_char=0;
 									break;
 
 								case 1: // 1 - Enable Bold
-									bo=1;
+									state.bold=1;
 									break;
 
 								case 3: // 3 - Enable Italic
-									it=1;
+									state.italic=1;
 									break;
 
 								case 4: // 4 - Enable underline
-									ul=1;
+									state.underline=1;
 									break;
 
 								case 5: // 5 - Slow Blink
-									bl=1;
+									state.blink=1;
 									break;
 
 								case 7: // 7 - Inverse video
-									if (bc == -1)
-										bc = 8;
-									if (fc == -1)
-										fc = 9;
-									temp = bc;
-									bc = fc;
-									fc = temp;
+									if (state.bc == -1)
+										state.bc = 8;
+									if (state.fc == -1)
+										state.fc = 9;
+									temp = state.bc;
+									state.bc = state.fc;
+									state.fc = temp;
 									negative = !negative;
 									break;
 
 								case 9: // 9 - Enable Crossed-out
-									co=1;
+									state.crossedout=1;
 									break;
 
 								case 21: // 21 - Reset bold
 								case 22: // 22 - Not bold, not "high intensity" color
-									bo=0;
+									state.bold=0;
 									break;
 
 								case 23: // 23 - Reset italic
-									it=0;
+									state.italic=0;
 									break;
 
 								case 24: // 23 - Reset underline
-									ul=0;
+									state.underline=0;
 									break;
 
 								case 25: // 25 - Reset blink
-									bl=0;
+									state.blink=0;
 									break;
 
 								case 27: // 27 - Reset Inverted
-									if (bc == -1)
-										bc = 8;
-									if (fc == -1)
-										fc = 9;
-									temp = bc;
-									bc = fc;
-									fc = temp;
+									if (state.bc == -1)
+										state.bc = 8;
+									if (state.fc == -1)
+										state.fc = 9;
+									temp = state.bc;
+									state.bc = state.fc;
+									state.fc = temp;
 									negative = 0;
 									break;
 
 								case 29: // 29 - Reset crossed-out
-									co=0;
+									state.crossedout=0;
 									break;
 
 								case 30:
@@ -604,9 +621,9 @@ int main(int argc,char* args[])
 								case 38:
 								case 39: // 3X - Set foreground color
 									if (negative == 0)
-										fc=momelem->value-30;
+										state.fc=momelem->value-30;
 									else
-										bc=momelem->value-30;
+										state.bc=momelem->value-30;
 									break;
 
 								case 40:
@@ -620,9 +637,9 @@ int main(int argc,char* args[])
 								case 48:
 								case 49: // 4X - Set background color
 									if (negative == 0)
-										bc=momelem->value-40;
+										state.bc=momelem->value-40;
 									else
-										fc=momelem->value-40;
+										state.fc=momelem->value-40;
 									break;
 							}
 							momelem=momelem->next;
@@ -654,49 +671,51 @@ int main(int argc,char* args[])
 							printf(" ");
 					}
 				//Checking the differences
-				if ((fc!=ofc) || (bc!=obc) || (ul!=oul) || (bo!=obo) || (oit!=it) || (bl!=obl) || (co!=oco)) //ANY Change
+				if ( statesDiffer(&state, &oldstate) ) //ANY Change
 				{
-					if ((ofc!=-1) || (obc!=-1) || (oul!=0) || (obo!=0) || (oit!=0) || (obl!=0) || (oco!=0))
+					// If old state was different than the default one, close the current <span>
+					if (statesDiffer(&oldstate, &default_state))
 						printf("</span>");
-					if ((fc!=-1) || (bc!=-1) || (ul!=0) || (bo!=0) || (it!=0) || (bl!=0) || (co!=0))
-					{
+					// Open new <span> if current state differs from the default one
+					if (statesDiffer(&state, &default_state))
+						{
 						if (opts.stylesheet)
 							printf("<span class=\"");
 						else
 							printf("<span style=\"");
 
-						if(fc>=0 && fc<=9) printf("%s", fcstyle[fc]);
-						if(bc>=0 && bc<=9) printf("%s", bcstyle[bc]);
+						if(state.fc>=0 && state.fc<=9) printf("%s", fcstyle[state.fc]);
+						if(state.bc>=0 && state.bc<=9) printf("%s", bcstyle[state.bc]);
 
-						if (ul)
+						if (state.underline)
 						{
 							if (opts.stylesheet)
 								printf("underline ");
 							else
 								printf("text-decoration:underline;");
 						}
-						if (bo)
+						if (state.bold)
 						{
 							if (opts.stylesheet)
 								printf("bold ");
 							else
 								printf("font-weight:bold;");
 						}
-						if (it)
+						if (state.italic)
 						{
 							if (opts.stylesheet)
 								printf("italic ");
 							else
 								printf("font-weight:italic;");
 						}
-						if (bl)
+						if (state.blink)
 						{
 							if (opts.stylesheet)
 								printf("blink ");
 							else
 								printf("text-decoration:blink;");
 						}
-						if (co)
+						if (state.crossedout)
 						{
 							if (opts.stylesheet)
 								printf("crossed-out ");
@@ -788,10 +807,11 @@ int main(int argc,char* args[])
 		}
 	}
 
-	//Footer
-	if ((fc!=-1) || (bc!=-1) || (ul!=0) || (bo!=0) || (bl!=0))
+	// If current state is different than the default, there is a <span> open - close it
+	if (statesDiffer(&state, &default_state))
 		printf("</span>\n");
 
+	//Footer
 	if (opts.no_header == 0)
 	{
 		printf("</pre>\n");
