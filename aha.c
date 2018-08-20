@@ -327,6 +327,19 @@ struct State {
 	int crossedout;
 };
 
+void swapColors(struct State *const state) {
+	if (state->bc == -1)
+		state->bc = 8;
+
+	if (state->fc == -1)
+		state->fc = 9;
+
+	int temp = state->bc;
+	state->bc = state->fc;
+	state->fc = temp;
+}
+
+
 const struct State default_state = {
 	.fc = -1, //Standard Foreground Color //IRC-Color+8
 	.bc = -1, //Standard Background Color //IRC-Color+8
@@ -508,7 +521,6 @@ int main(int argc,char* args[])
 	int line=0;
 	int momline=0;
 	int newline=-1;
-	int temp;
 	while ((c=fgetc(fp)) != EOF)
 	{
 		if (c=='\033')
@@ -564,13 +576,7 @@ int main(int argc,char* args[])
 									break;
 
 								case 7: // 7 - Inverse video
-									if (state.bc == -1)
-										state.bc = 8;
-									if (state.fc == -1)
-										state.fc = 9;
-									temp = state.bc;
-									state.bc = state.fc;
-									state.fc = temp;
+									swapColors(&state);
 									negative = !negative;
 									break;
 
@@ -596,14 +602,11 @@ int main(int argc,char* args[])
 									break;
 
 								case 27: // 27 - Reset Inverted
-									if (state.bc == -1)
-										state.bc = 8;
-									if (state.fc == -1)
-										state.fc = 9;
-									temp = state.bc;
-									state.bc = state.fc;
-									state.fc = temp;
-									negative = 0;
+									if (negative)
+									{
+										swapColors(&state); //7, 7X is not defined (and supported)
+										negative = 0;
+									}
 									break;
 
 								case 29: // 29 - Reset crossed-out
