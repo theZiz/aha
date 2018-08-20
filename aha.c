@@ -422,6 +422,32 @@ int main(int argc,char* args[])
 	struct Options opts = parseArgs(argc, args);
 	register FILE* fp = opts.fp;
 
+	char* fcstyle[10] = {
+		opts.stylesheet ? "dimgray " : "color:dimgray;", //Black
+		opts.stylesheet ? "red " : "color:red;", //Red
+		opts.stylesheet ? "green " : opts.colorscheme==SCHEME_BLACK ? "color:lime;" : "color:green;", //Green
+		opts.stylesheet ? "yellow " : opts.colorscheme==SCHEME_BLACK ? "color:yellow;" : "color:olive;", //Yellow
+		opts.stylesheet ? "blue " : opts.colorscheme==SCHEME_BLACK ? "color:#3333FF;" : "color:blue;", //Blue
+		opts.stylesheet ? "purple " : opts.colorscheme==SCHEME_BLACK ? "color:fuchsia;" : "color:purple;", //Purple
+		opts.stylesheet ? "cyan " : opts.colorscheme==SCHEME_BLACK ? "color:aqua;" : "color:teal;", //Cyan
+		opts.stylesheet ? "white " : opts.colorscheme==SCHEME_BLACK ? "color:white;" : "color:gray;", //White
+		opts.stylesheet ? "inverted " : opts.colorscheme==SCHEME_BLACK ? "color:black;" : opts.colorscheme==SCHEME_PINK ? "color:pink;" : "color:white;", //Background
+		opts.stylesheet ? "reset " : opts.colorscheme==SCHEME_BLACK ? "color:white;" : "color:black;" //Foreground
+	};
+
+	char* bcstyle[10] = {
+		opts.stylesheet ? "bg-black " : "background-color:black;", //Black
+		opts.stylesheet ? "bg-red " : "background-color:red;", //Red
+		opts.stylesheet ? "bg-green " : opts.colorscheme==SCHEME_BLACK ? "background-color:lime;" : "background-color:green;", //Green
+		opts.stylesheet ? "bg-yellow " : opts.colorscheme==SCHEME_BLACK ? "background-color:yellow;" : "background-color:olive;", //Yellow
+		opts.stylesheet ? "bg-blue " : opts.colorscheme==SCHEME_BLACK ? "background-color:#3333FF;" : "background-color:blue;", //Blue
+		opts.stylesheet ? "bg-purple " : opts.colorscheme==SCHEME_BLACK ? "background-color:fuchsia;" : "background-color:purple;", //Purple
+		opts.stylesheet ? "bg-cyan " : opts.colorscheme==SCHEME_BLACK ? "background-color:aqua;" : "background-color:teal;", //Cyan
+		opts.stylesheet ? "bg-white " : opts.colorscheme==SCHEME_BLACK ? "background-color:white;" : "background-color:gray;", //White
+		opts.stylesheet ? "bg-reset " : opts.colorscheme==SCHEME_BLACK ? "background-color:black;" : opts.colorscheme==SCHEME_PINK ? "background-color:pink;" : "background-color:white;", //Background
+		opts.stylesheet ? "bg-inverted " : opts.colorscheme==SCHEME_BLACK ? "background-color:white;" : "background-color:black;", //Foreground
+	};
+
 	if (!opts.no_header)
 		printHeader(&opts);
 
@@ -589,148 +615,10 @@ int main(int argc,char* args[])
 							printf("<span class=\"");
 						else
 							printf("<span style=\"");
-						switch (fc)
-						{
-							case	0: if (opts.stylesheet)
-												 printf("dimgray ");
-											 else
-												 printf("color:dimgray;");
-											 break; //Black
-							case	1: if (opts.stylesheet)
-												 printf("red ");
-											 else
-												 printf("color:red;");
-											 break; //Red
-							case	2: if (opts.stylesheet)
-												 printf("green ");
-											 else if (opts.colorscheme!=SCHEME_BLACK)
-												 printf("color:green;");
-											 else
-												 printf("color:lime;");
-											 break; //Green
-							case	3: if (opts.stylesheet)
-												 printf("yellow ");
-											 else if (opts.colorscheme!=SCHEME_BLACK)
-												 printf("color:olive;");
-											 else
-												 printf("color:yellow;");
-											 break; //Yellow
-							case	4: if (opts.stylesheet)
-												 printf("blue ");
-											 else if (opts.colorscheme!=SCHEME_BLACK)
-												 printf("color:blue;");
-											 else
-												 printf("color:#3333FF;");
-											 break; //Blue
-							case	5: if (opts.stylesheet)
-												 printf("purple ");
-											 else if (opts.colorscheme!=SCHEME_BLACK)
-												 printf("color:purple;");
-											 else
-												 printf("color:fuchsia;");
-											 break; //Purple
-							case	6: if (opts.stylesheet)
-												 printf("cyan ");
-											 else if (opts.colorscheme!=SCHEME_BLACK)
-												 printf("color:teal;");
-											 else
-												 printf("color:aqua;");
-											 break; //Cyan
-							case	7: if (opts.stylesheet)
-												 printf("white ");
-											 else if (opts.colorscheme!=SCHEME_BLACK)
-												 printf("color:gray;");
-											 else
-												 printf("color:white;");
-											 break; //White
-							case	8: if (opts.stylesheet)
-												 printf("inverted ");
-											 else if (opts.colorscheme==SCHEME_BLACK)
-												 printf("color:black;");
-											 else if (opts.colorscheme==SCHEME_PINK)
-												 printf("color:pink;");
-											 else
-												 printf("color:white;");
-											 break; //Background Colour
-							case	9: if (opts.stylesheet)
-												 printf("reset ");
-											 else if (opts.colorscheme!=SCHEME_BLACK)
-												 printf("color:black;");
-											 else
-												 printf("color:white;");
-											 break; //Foreground Color
-						}
-						switch (bc)
-						{
-							case	0: if (opts.stylesheet)
-												 printf("bg-black ");
-											 else
-												 printf("background-color:black;");
-											 break; //Black
-							case	1: if (opts.stylesheet)
-												 printf("bg-red ");
-											 else
-												 printf("background-color:red;");
-											 break; //Red
-							case	2: if (opts.stylesheet)
-												 printf("bg-green ");
-											 else if (opts.colorscheme!=SCHEME_BLACK)
-												 printf("background-color:green;");
-											 else
-												 printf("background-color:lime;");
-											 break; //Green
-							case	3: if (opts.stylesheet)
-												 printf("bg-yellow ");
-											 else if (opts.colorscheme!=SCHEME_BLACK)
-												 printf("background-color:olive;");
-											 else
-												 printf("background-color:yellow;");
-											 break; //Yellow
-							case	4: if (opts.stylesheet)
-												 printf("bg-blue ");
-											 else if (opts.colorscheme!=SCHEME_BLACK)
-												 printf("background-color:blue;");
-											 else
-												 printf("background-color:#3333FF;");
-											 break; //Blue
-							case	5: if (opts.stylesheet)
-												 printf("bg-purple ");
-											 else if (opts.colorscheme!=SCHEME_BLACK)
-												 printf("background-color:purple;");
-											 else
-												 printf("background-color:fuchsia;");
-											 break; //Purple
-							case	6: if (opts.stylesheet)
-												 printf("bg-cyan ");
-											 else if (opts.colorscheme!=SCHEME_BLACK)
-												 printf("background-color:teal;");
-											 else
-												 printf("background-color:aqua;");
-											 break; //Cyan
-							case	7: if (opts.stylesheet)
-												 printf("bg-white ");
-											 else if (opts.colorscheme!=SCHEME_BLACK)
-												 printf("background-color:gray;");
-											 else
-												 printf("background-color:white;");
-											 break; //White
-							case	8: if (opts.stylesheet)
-												 printf("bg-reset ");
-											 else if (opts.colorscheme==SCHEME_BLACK)
-												 printf("background-color:black;");
-											 else if (opts.colorscheme==SCHEME_PINK)
-												 printf("background-color:pink;");
-											 else
-												 printf("background-color:white;");
-											 break; //Background Colour
-							case	9: if (opts.stylesheet)
-												 printf("bg-inverted ");
-											 else if (opts.colorscheme!=SCHEME_BLACK)
-												 printf("background-color:black;");
-											 else
-												 printf("background-color:white;");
-											 break; //Foreground Colour
-						}
+
+						if(fc>=0 && fc<=9) printf("%s", fcstyle[fc]);
+						if(bc>=0 && bc<=9) printf("%s", bcstyle[bc]);
+
 						if (ul)
 						{
 							if (opts.stylesheet)
