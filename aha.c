@@ -397,6 +397,7 @@ void printHeader(const struct Options *opts)
 		}
 		printf(".underline   {text-decoration: underline;}\n");
 		printf(".bold        {font-weight: bold;}\n");
+		printf(".italic      {font-style: italic;}\n");
 		printf(".blink       {text-decoration: blink;}\n");
 	}
 
@@ -472,10 +473,11 @@ int main(int argc,char* args[])
 	int bc = -1; //Standard Background Color //IRC-Color+8
 	int ul = 0; //Not underlined
 	int bo = 0; //Not bold
+	int it = 0; //Not italic
 	int bl = 0; //No Blinking
 	int negative = 0; //No negative image
 	int special_char = 0; //No special characters
-	int ofc,obc,oul,obo,obl; //old values
+	int ofc,obc,oul,obo,oit,obl; //old values
 	int line=0;
 	int momline=0;
 	int newline=-1;
@@ -489,6 +491,7 @@ int main(int argc,char* args[])
 			obc=bc;
 			oul=ul;
 			obo=bo;
+			oit=it;
 			obl=bl;
 			//Searching the end (a letter) and safe the insert:
 			c=getNextChar(fp);
@@ -519,13 +522,17 @@ int main(int argc,char* args[])
 							switch (momelem->value)
 							{
 								case 0: // 0 - Reset all
-									bo=0; ul=0; bl=0;
+									bo=0; it=0; ul=0; bl=0;
 									fc=-1; bc=-1;
 									negative=0; special_char=0;
 									break;
 
 								case 1: // 1 - Enable Bold
 									bo=1;
+									break;
+
+								case 3: // 3 - Enable Italic
+									it=1;
 									break;
 
 								case 4: // 4 - Enable underline
@@ -550,6 +557,10 @@ int main(int argc,char* args[])
 								case 21: // 21 - Reset bold
 								case 22: // 22 - Not bold, not "high intensity" color
 									bo=0;
+									break;
+
+								case 23: // 23 - Reset italic
+									it=0;
 									break;
 
 								case 24: // 23 - Reset underline
@@ -632,11 +643,11 @@ int main(int argc,char* args[])
 							printf(" ");
 					}
 				//Checking the differences
-				if ((fc!=ofc) || (bc!=obc) || (ul!=oul) || (bo!=obo) || (bl!=obl)) //ANY Change
+				if ((fc!=ofc) || (bc!=obc) || (ul!=oul) || (bo!=obo) || (oit!=it) || (bl!=obl)) //ANY Change
 				{
-					if ((ofc!=-1) || (obc!=-1) || (oul!=0) || (obo!=0) || (obl!=0))
+					if ((ofc!=-1) || (obc!=-1) || (oul!=0) || (obo!=0) || (oit!=0) || (obl!=0))
 						printf("</span>");
-					if ((fc!=-1) || (bc!=-1) || (ul!=0) || (bo!=0) || (bl!=0))
+					if ((fc!=-1) || (bc!=-1) || (ul!=0) || (bo!=0) || (it!=0) || (bl!=0))
 					{
 						if (opts.stylesheet)
 							printf("<span class=\"");
@@ -659,6 +670,13 @@ int main(int argc,char* args[])
 								printf("bold ");
 							else
 								printf("font-weight:bold;");
+						}
+						if (it)
+						{
+							if (opts.stylesheet)
+								printf("italic ");
+							else
+								printf("font-weight:italic;");
 						}
 						if (bl)
 						{
