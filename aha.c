@@ -399,6 +399,7 @@ void printHeader(const struct Options *opts)
 		printf(".bold        {font-weight: bold;}\n");
 		printf(".italic      {font-style: italic;}\n");
 		printf(".blink       {text-decoration: blink;}\n");
+		printf(".crossed-out {text-decoration: line-through;}\n");
 	}
 
 	if (opts->word_wrap)
@@ -475,9 +476,10 @@ int main(int argc,char* args[])
 	int bo = 0; //Not bold
 	int it = 0; //Not italic
 	int bl = 0; //No Blinking
+	int co = 0; //Not crossed out
 	int negative = 0; //No negative image
 	int special_char = 0; //No special characters
-	int ofc,obc,oul,obo,oit,obl; //old values
+	int ofc,obc,oul,obo,oit,obl,oco; //old values
 	int line=0;
 	int momline=0;
 	int newline=-1;
@@ -493,6 +495,7 @@ int main(int argc,char* args[])
 			obo=bo;
 			oit=it;
 			obl=bl;
+			oco=co;
 			//Searching the end (a letter) and safe the insert:
 			c=getNextChar(fp);
 			if ( c == '[' ) // CSI code, see https://en.wikipedia.org/wiki/ANSI_escape_code#Colors
@@ -522,7 +525,7 @@ int main(int argc,char* args[])
 							switch (momelem->value)
 							{
 								case 0: // 0 - Reset all
-									bo=0; it=0; ul=0; bl=0;
+									bo=0; it=0; ul=0; bl=0; co=0;
 									fc=-1; bc=-1;
 									negative=0; special_char=0;
 									break;
@@ -554,6 +557,10 @@ int main(int argc,char* args[])
 									negative = !negative;
 									break;
 
+								case 9: // 9 - Enable Crossed-out
+									co=1;
+									break;
+
 								case 21: // 21 - Reset bold
 								case 22: // 22 - Not bold, not "high intensity" color
 									bo=0;
@@ -580,6 +587,10 @@ int main(int argc,char* args[])
 									bc = fc;
 									fc = temp;
 									negative = 0;
+									break;
+
+								case 29: // 29 - Reset crossed-out
+									co=0;
 									break;
 
 								case 30:
@@ -643,11 +654,11 @@ int main(int argc,char* args[])
 							printf(" ");
 					}
 				//Checking the differences
-				if ((fc!=ofc) || (bc!=obc) || (ul!=oul) || (bo!=obo) || (oit!=it) || (bl!=obl)) //ANY Change
+				if ((fc!=ofc) || (bc!=obc) || (ul!=oul) || (bo!=obo) || (oit!=it) || (bl!=obl) || (co!=oco)) //ANY Change
 				{
-					if ((ofc!=-1) || (obc!=-1) || (oul!=0) || (obo!=0) || (oit!=0) || (obl!=0))
+					if ((ofc!=-1) || (obc!=-1) || (oul!=0) || (obo!=0) || (oit!=0) || (obl!=0) || (oco!=0))
 						printf("</span>");
-					if ((fc!=-1) || (bc!=-1) || (ul!=0) || (bo!=0) || (it!=0) || (bl!=0))
+					if ((fc!=-1) || (bc!=-1) || (ul!=0) || (bo!=0) || (it!=0) || (bl!=0) || (co!=0))
 					{
 						if (opts.stylesheet)
 							printf("<span class=\"");
@@ -685,7 +696,13 @@ int main(int argc,char* args[])
 							else
 								printf("text-decoration:blink;");
 						}
-
+						if (co)
+						{
+							if (opts.stylesheet)
+								printf("crossed-out ");
+							else
+								printf("text-decoration:line-through;");
+						}
 						printf("\">");
 					}
 				}
