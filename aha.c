@@ -709,7 +709,7 @@ int main(int argc,char* args[])
 							if (opts.stylesheet)
 								printf("italic ");
 							else
-								printf("font-weight:italic;");
+								printf("font-style:italic;");
 						}
 						if (state.blink)
 						{
