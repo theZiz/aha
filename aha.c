@@ -376,6 +376,7 @@ struct State {
 	int crossedout;
 	enum ColorMode fc_colormode;
 	enum ColorMode bc_colormode;
+	int highlighted; //for fc AND bc although not correct...
 };
 
 void swapColors(struct State *const state) {
@@ -405,6 +406,7 @@ const struct State default_state = {
 	.crossedout = 0,
 	.fc_colormode = MODE_3BIT,
 	.bc_colormode = MODE_3BIT,
+	.highlighted = 0,
 };
 
 int statesDiffer(const struct State *const old, const struct State *const new) {
@@ -417,7 +419,8 @@ int statesDiffer(const struct State *const old, const struct State *const new) {
 		(old->blink != new->blink) ||
 		(old->crossedout != new->crossedout) ||
 		(old->fc_colormode != new->fc_colormode) ||
-		(old->bc_colormode != new->bc_colormode);
+		(old->bc_colormode != new->bc_colormode) ||
+		(old->highlighted != new->highlighted);
 }
 
 
@@ -503,6 +506,7 @@ void printHeader(const struct Options *opts)
 		printf(".italic      {font-style: italic;}\n");
 		printf(".blink       {text-decoration: blink;}\n");
 		printf(".crossed-out {text-decoration: line-through;}\n");
+		printf(".highlighted {filter: contrast(70%%) brightness(190%%);}\n");
 	}
 
 	if (opts->word_wrap)
@@ -693,7 +697,16 @@ int main(int argc,char* args[])
 										{
 											momelem = momelem->next->next;
 											state.fc_colormode = MODE_8BIT;
-											*dest = momelem->value;
+											if (momelem->value >=8 && momelem->value <=15)
+											{
+												state.highlighted = 1;
+												*dest = momelem->value-8;
+											}
+											else
+											{
+												state.highlighted = 0;
+												*dest = momelem->value;
+											}
 										}
 										else
 										if (momelem->value == 38 &&
@@ -711,6 +724,7 @@ int main(int argc,char* args[])
 											b = momelem;
 											if ( r && g && b )
 											{
+												state.highlighted = 0;
 												state.fc_colormode = MODE_24BIT;
 												*dest =
 													(r->value & 255) * 65536 +
@@ -721,6 +735,7 @@ int main(int argc,char* args[])
 										else
 										{
 											state.fc_colormode = MODE_3BIT;
+											state.highlighted = 0;
 											*dest=momelem->value-30;
 										}
 									}
@@ -747,7 +762,16 @@ int main(int argc,char* args[])
 										{
 											momelem = momelem->next->next;
 											state.bc_colormode = MODE_8BIT;
-											*dest = momelem->value;
+											if (momelem->value >=8 && momelem->value <=15)
+											{
+												state.highlighted = 1;
+												*dest = momelem->value-8;
+											}
+											else
+											{
+												state.highlighted = 0;
+												*dest = momelem->value;
+											}
 										}
 										else
 										if (momelem->value == 48 &&
@@ -766,6 +790,7 @@ int main(int argc,char* args[])
 											if ( r && g && b )
 											{
 												state.bc_colormode = MODE_24BIT;
+												state.highlighted = 0;
 												*dest =
 													(r->value & 255) * 65536 +
 													(g->value & 255) * 256 +
@@ -775,8 +800,44 @@ int main(int argc,char* args[])
 										else
 										{
 											state.bc_colormode = MODE_3BIT;
+											state.highlighted = 0;
 											*dest=momelem->value-40;
 										}
+									}
+									break;
+								case 90:
+								case 91:
+								case 92:
+								case 93:
+								case 94:
+								case 95:
+								case 96:
+								case 97: // 9X - Set foreground color highlighted
+									{
+										int *dest = &(state.fc);
+										if (negative != 0)
+											dest=&(state.bc);
+										state.fc_colormode = MODE_3BIT;
+										state.highlighted = 1;
+										*dest=momelem->value-90;
+									}
+									break;
+
+								case 100:
+								case 101:
+								case 102:
+								case 103:
+								case 104:
+								case 105:
+								case 106:
+								case 107: // 10X - Set background color highlighted
+									{
+										int *dest = &(state.bc);
+										if (negative != 0)
+											dest=&(state.fc);
+										state.bc_colormode = MODE_3BIT;
+										state.highlighted = 1;
+										*dest=momelem->value-100;
 									}
 									break;
 							}
@@ -856,7 +917,13 @@ int main(int argc,char* args[])
 							else
 								printf("text-decoration:line-through;");
 						}
-						if (opts.stylesheet &&
+						if (state.highlighted)
+						{
+							if (opts.stylesheet)
+								printf("highlighted ");
+							else
+								printf("filter: contrast(70%%) brightness(190%%);");
+						}						if (opts.stylesheet &&
 							state.fc_colormode != MODE_3BIT &&
 							(state.fc_colormode != MODE_8BIT || state.fc>15))
 							printf("\" style=\"");
@@ -868,9 +935,6 @@ int main(int argc,char* args[])
 							case MODE_8BIT:
 								if (state.fc>=0 && state.fc<=7)
 									printf("%s", fcstyle[state.fc]);
-								else
-								if (state.fc>=8 && state.fc<=15) // ignore highlight
-									printf("%s filter: contrast(70%%) brightness(190%%)", fcstyle[state.fc-8]);
 								else
 								{
 									char rgb[11];
@@ -896,9 +960,6 @@ int main(int argc,char* args[])
 							case MODE_8BIT:
 								if (state.bc>=0 && state.bc<=7)
 									printf("%s", bcstyle[state.bc]);
-								else
-								if (state.bc>=8 && state.bc<=15)
-									printf("%s filter: contrast(70%%) brightness(190%%)", bcstyle[state.bc-8]);
 								else
 								{
 									char rgb[11];
