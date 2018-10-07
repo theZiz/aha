@@ -374,19 +374,24 @@ struct State {
 	int underline;
 	int blink;
 	int crossedout;
-	enum ColorMode colormode;
+	enum ColorMode fc_colormode;
+	enum ColorMode bc_colormode;
 };
 
 void swapColors(struct State *const state) {
-	if (state->bc == -1)
+	if (state->bc_colormode == MODE_3BIT && state->bc == -1)
 		state->bc = 8;
 
-	if (state->fc == -1)
+	if (state->fc_colormode == MODE_3BIT && state->fc == -1)
 		state->fc = 9;
 
 	int temp = state->bc;
 	state->bc = state->fc;
 	state->fc = temp;
+
+	enum ColorMode temp_colormode = state->bc_colormode;
+	state->bc_colormode = state->fc_colormode;
+	state->fc_colormode = temp_colormode;
 }
 
 
@@ -398,7 +403,8 @@ const struct State default_state = {
 	.underline = 0,
 	.blink = 0,
 	.crossedout = 0,
-	.colormode = MODE_3BIT,
+	.fc_colormode = MODE_3BIT,
+	.bc_colormode = MODE_3BIT,
 };
 
 int statesDiffer(const struct State *const old, const struct State *const new) {
@@ -410,7 +416,8 @@ int statesDiffer(const struct State *const old, const struct State *const new) {
 		(old->underline != new->underline) ||
 		(old->blink != new->blink) ||
 		(old->crossedout != new->crossedout) ||
-		(old->colormode != new->colormode);
+		(old->fc_colormode != new->fc_colormode) ||
+		(old->bc_colormode != new->bc_colormode);
 }
 
 
@@ -682,15 +689,38 @@ int main(int argc,char* args[])
 										if (momelem->value == 38 &&
 											momelem->next &&
 											momelem->next->value == 5 &&
-											momelem->next->next)// 38;5;<n>
+											momelem->next->next)// 38;5;<n> -> 8 Bit
 										{
 											momelem = momelem->next->next;
-											state.colormode = MODE_8BIT;
+											state.fc_colormode = MODE_8BIT;
 											*dest = momelem->value;
 										}
 										else
+										if (momelem->value == 38 &&
+											momelem->next &&
+											momelem->next->value == 2 &&
+											momelem->next->next)// 38;2;<n> -> 24 Bit
 										{
-											state.colormode = MODE_3BIT;
+											momelem = momelem->next->next;
+											pelem r,g,b;
+											r = momelem;
+											momelem = momelem->next;
+											g = momelem;
+											if ( momelem )
+												momelem = momelem->next;
+											b = momelem;
+											if ( r && g && b )
+											{
+												state.fc_colormode = MODE_24BIT;
+												*dest =
+													(r->value & 255) * 65536 +
+													(g->value & 255) * 256 +
+													(b->value & 255);
+											}
+										}
+										else
+										{
+											state.fc_colormode = MODE_3BIT;
 											*dest=momelem->value-30;
 										}
 									}
@@ -713,15 +743,38 @@ int main(int argc,char* args[])
 										if (momelem->value == 48 &&
 											momelem->next &&
 											momelem->next->value == 5 &&
-											momelem->next->next)// 48;5;<n>
+											momelem->next->next)// 48;5;<n> -> 8 Bit
 										{
 											momelem = momelem->next->next;
-											state.colormode = MODE_8BIT;
+											state.bc_colormode = MODE_8BIT;
 											*dest = momelem->value;
 										}
 										else
+										if (momelem->value == 48 &&
+											momelem->next &&
+											momelem->next->value == 2 &&
+											momelem->next->next)// 48;2;<n> -> 24 Bit
 										{
-											state.colormode = MODE_3BIT;
+											momelem = momelem->next->next;
+											pelem r,g,b;
+											r = momelem;
+											momelem = momelem->next;
+											g = momelem;
+											if ( momelem )
+												momelem = momelem->next;
+											b = momelem;
+											if ( r && g && b )
+											{
+												state.bc_colormode = MODE_24BIT;
+												*dest =
+													(r->value & 255) * 65536 +
+													(g->value & 255) * 256 +
+													(b->value & 255);
+											}
+										}
+										else
+										{
+											state.bc_colormode = MODE_3BIT;
 											*dest=momelem->value-40;
 										}
 									}
@@ -763,35 +816,46 @@ int main(int argc,char* args[])
 						printf("</span>");
 					// Open new <span> if current state differs from the default one
 					if (statesDiffer(&state, &default_state))
-						{
+					{
 						if (opts.stylesheet)
 							printf("<span class=\"");
 						else
 							printf("<span style=\"");
 
-						switch (state.colormode)
+						switch (state.fc_colormode)
 						{
 							case MODE_3BIT:
 								if (state.fc>=0 && state.fc<=9) printf("%s", fcstyle[state.fc]);
-								if (state.bc>=0 && state.bc<=9) printf("%s", bcstyle[state.bc]);
 								break;
 							case MODE_8BIT:
 								if (state.fc>=0 && state.fc<=7)
 									printf("%s", fcstyle[state.fc]);
 								else
 								if (state.fc>=8 && state.fc<=15) // ignore highlight
-									printf("%s; filter: contrast(70%%) brightness(190%%)", fcstyle[state.fc-8]);
+									printf("%s filter: contrast(70%%) brightness(190%%)", fcstyle[state.fc-8]);
 								else
 								{
 									char rgb[11];
 									make_rgb(state.fc,rgb);
 									printf("color: rgb(%s);",rgb);
 								}
+								break;
+							case MODE_24BIT:
+								printf("color: #%06x;",state.fc);
+								break;
+						};
+
+						switch (state.bc_colormode)
+						{
+							case MODE_3BIT:
+								if (state.bc>=0 && state.bc<=9) printf("%s", bcstyle[state.bc]);
+								break;
+							case MODE_8BIT:
 								if (state.bc>=0 && state.bc<=7)
 									printf("%s", bcstyle[state.bc]);
 								else
 								if (state.bc>=8 && state.bc<=15)
-									printf("%s; filter: contrast(70%%) brightness(190%%)", bcstyle[state.bc-8]);
+									printf("%s filter: contrast(70%%) brightness(190%%)", bcstyle[state.bc-8]);
 								else
 								{
 									char rgb[11];
@@ -800,6 +864,7 @@ int main(int argc,char* args[])
 								}
 								break;
 							case MODE_24BIT:
+								printf("background-color: #%06x;",state.bc);
 								break;
 						};
 
