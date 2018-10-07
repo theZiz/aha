@@ -85,17 +85,17 @@ pelem parseInsert(char* s)
 {
 	pelem firstelem=NULL;
 	pelem momelem=NULL;
-	
+
 	unsigned char digit[8];
 	unsigned char digitcount=0;
 	long int value=0;
-	
+
 	int pos=0;
 	for (pos=0;pos<1024;pos++)
 	{
 		if (s[pos]=='[')
 			continue;
-		if (s[pos]==';' || s[pos]==0)
+		if (s[pos]==';' || s[pos]==':' || s[pos]==0)
 		{
 			if (digitcount==0)
 			{
@@ -104,27 +104,27 @@ pelem parseInsert(char* s)
 			}
 
 			pelem newelem=(pelem)malloc(sizeof(telem));
-			if (newelem==NULL) 
+			if (newelem==NULL)
 			{
 				perror("Failed to allocate memory for parseInsert()");
 				exit(EXIT_FAILURE);
 			}
-			
+
 			memcpy(newelem->digit, digit, sizeof(digit));
 			newelem->digitcount=digitcount;
 			newelem->value=value;
 			newelem->next=NULL;
-			
+
 			if (momelem==NULL)
 				firstelem=newelem;
 			else
 				momelem->next=newelem;
 			momelem=newelem;
-			
+
 			digitcount=0;
 			memset(digit,0,sizeof(digit));
 			value=0;
-			
+
 			if (s[pos]==0)
 				break;
 		}
@@ -184,6 +184,49 @@ struct Options {
 	char *title;
 	int word_wrap;
 };
+
+int divide (int dividend, int divisor){
+	div_t result;
+	result = div (dividend, divisor);
+	return result.quot;
+}
+
+void make_rgb (int color_id, char str_rgb[11]){
+
+	if (color_id < 16 || color_id > 255)
+		return;
+	if (color_id >= 232)
+	{
+		int index = color_id - 232;
+		int grey = index * 256 / 24;
+		sprintf(str_rgb, "%d,%d,%d", grey, grey, grey);
+		return;
+	}
+	int index_R = divide((color_id - 16), 36);
+	int rgb_R;
+	if (index_R > 0){
+		rgb_R = 55 + index_R * 40;
+	} else {
+		rgb_R = 0;
+	}
+
+	int index_G = divide(((color_id - 16) % 36), 6);
+	int rgb_G;
+	if (index_G > 0){
+		rgb_G = 55 + index_G * 40;
+	} else {
+		rgb_G = 0;
+	}
+
+	int index_B = ((color_id - 16) % 6);
+	int rgb_B;
+	if (index_B > 0){
+		rgb_B = 55 + index_B * 40;
+	} else {
+		rgb_B = 0;
+	}
+	sprintf(str_rgb, "%d,%d,%d", rgb_R, rgb_G, rgb_B);
+}
 
 #define VERSION_PRINTF_MAKRO \
 	printf("\033[1;31mAnsi Html Adapter\033[0m Version "AHA_VERSION"\n");
@@ -318,6 +361,12 @@ struct Options parseArgs(int argc, char* args[])
 	return opts;
 }
 
+enum ColorMode {
+	MODE_3BIT,
+	MODE_8BIT,
+	MODE_24BIT
+};
+
 struct State {
 	int fc, bc;
 	int bold;
@@ -325,6 +374,7 @@ struct State {
 	int underline;
 	int blink;
 	int crossedout;
+	enum ColorMode colormode;
 };
 
 void swapColors(struct State *const state) {
@@ -348,17 +398,19 @@ const struct State default_state = {
 	.underline = 0,
 	.blink = 0,
 	.crossedout = 0,
+	.colormode = MODE_3BIT,
 };
 
 int statesDiffer(const struct State *const old, const struct State *const new) {
 	return
 		(old->fc != new->fc) ||
-		(old->bc != new->bc) || 
+		(old->bc != new->bc) ||
 		(old->bold != new->bold) ||
 		(old->italic != new->italic) ||
 		(old->underline != new->underline) ||
 		(old->blink != new->blink) ||
-		(old->crossedout != new->crossedout);
+		(old->crossedout != new->crossedout) ||
+		(old->colormode != new->colormode);
 }
 
 
@@ -623,10 +675,25 @@ int main(int argc,char* args[])
 								case 37:
 								case 38:
 								case 39: // 3X - Set foreground color
-									if (negative == 0)
-										state.fc=momelem->value-30;
-									else
-										state.bc=momelem->value-30;
+									{
+										int *dest = &(state.fc);
+										if (negative != 0)
+											dest=&(state.bc);
+										if (momelem->value == 38 &&
+											momelem->next &&
+											momelem->next->value == 5 &&
+											momelem->next->next)// 38;5;<n>
+										{
+											momelem = momelem->next->next;
+											state.colormode = MODE_8BIT;
+											*dest = momelem->value;
+										}
+										else
+										{
+											state.colormode = MODE_3BIT;
+											*dest=momelem->value-30;
+										}
+									}
 									break;
 
 								case 40:
@@ -639,10 +706,25 @@ int main(int argc,char* args[])
 								case 47:
 								case 48:
 								case 49: // 4X - Set background color
-									if (negative == 0)
-										state.bc=momelem->value-40;
-									else
-										state.fc=momelem->value-40;
+									{
+										int *dest = &(state.bc);
+										if (negative != 0)
+											dest=&(state.fc);
+										if (momelem->value == 48 &&
+											momelem->next &&
+											momelem->next->value == 5 &&
+											momelem->next->next)// 48;5;<n>
+										{
+											momelem = momelem->next->next;
+											state.colormode = MODE_8BIT;
+											*dest = momelem->value;
+										}
+										else
+										{
+											state.colormode = MODE_3BIT;
+											*dest=momelem->value-40;
+										}
+									}
 									break;
 							}
 							momelem=momelem->next;
@@ -687,8 +769,39 @@ int main(int argc,char* args[])
 						else
 							printf("<span style=\"");
 
-						if(state.fc>=0 && state.fc<=9) printf("%s", fcstyle[state.fc]);
-						if(state.bc>=0 && state.bc<=9) printf("%s", bcstyle[state.bc]);
+						switch (state.colormode)
+						{
+							case MODE_3BIT:
+								if (state.fc>=0 && state.fc<=9) printf("%s", fcstyle[state.fc]);
+								if (state.bc>=0 && state.bc<=9) printf("%s", bcstyle[state.bc]);
+								break;
+							case MODE_8BIT:
+								if (state.fc>=0 && state.fc<=7)
+									printf("%s", fcstyle[state.fc]);
+								else
+								if (state.fc>=8 && state.fc<=15) // ignore highlight
+									printf("%s; filter: contrast(70%%) brightness(190%%)", fcstyle[state.fc-8]);
+								else
+								{
+									char rgb[11];
+									make_rgb(state.fc,rgb);
+									printf("color: rgb(%s);",rgb);
+								}
+								if (state.bc>=0 && state.bc<=7)
+									printf("%s", bcstyle[state.bc]);
+								else
+								if (state.bc>=8 && state.bc<=15)
+									printf("%s; filter: contrast(70%%) brightness(190%%)", bcstyle[state.bc-8]);
+								else
+								{
+									char rgb[11];
+									make_rgb(state.bc,rgb);
+									printf("background-color: rgb(%s);",rgb);
+								}
+								break;
+							case MODE_24BIT:
+								break;
+						};
 
 						if (state.underline)
 						{
@@ -732,7 +845,9 @@ int main(int argc,char* args[])
 			else
 			if ( c == ']' ) //Operating System Command (OSC), ignoring for now
 			{
-				while (c != 2 && c != 7) //STX and BEL end an OSC.
+				while (c != 2 && c != 7 && c!= 27) //STX, BEL or ESC end an OSC.
+					c = getNextChar(fp);
+				if ( c == 27 ) // expecting \ after ESC
 					c = getNextChar(fp);
 			}
 			else
