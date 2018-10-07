@@ -821,53 +821,6 @@ int main(int argc,char* args[])
 							printf("<span class=\"");
 						else
 							printf("<span style=\"");
-
-						switch (state.fc_colormode)
-						{
-							case MODE_3BIT:
-								if (state.fc>=0 && state.fc<=9) printf("%s", fcstyle[state.fc]);
-								break;
-							case MODE_8BIT:
-								if (state.fc>=0 && state.fc<=7)
-									printf("%s", fcstyle[state.fc]);
-								else
-								if (state.fc>=8 && state.fc<=15) // ignore highlight
-									printf("%s filter: contrast(70%%) brightness(190%%)", fcstyle[state.fc-8]);
-								else
-								{
-									char rgb[11];
-									make_rgb(state.fc,rgb);
-									printf("color: rgb(%s);",rgb);
-								}
-								break;
-							case MODE_24BIT:
-								printf("color: #%06x;",state.fc);
-								break;
-						};
-
-						switch (state.bc_colormode)
-						{
-							case MODE_3BIT:
-								if (state.bc>=0 && state.bc<=9) printf("%s", bcstyle[state.bc]);
-								break;
-							case MODE_8BIT:
-								if (state.bc>=0 && state.bc<=7)
-									printf("%s", bcstyle[state.bc]);
-								else
-								if (state.bc>=8 && state.bc<=15)
-									printf("%s filter: contrast(70%%) brightness(190%%)", bcstyle[state.bc-8]);
-								else
-								{
-									char rgb[11];
-									make_rgb(state.bc,rgb);
-									printf("background-color: rgb(%s);",rgb);
-								}
-								break;
-							case MODE_24BIT:
-								printf("background-color: #%06x;",state.bc);
-								break;
-						};
-
 						if (state.underline)
 						{
 							if (opts.stylesheet)
@@ -903,6 +856,60 @@ int main(int argc,char* args[])
 							else
 								printf("text-decoration:line-through;");
 						}
+						if (opts.stylesheet &&
+							state.fc_colormode != MODE_3BIT &&
+							(state.fc_colormode != MODE_8BIT || state.fc>15))
+							printf("\" style=\"");
+						switch (state.fc_colormode)
+						{
+							case MODE_3BIT:
+								if (state.fc>=0 && state.fc<=9) printf("%s", fcstyle[state.fc]);
+								break;
+							case MODE_8BIT:
+								if (state.fc>=0 && state.fc<=7)
+									printf("%s", fcstyle[state.fc]);
+								else
+								if (state.fc>=8 && state.fc<=15) // ignore highlight
+									printf("%s filter: contrast(70%%) brightness(190%%)", fcstyle[state.fc-8]);
+								else
+								{
+									char rgb[11];
+									make_rgb(state.fc,rgb);
+									printf("color: rgb(%s);",rgb);
+								}
+								break;
+							case MODE_24BIT:
+								printf("color: #%06x;",state.fc);
+								break;
+						};
+						if (opts.stylesheet &&
+							!(state.fc_colormode != MODE_3BIT &&
+							(state.fc_colormode != MODE_8BIT || state.fc>15)) && //already in style
+							state.bc_colormode != MODE_3BIT &&
+							(state.bc_colormode != MODE_8BIT || state.bc>15))
+							printf("\" style=\"");
+						switch (state.bc_colormode)
+						{
+							case MODE_3BIT:
+								if (state.bc>=0 && state.bc<=9) printf("%s", bcstyle[state.bc]);
+								break;
+							case MODE_8BIT:
+								if (state.bc>=0 && state.bc<=7)
+									printf("%s", bcstyle[state.bc]);
+								else
+								if (state.bc>=8 && state.bc<=15)
+									printf("%s filter: contrast(70%%) brightness(190%%)", bcstyle[state.bc-8]);
+								else
+								{
+									char rgb[11];
+									make_rgb(state.bc,rgb);
+									printf("background-color: rgb(%s);",rgb);
+								}
+								break;
+							case MODE_24BIT:
+								printf("background-color: #%06x;",state.bc);
+								break;
+						};
 						printf("\">");
 					}
 				}
