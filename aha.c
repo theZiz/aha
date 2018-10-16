@@ -191,7 +191,7 @@ int divide (int dividend, int divisor){
 	return result.quot;
 }
 
-void make_rgb (int color_id, char str_rgb[11]){
+void make_rgb (int color_id, char str_rgb[12]){
 
 	if (color_id < 16 || color_id > 255)
 		return;
@@ -937,7 +937,7 @@ int main(int argc,char* args[])
 									printf("%s", fcstyle[state.fc]);
 								else
 								{
-									char rgb[11];
+									char rgb[12];
 									make_rgb(state.fc,rgb);
 									printf("color: rgb(%s);",rgb);
 								}
@@ -962,7 +962,7 @@ int main(int argc,char* args[])
 									printf("%s", bcstyle[state.bc]);
 								else
 								{
-									char rgb[11];
+									char rgb[12];
 									make_rgb(state.bc,rgb);
 									printf("background-color: rgb(%s);",rgb);
 								}
