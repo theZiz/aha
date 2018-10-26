@@ -1,7 +1,26 @@
-Version 0.4.10.6 (recent):
+Version 0.5 (recent):
+- Added support for ansi vt220 character set using utf8 characters, useful for tables
+- Added support for italic text (thanks to suve)
+- Added support for crossed out text (thanks to suve)
+- Added support for 8 bit colours (thanks to  John Poole and suve)
+- Added support for 24 bit colours
+- Added rudimentary support for highlighting
+- Fixed behaviour of ESC[7m "negative image"
+- Fixed charset information in head based on used encoding (thanks to suve)
+- Fixed ESC[27m "revert off" (thanks to suve)
+- Escaping html special characters in title (thanks to suve)
+- Not returning zero at unknown option error (thanks to suve)
+- Refactored used colour scheme from int to enum (thanks to suve)
+- Refactored error report using errstr (thanks to suve)
+- Refactored code to avoid warnings (thanks to suve)
+- Refactored options to an own struct (thanks to suve)
+- Refactored color printing switch to an array (thanks to suve)
+- Refactored application state to an own struct (thanks to suve)
+
+Version 0.4.10.6:
 - Fixed MANDIR according to the GNU Coding standards, the man file is now installed to $(PREFIX)/share/man instead of $(PREFIX)/man (thanks to Eddie Antonio Santos)
 
-Version 0.4.10.5 (recent):
+Version 0.4.10.5:
 - Fixed reset of blinking text
 
 Version 0.4.10.4:
@@ -25,7 +44,7 @@ Version 0.4.9:
 - Fixed urls (thanks to Jeroen Wiert Pluimers)
 - Fixed behaviour for non CSI codes (thanks to Jack Brear)
 
-Version 0.4.8 (recent):
+Version 0.4.8:
 - Fixed the behaviour of 1;30, which should be darkgray instead of black (thanks to Vincent Pelletier)
 
 Version 0.4.7.3:
