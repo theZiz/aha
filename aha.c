@@ -10,7 +10,7 @@
  under the License.
 
  Alternatively, the contents of this file may be used under the terms
- of the GNU Lesser General Public license version 2 or later (LGPL2+),
+ of the GNU Lesser General Public license version 2 or later (LGPLv2+),
  in which case the provisions of LGPL License are applicable instead of
  those above.
 
@@ -274,7 +274,7 @@ struct Options parseArgs(int argc, char* args[])
 			printf("Copyleft \033[1;32mAlexander Matthes\033[0m aka \033[4mZiz\033[0m "AHA_YEAR"\n");
 			printf("         \033[5;36mziz@mailbox.org\033[0m\n");
 			printf("         \033[5;36mhttps://github.com/theZiz/aha\033[0m\n");
-			printf("This application is subject to the \033[1;34mMPL\033[0m or \033[1;34mLGPL\033[0m.\n");
+			printf("This application is subject to the \033[1;34mMPL1.1\033[0m or \033[1;34mLGPLv2+\033[0m.\n");
 			exit(EXIT_SUCCESS);
 		}
 		else
