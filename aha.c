@@ -1059,7 +1059,7 @@ int main(int argc,char* args[])
 
 	// If current state is different than the default, there is a <span> open - close it
 	if (statesDiffer(&state, &default_state))
-		printf("</span>\n");
+		printf("</span>");
 
 	//Footer
 	if (opts.no_header == 0)
