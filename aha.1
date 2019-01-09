@@ -60,24 +60,24 @@ Wrap long lines in the html output.
 Works with CSS3 supporting browsers and many older ones.
 .El
 .Sh EXAMPLES
-Create a HTML file with a black background and custom title using
+Create an HTML file with a black background and custom title using
 .Nm Ap s
 help:
 .Pp
-.Dl $ aha -h | aha -b -t "the awesome aha help" > aha-help.html
+.Dl $ aha -h | aha -b -t 'the awesome aha help' > aha-help.html
 .Pp
-Create a HTML file with a white background using the output of
+Create an HTML file with a white background using the output of
 .Xr diff 1 :
 .Pp
 .Dl $ diff -u --color=always oldfile.c newfile.c | aha > diff.html
 .Pp
-Create a HTML file with a black background from the output of
+Create an HTML file with a black background from the output of
 .Xr htop 1 .
 You have to use option
 .Fl l
 due the other new-line-commands htop uses:
 .Pp
-.Dl $ echo q | htop | aha - b -l > htop.html
+.Dl $ echo q | htop | aha -b -l > htop.html
 .Pp
 Create an HTML file from the output of this man page.
 .Xr man 1
