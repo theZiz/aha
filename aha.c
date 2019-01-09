@@ -428,10 +428,12 @@ void printHeader(const struct Options *opts)
 	char encoding[16] = "UTF-8";
 	if(opts->iso>0) snprintf(encoding, sizeof(encoding), "ISO-8859-%i", opts->iso);
 
-	printf("<?xml version=\"1.0\" encoding=\"%s\" ?>\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n", encoding);
+	printf("<!DOCTYPE html>\n");
 	printf("<!-- This file was created with the aha Ansi HTML Adapter. https://github.com/theZiz/aha -->\n");
-	printf("<html xmlns=\"http://www.w3.org/1999/xhtml\">\n");
-	printf("<head>\n<meta http-equiv=\"Content-Type\" content=\"application/xml+xhtml; charset=%s\" />\n", encoding);
+	printf("<html>\n");  //Markup not 100% valid since specification says language attribute is desired.
+	//TODO:some  way to specify/detect language and then default to "en" unless told otherwise
+	//printf("<html lang=\"en\">\n"); 
+	printf("<head>\n<meta charset=\"%s\">\n", encoding);
 
 	printf("<title>");
 	printHtml(opts->title ? opts->title : opts->filename ? opts->filename : "stdin");
