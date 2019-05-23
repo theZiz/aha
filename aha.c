@@ -183,6 +183,7 @@ struct Options {
 	char *title;
 	int word_wrap;
 	int no_xml;
+	char* lang;
 };
 
 int divide (int dividend, int divisor){
@@ -244,7 +245,8 @@ struct Options parseArgs(int argc, char* args[])
 		.stylesheet = 0,
 		.title = NULL,
 		.word_wrap = 0,
-		.no_xml = 0
+		.no_xml = 0,
+		.lang = NULL
 	};
 
 	//Searching Parameters
@@ -263,6 +265,7 @@ struct Options parseArgs(int argc, char* args[])
 			printf("         --iso X,    -i X: Uses ISO 8859-X instead of utf-8. X must be 1..16\n");
 			printf("         --title X,  -t X: Gives the html output the title \"X\" instead of\n");
 			printf("                           \"stdin\" or the filename\n");
+			printf("         --lang X,   -L X: Uses the ISO 639-1 code X for the language\n");
 			printf("         --line-fix,   -l: Uses a fix for inputs using control sequences to\n");
 			printf("                           change the cursor position like htop. It's a hot fix,\n");
 			printf("                           it may not work with any program like htop. Example:\n");
@@ -358,6 +361,17 @@ struct Options parseArgs(int argc, char* args[])
 		if ((strcmp(args[p],"--no-xml")==0) || (strcmp(args[p],"-x")==0))
 			opts.no_xml=1;
 		else
+		if ((strcmp(args[p],"--lang")==0) || (strcmp(args[p],"-L")==0))
+		{
+			if (p+1>=argc)
+			{
+				fprintf(stderr,"No ISO lang code given!\n");
+				exit(EXIT_FAILURE);
+			}
+			opts.lang = args[p+1];
+			p++;
+		}
+		else
 		{
 			fprintf(stderr,"Unknown parameter \"%s\"\n",args[p]);
 			exit(EXIT_FAILURE);
@@ -442,14 +456,18 @@ void printHeader(const struct Options *opts)
 	printf("<!-- This file was created with the aha Ansi HTML Adapter. https://github.com/theZiz/aha -->\n");
 	if (opts->no_xml)
 	{
-		printf("<html>\n");  //Markup not 100% valid since specification says language attribute is desired.
+		if (opts->lang)
+			printf("<html lang=\"%s\">\n",opts->lang);
+		else
+			printf("<html>\n");
 		printf("<head>\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=%s\">\n", encoding);
-		//TODO:some  way to specify/detect language and then default to "en" unless told otherwise
-		//printf("<html lang=\"en\">\n");
 	}
 	else
 	{
-		printf("<html xmlns=\"http://www.w3.org/1999/xhtml\">\n");
+		if (opts->lang)
+			printf("<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\"%s\">\n",opts->lang);
+		else
+			printf("<html xmlns=\"http://www.w3.org/1999/xhtml\">\n");
 		printf("<head>\n<meta http-equiv=\"Content-Type\" content=\"application/xml+xhtml; charset=%s\"/>\n", encoding);
 	}
 	printf("<title>");

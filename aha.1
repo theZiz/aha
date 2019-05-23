@@ -6,9 +6,10 @@
 .Nd Convert ANSI escape sequences to HTML
 .Sh SYNOPSIS
 .Nm
-.Op Fl bhlnpsvw
+.Op Fl bhlnpsvwx
 .Op Fl f Ar file
 .Op Fl i Ar X
+.Op Fl L Ar LANG
 .Op Fl t Ar TITLE
 .Sh DESCRIPTION
 .Nm
@@ -35,6 +36,12 @@ is a number from 1-16.
 .It Fl l , Fl Fl line-fix
 Use a fix for inputs using control sequences to change the cursor position.
 This is a hot fix, thus it may not work with every program.
+.It Fl L Ar LANG , Fl Fl lang Ar LANG
+Uses the
+.Va ISO-639-1 Ns
+ code
+.Ar LANG
+for the language.
 .It Fl n , Fl Fl no-header
 Do not enclose HTML output in
 .Va <html> , <head>
