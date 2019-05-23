@@ -18,7 +18,7 @@
  Alexander Matthes (Ziz) , ziz_at_mailbox.org
 */
 #define AHA_VERSION "0.5"
-#define AHA_YEAR "2018"
+#define AHA_YEAR "2019"
 #include <errno.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -182,6 +182,7 @@ struct Options {
 	int stylesheet;
 	char *title;
 	int word_wrap;
+	int no_xml;
 };
 
 int divide (int dividend, int divisor){
@@ -242,7 +243,8 @@ struct Options parseArgs(int argc, char* args[])
 		.no_header = 0,
 		.stylesheet = 0,
 		.title = NULL,
-		.word_wrap = 0
+		.word_wrap = 0,
+		.no_xml = 0
 	};
 
 	//Searching Parameters
@@ -269,6 +271,8 @@ struct Options parseArgs(int argc, char* args[])
 			printf("                           CSS3 supporting browsers as well as many older ones.\n");
 			printf("         --no-header,  -n: Don't include header into generated HTML,\n");
 			printf("                           useful for inclusion in full HTML files.\n");
+			printf("         --no-xml,     -x: Don't use doctype xml but html (may useful for old \n");
+			printf("                           browsers like IE)\n");
 			printf("Example: \033[1maha\033[0m --help | \033[1maha\033[0m --black > aha-help.htm\n");
 			printf("         Writes this help text to the file aha-help.htm\n\n");
 			printf("Copyleft \033[1;32mAlexander Matthes\033[0m aka \033[4mZiz\033[0m "AHA_YEAR"\n");
@@ -351,6 +355,9 @@ struct Options parseArgs(int argc, char* args[])
 			opts.filename=args[p];
 		}
 		else
+		if ((strcmp(args[p],"--no-xml")==0) || (strcmp(args[p],"-x")==0))
+			opts.no_xml=1;
+		else
 		{
 			fprintf(stderr,"Unknown parameter \"%s\"\n",args[p]);
 			exit(EXIT_FAILURE);
@@ -428,13 +435,23 @@ void printHeader(const struct Options *opts)
 	char encoding[16] = "UTF-8";
 	if(opts->iso>0) snprintf(encoding, sizeof(encoding), "ISO-8859-%i", opts->iso);
 
-	printf("<!DOCTYPE html>\n");
+	if (opts->no_xml)
+		printf("<!DOCTYPE html>\n");
+	else
+		printf("<?xml version=\"1.0\" encoding=\"%s\" ?>\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n", encoding);
 	printf("<!-- This file was created with the aha Ansi HTML Adapter. https://github.com/theZiz/aha -->\n");
-	printf("<html>\n");  //Markup not 100% valid since specification says language attribute is desired.
-	//TODO:some  way to specify/detect language and then default to "en" unless told otherwise
-	//printf("<html lang=\"en\">\n"); 
-	printf("<head>\n<meta charset=\"%s\">\n", encoding);
-
+	if (opts->no_xml)
+	{
+		printf("<html>\n");  //Markup not 100% valid since specification says language attribute is desired.
+		printf("<head>\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=%s\">\n", encoding);
+		//TODO:some  way to specify/detect language and then default to "en" unless told otherwise
+		//printf("<html lang=\"en\">\n");
+	}
+	else
+	{
+		printf("<html xmlns=\"http://www.w3.org/1999/xhtml\">\n");
+		printf("<head>\n<meta http-equiv=\"Content-Type\" content=\"application/xml+xhtml; charset=%s\"/>\n", encoding);
+	}
 	printf("<title>");
 	printHtml(opts->title ? opts->title : opts->filename ? opts->filename : "stdin");
 	printf("</title>\n");
