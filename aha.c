@@ -200,7 +200,7 @@ void make_rgb (int color_id, char str_rgb[12]){
 	{
 		int index = color_id - 232;
 		int grey = index * 256 / 24;
-		sprintf(str_rgb, "%d,%d,%d", grey, grey, grey);
+		sprintf(str_rgb, "%02x%02x%02x", grey, grey, grey);
 		return;
 	}
 	int index_R = divide((color_id - 16), 36);
@@ -226,7 +226,7 @@ void make_rgb (int color_id, char str_rgb[12]){
 	} else {
 		rgb_B = 0;
 	}
-	sprintf(str_rgb, "%d,%d,%d", rgb_R, rgb_G, rgb_B);
+	sprintf(str_rgb, "%02x%02x%02x", rgb_R, rgb_G, rgb_B);
 }
 
 #define VERSION_PRINTF_MAKRO \
@@ -975,11 +975,11 @@ int main(int argc,char* args[])
 								{
 									char rgb[12];
 									make_rgb(state.fc,rgb);
-									printf("color: rgb(%s);",rgb);
+									printf("color:#%s;",rgb);
 								}
 								break;
 							case MODE_24BIT:
-								printf("color: #%06x;",state.fc);
+								printf("color:#%06x;",state.fc);
 								break;
 						};
 						if (opts.stylesheet &&
@@ -1000,11 +1000,11 @@ int main(int argc,char* args[])
 								{
 									char rgb[12];
 									make_rgb(state.bc,rgb);
-									printf("background-color: rgb(%s);",rgb);
+									printf("background-color:#%s;",rgb);
 								}
 								break;
 							case MODE_24BIT:
-								printf("background-color: #%06x;",state.bc);
+								printf("background-color:#%06x;",state.bc);
 								break;
 						};
 						printf("\">");
