@@ -8,12 +8,12 @@ MANDIR?=$(DATAROOTDIR)/man
 BINMODE?=0755
 MANMODE?=644
 
-CFLAGS += -Wall -Wextra
+CFLAGS += -std=c99 -Wall -Wextra
 
 all: aha
 
 aha: aha.c
-	$(CC) -std=c99 $(CFLAGS) $(LDFLAGS) $(CPPFLAGS) aha.c -o aha
+	$(CC) $(CFLAGS) $(LDFLAGS) $(CPPFLAGS) aha.c -o $@
 
 clean:
 	rm -f aha
