@@ -720,8 +720,7 @@ int main(int argc,char* args[])
 								case 35:
 								case 36:
 								case 37:
-								case 38:
-								case 39: // 3X - Set foreground color
+								case 38: // 3X - Set foreground color
 									{
 										int *dest = &(state.fc);
 										if (negative != 0)
@@ -776,7 +775,11 @@ int main(int argc,char* args[])
 										}
 									}
 									break;
-
+								case 39: // Set foreground color to default
+									state.fc_colormode = MODE_3BIT;
+									state.highlighted = 0;
+									state.fc = -1;
+									break;
 								case 40:
 								case 41:
 								case 42:
@@ -785,8 +788,7 @@ int main(int argc,char* args[])
 								case 45:
 								case 46:
 								case 47:
-								case 48:
-								case 49: // 4X - Set background color
+								case 48: // 4X - Set background color
 									{
 										int *dest = &(state.bc);
 										if (negative != 0)
@@ -840,6 +842,11 @@ int main(int argc,char* args[])
 											*dest=momelem->value-40;
 										}
 									}
+									break;
+								case 49: // Set background color to default
+									state.bc_colormode = MODE_3BIT;
+									state.highlighted = 0;
+									state.bc = -1;
 									break;
 								case 90:
 								case 91:
