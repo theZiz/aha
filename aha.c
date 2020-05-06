@@ -184,6 +184,7 @@ struct Options {
 	int word_wrap;
 	int no_xml;
 	char* lang;
+	char* css;
 };
 
 int divide (int dividend, int divisor){
@@ -276,6 +277,8 @@ struct Options parseArgs(int argc, char* args[])
 			printf("                           useful for inclusion in full HTML files.\n");
 			printf("         --no-xml,     -x: Don't use doctype xml but html (may useful for old \n");
 			printf("                           browsers like IE)\n");
+			printf("         --css X,    -c X: Add css file X to the output. In fact just adds \n");
+			printf("                           <link rel=\"stylesheet\" href=\"X\" /> to the header.\n");
 			printf("Example: \033[1maha\033[0m --help | \033[1maha\033[0m --black > aha-help.htm\n");
 			printf("         Writes this help text to the file aha-help.htm\n\n");
 			printf("Copyleft \033[1;32mAlexander Matthes\033[0m aka \033[4mZiz\033[0m "AHA_YEAR"\n");
@@ -369,6 +372,17 @@ struct Options parseArgs(int argc, char* args[])
 				exit(EXIT_FAILURE);
 			}
 			opts.lang = args[p+1];
+			p++;
+		}
+		else
+		if ((strcmp(args[p],"--css")==0) || (strcmp(args[p],"-c")==0))
+		{
+			if (p+1>=argc)
+			{
+				fprintf(stderr,"No css file given!\n");
+				exit(EXIT_FAILURE);
+			}
+			opts.css = args[p+1];
 			p++;
 		}
 		else
@@ -473,6 +487,9 @@ void printHeader(const struct Options *opts)
 	printf("<title>");
 	printHtml(opts->title ? opts->title : opts->filename ? opts->filename : "stdin");
 	printf("</title>\n");
+
+	if (opts->css)
+		printf("<link rel=\"stylesheet\" href=\"%s\" />\n", opts->css );
 
 	int style_tag = 0;
 	if (opts->stylesheet)
