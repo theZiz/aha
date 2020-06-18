@@ -185,6 +185,7 @@ struct Options {
 	int no_xml;
 	char* lang;
 	char* css;
+	int ignore_cr;
 };
 
 int divide (int dividend, int divisor){
@@ -247,7 +248,8 @@ struct Options parseArgs(int argc, char* args[])
 		.title = NULL,
 		.word_wrap = 0,
 		.no_xml = 0,
-		.lang = NULL
+		.lang = NULL,
+		.ignore_cr = 0
 	};
 
 	//Searching Parameters
@@ -279,6 +281,8 @@ struct Options parseArgs(int argc, char* args[])
 			printf("                           browsers like IE)\n");
 			printf("         --css X,    -c X: Add css file X to the output. In fact just adds \n");
 			printf("                           <link rel=\"stylesheet\" href=\"X\" /> to the header.\n");
+			printf("         --ignore-cr,  -r: Ignore all carriage-returns (ASCII sign 13, \\r)\n");
+			printf("                           which may lead to double new lines in html.\n");
 			printf("Example: \033[1maha\033[0m --help | \033[1maha\033[0m --black > aha-help.htm\n");
 			printf("         Writes this help text to the file aha-help.htm\n\n");
 			printf("Copyleft \033[1;32mAlexander Matthes\033[0m aka \033[4mZiz\033[0m "AHA_YEAR"\n");
@@ -385,6 +389,9 @@ struct Options parseArgs(int argc, char* args[])
 			opts.css = args[p+1];
 			p++;
 		}
+		else
+		if ((strcmp(args[p],"--ignore-cr")==0) || (strcmp(args[p],"-r")==0))
+			opts.ignore_cr=1;
 		else
 		{
 			fprintf(stderr,"Unknown parameter \"%s\"\n",args[p]);
@@ -1064,6 +1071,10 @@ int main(int argc,char* args[])
 			line=0;
 			momline++;
 			printf("\n");
+		}
+		else
+		if (c==13 && opts.ignore_cr)
+		{
 		}
 		else if (c!=8)
 		{
