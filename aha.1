@@ -67,6 +67,14 @@ Wrap long lines in the html output.
 Works with CSS3 supporting browsers and many older ones.
 .It Fl x , Fl Fl no-xml
 Don't use doctype xml but html (may useful for old browsers like IE)
+.It Fl c Ar file , Fl Fl css Ar file
+Adds the given css
+.Ar file
+to the output. In fact just adds <link rel="stylesheet" href="
+.Ar file
+" /> to the header.
+.It Fl r , Fl Fl ignore-cr
+Ignore all carriage-returns (ASCII sign 13, \\r) which may lead to double new lines in html.
 .El
 .Sh EXAMPLES
 Create an HTML file with a black background and custom title using
