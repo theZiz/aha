@@ -186,6 +186,7 @@ struct Options {
 	char* lang;
 	char* css;
 	int ignore_cr;
+	char* bodystyle;
 };
 
 int divide (int dividend, int divisor){
@@ -249,7 +250,8 @@ struct Options parseArgs(int argc, char* args[])
 		.word_wrap = 0,
 		.no_xml = 0,
 		.lang = NULL,
-		.ignore_cr = 0
+		.ignore_cr = 0,
+		.bodystyle = NULL
 	};
 
 	//Searching Parameters
@@ -262,29 +264,32 @@ struct Options parseArgs(int argc, char* args[])
 			printf("use: \033[1maha\033[0m <\033[4moptions\033[0m> [\033[4m-f file\033[0m]\n");
 			printf("     \033[1maha\033[0m (\033[4m--help\033[0m|\033[4m-h\033[0m|\033[4m-?\033[0m)\n");
 			printf("\033[1maha\033[0m reads the Input from a file or stdin and writes HTML-Code to stdout\n");
-			printf("\033[4moptions\033[0m: --black,      -b: \033[1;30m\033[1;47mBlack\033[0m Background and \033[1;37mWhite\033[0m \"standard color\"\n");
-			printf("         --pink,       -p: \033[1;35mPink\033[0m Background\n");
-			printf("         --stylesheet, -s: Use a stylesheet instead of inline styles\n");
-			printf("         --iso X,    -i X: Uses ISO 8859-X instead of utf-8. X must be 1..16\n");
-			printf("         --title X,  -t X: Gives the html output the title \"X\" instead of\n");
-			printf("                           \"stdin\" or the filename\n");
-			printf("         --lang X,   -L X: Uses the ISO 639-1 code X for the language\n");
-			printf("         --line-fix,   -l: Uses a fix for inputs using control sequences to\n");
-			printf("                           change the cursor position like htop. It's a hot fix,\n");
-			printf("                           it may not work with any program like htop. Example:\n");
-			printf("                           \033[1mecho\033[0m q | \033[1mhtop\033[0m | \033[1maha\033[0m -l > htop.htm\n");
-			printf("         --word-wrap,  -w: Wrap long lines in the html file. This works with\n");
-			printf("                           CSS3 supporting browsers as well as many older ones.\n");
-			printf("         --no-header,  -n: Don't include header into generated HTML,\n");
-			printf("                           useful for inclusion in full HTML files.\n");
-			printf("         --no-xml,     -x: Don't use doctype xml but html (may useful for old \n");
-			printf("                           browsers like IE)\n");
-			printf("         --css X,    -c X: Add css file X to the output. In fact just adds \n");
-			printf("                           <link rel=\"stylesheet\" href=\"X\" /> to the header.\n");
-			printf("         --ignore-cr,  -r: Ignore all carriage-returns (ASCII sign 13, \\r)\n");
-			printf("                           which may lead to double new lines in html.\n");
-			printf("Example: \033[1maha\033[0m --help | \033[1maha\033[0m --black > aha-help.htm\n");
-			printf("         Writes this help text to the file aha-help.htm\n\n");
+			printf("\033[4moptions\033[0m:\n");
+			printf("      --black,       -b: \033[1;30m\033[1;47mBlack\033[0m Background and \033[1;37mWhite\033[0m \"standard color\"\n");
+			printf("      --pink,        -p: \033[1;35mPink\033[0m Background\n");
+			printf("      --style,     -o X: Set the style used in the <body> element\n");
+			printf("      --stylesheet,  -s: Use a stylesheet instead of inline styles\n");
+			printf("      --iso X,     -i X: Uses ISO 8859-X instead of utf-8. X must be 1..16\n");
+			printf("      --title X,   -t X: Gives the html output the title \"X\" instead of\n");
+			printf("                         \"stdin\" or the filename\n");
+			printf("      --lang X,    -L X: Uses the ISO 639-1 code X for the language\n");
+			printf("      --line-fix,    -l: Uses a fix for inputs using control sequences to\n");
+			printf("                         change the cursor position like htop. It's a hot fix,\n");
+			printf("                         it may not work with any program like htop. Example:\n");
+			printf("                         \033[1mecho\033[0m q | \033[1mhtop\033[0m | \033[1maha\033[0m -l > htop.htm\n");
+			printf("      --word-wrap,   -w: Wrap long lines in the html file. This works with\n");
+			printf("                         CSS3 supporting browsers as well as many older ones.\n");
+			printf("      --no-header,   -n: Don't include header into generated HTML,\n");
+			printf("                         useful for inclusion in full HTML files.\n");
+			printf("      --no-xml,      -x: Don't use doctype xml but html (may useful for old \n");
+			printf("                         browsers like IE)\n");
+			printf("      --css X,     -c X: Add css file X to the output. In fact just adds \n");
+			printf("                         <link rel=\"stylesheet\" href=\"X\" /> to the header.\n");
+			printf("      --ignore-cr,   -r: Ignore all carriage-returns (ASCII sign 13, \\r)\n");
+			printf("                         which may lead to double new lines in html.\n");
+			printf("Example: \033[1maha\033[0m --help | \033[1maha\033[0m --black --style 'font-size:1.875em' > aha-help.htm\n");
+			printf("         Writes this help text to the file aha-help.htm with a larger\n");
+			printf("         font-size than default.\n");
 			printf("Copyleft \033[1;32mAlexander Matthes\033[0m aka \033[4mZiz\033[0m "AHA_YEAR"\n");
 			printf("         \033[5;36mziz@mailbox.org\033[0m\n");
 			printf("         \033[5;36mhttps://github.com/theZiz/aha\033[0m\n");
@@ -392,6 +397,17 @@ struct Options parseArgs(int argc, char* args[])
 		else
 		if ((strcmp(args[p],"--ignore-cr")==0) || (strcmp(args[p],"-r")==0))
 			opts.ignore_cr=1;
+		else
+		if ((strcmp(args[p],"--style")==0) || (strcmp(args[p],"-o")==0))
+		{
+			if (p+1>=argc)
+			{
+				fprintf(stderr,"No style given!\n");
+				exit(EXIT_FAILURE);
+			}
+			opts.bodystyle=args[p+1];
+			p++;
+		}
 		else
 		{
 			fprintf(stderr,"Unknown parameter \"%s\"\n",args[p]);
@@ -590,12 +606,25 @@ void printHeader(const struct Options *opts)
 	}
 	else
 	{
-		switch (opts->colorscheme)
+		printf("<body");
+		if(opts->bodystyle || opts->colorscheme==SCHEME_BLACK || opts->colorscheme==SCHEME_PINK)
 		{
-			case SCHEME_BLACK: printf("<body style=\"color:white; background-color:black\">\n"); break;
-			case SCHEME_PINK: printf("<body style=\"background-color:pink\">\n");	break;
-			case SCHEME_WHITE: printf("<body>\n"); break;
+		    int styles=0;
+		    printf(" style=\"");
+		    if(opts->colorscheme==SCHEME_BLACK) {
+			++styles;
+			printf("color:white; background-color:black");
+		    } else if(opts->colorscheme==SCHEME_PINK) {
+			++styles;
+			printf("background-color:pink");
+		    }
+		    if(opts->bodystyle) {
+			if(styles) printf(";");
+			fputs(opts->bodystyle, stdout);
+		    }
+		    printf("\"");
 		}
+		printf(">\n");
 	}
 
 	printf("<pre>\n");
