@@ -267,7 +267,7 @@ struct Options parseArgs(int argc, char* args[])
 			printf("\033[4moptions\033[0m:\n");
 			printf("      --black,       -b: \033[1;30m\033[1;47mBlack\033[0m Background and \033[1;37mWhite\033[0m \"standard color\"\n");
 			printf("      --pink,        -p: \033[1;35mPink\033[0m Background\n");
-			printf("      --style,     -o X: Set the style used in the <body> element\n");
+			printf("      --style X,   -y X: Set the style used in the <body> element\n");
 			printf("      --stylesheet,  -s: Use a stylesheet instead of inline styles\n");
 			printf("      --iso X,     -i X: Uses ISO 8859-X instead of utf-8. X must be 1..16\n");
 			printf("      --title X,   -t X: Gives the html output the title \"X\" instead of\n");
@@ -398,7 +398,7 @@ struct Options parseArgs(int argc, char* args[])
 		if ((strcmp(args[p],"--ignore-cr")==0) || (strcmp(args[p],"-r")==0))
 			opts.ignore_cr=1;
 		else
-		if ((strcmp(args[p],"--style")==0) || (strcmp(args[p],"-o")==0))
+		if ((strcmp(args[p],"--style")==0) || (strcmp(args[p],"-y")==0))
 		{
 			if (p+1>=argc)
 			{
