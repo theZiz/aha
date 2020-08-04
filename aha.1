@@ -75,13 +75,19 @@ to the output. In fact just adds <link rel="stylesheet" href="
 " /> to the header.
 .It Fl r , Fl Fl ignore-cr
 Ignore all carriage-returns (ASCII sign 13, \\r) which may lead to double new lines in html.
+.It Fl y Ar STYLE , Fl Fl style Ar STYLE
+Sets the style used in the
+.Va <body>
+element to
+.Ar STYLE
+after styles set by other parameters.
 .El
 .Sh EXAMPLES
-Create an HTML file with a black background and custom title using
+Create an HTML file with a black background, a custom title and a larger font-size using
 .Nm Ap s
 help:
 .Pp
-.Dl $ aha -h | aha -b -t 'the awesome aha help' > aha-help.html
+.Dl $ aha -h | aha -b -t 'the awesome aha help' -y 'font-size:1.875em' > aha-help.html
 .Pp
 Create an HTML file with a white background using the output of
 .Xr diff 1 :
