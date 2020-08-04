@@ -1,4 +1,15 @@
-Version 0.5 (recent):
+Version 0.5.1 (recent):
+- Use doctype HTML5 instead of XHTML optionally (thanks to Dan Nagle)
+- Rewrote man page using mdoc (thanks to Stephen Gregoratto)
+- Removed extra linebreak at end (thanks to Ryan Hendrickson)
+- Use the #hex format for colours (thanks to suve)
+- Added optional language attribute
+- Added vbcc support (thanks to polluks)
+- Fixed handling of SGR 39/49 (thanks to Patric Mueller)
+- Added css inline option
+- Added --style option for inlining css styles like font size (thanks to Ted Lyngmo)
+
+Version 0.5:
 - Added support for ansi vt220 character set using utf8 characters, useful for tables
 - Added support for italic text (thanks to suve)
 - Added support for crossed out text (thanks to suve)
