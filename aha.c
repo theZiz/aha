@@ -18,7 +18,7 @@
  Alexander Matthes (Ziz) , ziz_at_mailbox.org
 */
 #define AHA_VERSION "0.5"
-#define AHA_YEAR "2019"
+#define AHA_YEAR "2020"
 #include <errno.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -264,7 +264,7 @@ struct Options parseArgs(int argc, char* args[])
 			printf("use: \033[1maha\033[0m <\033[4moptions\033[0m> [\033[4m-f file\033[0m]\n");
 			printf("     \033[1maha\033[0m (\033[4m--help\033[0m|\033[4m-h\033[0m|\033[4m-?\033[0m)\n");
 			printf("\033[1maha\033[0m reads the Input from a file or stdin and writes HTML-Code to stdout\n");
-			printf("\033[4moptions\033[0m:\n");
+			printf("\033[4mOptions\033[0m:\n");
 			printf("      --black,       -b: \033[1;30m\033[1;47mBlack\033[0m Background and \033[1;37mWhite\033[0m \"standard color\"\n");
 			printf("      --pink,        -p: \033[1;35mPink\033[0m Background\n");
 			printf("      --style X,   -y X: Set the style used in the <body> element\n");
@@ -287,9 +287,26 @@ struct Options parseArgs(int argc, char* args[])
 			printf("                         <link rel=\"stylesheet\" href=\"X\" /> to the header.\n");
 			printf("      --ignore-cr,   -r: Ignore all carriage-returns (ASCII sign 13, \\r)\n");
 			printf("                         which may lead to double new lines in html.\n");
-			printf("Example: \033[1maha\033[0m --help | \033[1maha\033[0m --black --style 'font-size:1.875em' > aha-help.htm\n");
-			printf("         Writes this help text to the file aha-help.htm with a larger\n");
-			printf("         font-size than default.\n");
+			printf("\033[4mExamples\033[0m:\n");
+			printf("          Create an HTML file with a black background, a custom title and\n");
+			printf("          a larger font-size using \033[1maha\033[0m's help:\n");
+			printf("\n");
+			printf("            \033[1;3;33m$\033[0m \033[1maha\033[0m -h | \033[1maha\033[0m -b -t '\033[1maha\033[0m help' -y 'font-size:1.8em' > \033[1maha\033[0m-help.html\n");
+			printf("\n");
+			printf("          Create an HTML file with a white background using the output of \033[3mdiff\033[0m\n");
+			printf("\n");
+			printf("            \033[1;3;33m$\033[0m diff -u --color=always oldfile.c newfile.c | \033[1maha\033[0m > diff.html\n");
+			printf("\n");
+			printf("          Create an HTML file with a black background from the output of \033[3mhtop\033[0m.\n");
+			printf("          You have to use option -l due the other new-line-commands \033[3mhtop\033[0m uses:\n");
+			printf("\n");
+			printf("            \033[1;3;33m$\033[0m echo q | htop | \033[1maha\033[0m -b -l > htop.html\n");
+			printf("\n");
+			printf("          Create an HTML file from the output of this man page. \033[3mman\033[0m uses bold\n");
+			printf("          and underline formatting from \033[3mnroff\033[0m, which \033[3mul\033[0m converts to SGR:\n");
+			printf("\n");
+			printf("            \033[1;3;33m$\033[0m MAN_KEEP_FORMATTING=1 COLUMNS=80 man \033[1maha\033[0m | ul | \033[1maha\033[0m > man-\033[1maha\033[0m.html\n");
+			printf("\n");
 			printf("Copyleft \033[1;32mAlexander Matthes\033[0m aka \033[4mZiz\033[0m "AHA_YEAR"\n");
 			printf("         \033[5;36mziz@mailbox.org\033[0m\n");
 			printf("         \033[5;36mhttps://github.com/theZiz/aha\033[0m\n");
