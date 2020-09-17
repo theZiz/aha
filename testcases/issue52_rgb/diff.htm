@@ -1,0 +1,1252 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!-- This file was created with the aha Ansi HTML Adapter. https://github.com/theZiz/aha -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="application/xml+xhtml; charset=UTF-8" />
+<title>stdin</title>
+</head>
+<body>
+<pre>
+<span style="color:teal;">13,15c13,15</span>
+<span style="color:red;">&lt;  of the GNU Lesser General Public license (the	&quot;LGPL License&quot;), in which case the</span>
+<span style="color:red;">&lt;  provisions of LGPL License are applicable instead of those</span>
+<span style="color:red;">&lt;  above.</span>
+---
+<span style="color:green;">&gt;  of the GNU Lesser General Public license version 2 or later (LGPL2+),</span>
+<span style="color:green;">&gt;  in which case the provisions of LGPL License are applicable instead of</span>
+<span style="color:green;">&gt;  those above.</span>
+<span style="color:teal;">18c18</span>
+<span style="color:red;">&lt;  Alexander Matthes (Ziz) , zizsdl_at_googlemail.com</span>
+---
+<span style="color:green;">&gt;  Alexander Matthes (Ziz) , ziz_at_mailbox.org</span>
+<span style="color:teal;">20,21c20,23</span>
+<span style="color:red;">&lt; #define AHA_VERSION &quot;0.4.8.0&quot;</span>
+<span style="color:red;">&lt; #define AHA_YEAR &quot;2015&quot;</span>
+---
+<span style="color:green;">&gt; #define AHA_VERSION &quot;0.4.10.6&quot;</span>
+<span style="color:green;">&gt; #define TEST</span>
+<span style="color:green;">&gt; #define AHA_YEAR &quot;2017&quot;</span>
+<span style="color:green;">&gt; #include &lt;errno.h&gt;</span>
+<span style="color:teal;">26,69c28,64</span>
+<span style="color:red;">&lt; int future=0;</span>
+<span style="color:red;">&lt; int future_char=0;</span>
+<span style="color:red;">&lt; </span>
+<span style="color:red;">&lt; </span>
+<span style="color:red;">&lt; int divide (int dividend, int divisor){</span>
+<span style="color:red;">&lt; 	div_t result;</span>
+<span style="color:red;">&lt; 	result = div (dividend, divisor);</span>
+<span style="color:red;">&lt; 	return result.quot;</span>
+<span style="color:red;">&lt; }</span>
+<span style="color:red;">&lt; //</span>
+<span style="color:red;">&lt; // makes the the comma-separated values for an RGB given</span>
+<span style="color:red;">&lt; // a 256 color value.  Example 196 =&gt; 255,0,0</span>
+<span style="color:red;">&lt; //</span>
+<span style="color:red;">&lt; void make_rgb (int color_id, char str_rgb[11]){</span>
+<span style="color:red;">&lt; 	//printf(&quot;color_id = %d&quot;, color_id);</span>
+<span style="color:red;">&lt; 	// QA color_id as less than &lt;256</span>
+<span style="color:red;">&lt; </span>
+<span style="color:red;">&lt; 	int index_R = divide((color_id - 16), 36);</span>
+<span style="color:red;">&lt; 	int rgb_R;</span>
+<span style="color:red;">&lt; 	if (index_R &gt; 0){</span>
+<span style="color:red;">&lt; 		rgb_R = 55 + index_R * 40;</span>
+<span style="color:red;">&lt; 	} else {</span>
+<span style="color:red;">&lt; 		rgb_R = 0;</span>
+<span style="color:red;">&lt; 	}</span>
+<span style="color:red;">&lt; </span>
+<span style="color:red;">&lt; 	int index_G = divide(((color_id - 16) % 36), 6);</span>
+<span style="color:red;">&lt; 	int rgb_G;</span>
+<span style="color:red;">&lt; 	if (index_G &gt; 0){</span>
+<span style="color:red;">&lt; 		rgb_G = 55 + index_G * 40;</span>
+<span style="color:red;">&lt; 	} else {</span>
+<span style="color:red;">&lt; 		rgb_G = 0;</span>
+<span style="color:red;">&lt; 	}</span>
+<span style="color:red;">&lt; </span>
+<span style="color:red;">&lt; 	int index_B = ((color_id - 16) % 6);</span>
+<span style="color:red;">&lt; 	int rgb_B;</span>
+<span style="color:red;">&lt; 	if (index_B &gt; 0){</span>
+<span style="color:red;">&lt; 		rgb_B = 55 + index_B * 40;</span>
+<span style="color:red;">&lt; 	} else {</span>
+<span style="color:red;">&lt; 		rgb_B = 0;</span>
+<span style="color:red;">&lt; 	}</span>
+<span style="color:red;">&lt; 	sprintf(str_rgb, &quot;%d,%d,%d&quot;, rgb_R,rgb_G,rgb_B);</span>
+<span style="color:red;">&lt; }</span>
+<span style="color:red;">&lt; </span>
+<span style="color:red;">&lt; </span>
+---
+<span style="color:green;">&gt; // table for vt220 character set, see also</span>
+<span style="color:green;">&gt; // https://whitefiles.org/b1_s/1_free_guides/fg2cd/pgs/c03b.htm</span>
+<span style="color:green;">&gt; const char ansi_vt220_character_set[256][16] =</span>
+<span style="color:green;">&gt; {</span>
+<span style="color:green;">&gt; 	&quot;&amp;#x2400;&quot;,&quot;&amp;#x2401;&quot;,&quot;&amp;#x2402;&quot;,&quot;&amp;#x2403;&quot;,&quot;&amp;#x2404;&quot;,&quot;&amp;#x2405;&quot;,&quot;&amp;#x2406;&quot;,&quot;&amp;#x2407;&quot;, //00..07</span>
+<span style="color:green;">&gt; 	&quot;&amp;#x2408;&quot;,&quot;&amp;#x2409;&quot;,&quot;&amp;#x240a;&quot;,&quot;&amp;#x240b;&quot;,&quot;&amp;#x240c;&quot;,&quot;&amp;#x240d;&quot;,&quot;&amp;#x240e;&quot;,&quot;&amp;#x240f;&quot;, //08..0f</span>
+<span style="color:green;">&gt; 	&quot;&amp;#x2410;&quot;,&quot;&amp;#x2411;&quot;,&quot;&amp;#x2412;&quot;,&quot;&amp;#x2413;&quot;,&quot;&amp;#x2414;&quot;,&quot;&amp;#x2415;&quot;,&quot;&amp;#x2416;&quot;,&quot;&amp;#x2417;&quot;, //10..17</span>
+<span style="color:green;">&gt; 	&quot;&amp;#x2418;&quot;,&quot;&amp;#x2419;&quot;,&quot;&amp;#x241a;&quot;,&quot;&amp;#x241b;&quot;,&quot;&amp;#x241c;&quot;,&quot;&amp;#x241d;&quot;,&quot;&amp;#x241e;&quot;,&quot;&amp;#x241f;&quot;, //18..1f</span>
+<span style="color:green;">&gt; 	&quot; &quot;       ,&quot;!&quot;       ,&quot;\&quot;&quot;      ,&quot;#&quot;       ,&quot;$&quot;       ,&quot;%&quot;       ,&quot;&amp;&quot;       ,&quot;'&quot;       , //20..27</span>
+<span style="color:green;">&gt; 	&quot;(&quot;       ,&quot;)&quot;       ,&quot;*&quot;       ,&quot;+&quot;       ,&quot;,&quot;       ,&quot;-&quot;       ,&quot;.&quot;       ,&quot;/&quot;       , //28..2f</span>
+<span style="color:green;">&gt; 	&quot;0&quot;       ,&quot;1&quot;       ,&quot;2&quot;       ,&quot;3&quot;       ,&quot;4&quot;       ,&quot;5&quot;       ,&quot;6&quot;       ,&quot;7&quot;       , //30..37</span>
+<span style="color:green;">&gt; 	&quot;8&quot;       ,&quot;9&quot;       ,&quot;:&quot;       ,&quot;;&quot;       ,&quot;&amp;lt;&quot;    ,&quot;=&quot;       ,&quot;&amp;gt;&quot;    ,&quot;?&quot;       , //38..3f</span>
+<span style="color:green;">&gt; 	&quot;@&quot;       ,&quot;A&quot;       ,&quot;B&quot;       ,&quot;C&quot;       ,&quot;D&quot;       ,&quot;E&quot;       ,&quot;F&quot;       ,&quot;G&quot;       , //40..47</span>
+<span style="color:green;">&gt; 	&quot;H&quot;       ,&quot;I&quot;       ,&quot;J&quot;       ,&quot;K&quot;       ,&quot;L&quot;       ,&quot;M&quot;       ,&quot;N&quot;       ,&quot;O&quot;       , //48..4f</span>
+<span style="color:green;">&gt; 	&quot;P&quot;       ,&quot;Q&quot;       ,&quot;R&quot;       ,&quot;S&quot;       ,&quot;T&quot;       ,&quot;U&quot;       ,&quot;V&quot;       ,&quot;W&quot;       , //50..57</span>
+<span style="color:green;">&gt; 	&quot;X&quot;       ,&quot;Y&quot;       ,&quot;Z&quot;       ,&quot;[&quot;       ,&quot;\\&quot;      ,&quot;]&quot;       ,&quot;^&quot;       ,&quot;_&quot;       , //58..5f</span>
+<span style="color:green;">&gt; 	&quot;`&quot;       ,&quot;a&quot;       ,&quot;b&quot;       ,&quot;c&quot;       ,&quot;d&quot;       ,&quot;e&quot;       ,&quot;f&quot;       ,&quot;g&quot;       , //60..67</span>
+<span style="color:green;">&gt; 	&quot;h&quot;       ,&quot;i&quot;       ,&quot;j&quot;       ,&quot;k&quot;       ,&quot;l&quot;       ,&quot;m&quot;       ,&quot;n&quot;       ,&quot;o&quot;       , //68..6f</span>
+<span style="color:green;">&gt; 	&quot;p&quot;       ,&quot;q&quot;       ,&quot;r&quot;       ,&quot;s&quot;       ,&quot;t&quot;       ,&quot;u&quot;       ,&quot;v&quot;       ,&quot;w&quot;       , //70..77</span>
+<span style="color:green;">&gt; 	&quot;x&quot;       ,&quot;y&quot;       ,&quot;z&quot;       ,&quot;{&quot;       ,&quot;|&quot;       ,&quot;}&quot;       ,&quot;~&quot;       ,&quot;&amp;#x2421;&quot;, //78..7f</span>
+<span style="color:green;">&gt; 	&quot;&amp;#x25c6;&quot;,&quot;&amp;#x2592;&quot;,&quot;&amp;#x2409;&quot;,&quot;&amp;#x240c;&quot;,&quot;&amp;#x240d;&quot;,&quot;&amp;#x240a;&quot;,&quot;&amp;#x00b0;&quot;,&quot;&amp;#x00b1;&quot;, //80..87</span>
+<span style="color:green;">&gt; 	&quot;&amp;#x2400;&quot;,&quot;&amp;#x240b;&quot;,&quot;&amp;#x2518;&quot;,&quot;&amp;#x2510;&quot;,&quot;&amp;#x250c;&quot;,&quot;&amp;#x2514;&quot;,&quot;&amp;#x253c;&quot;,&quot;&amp;#x23ba;&quot;, //88..8f</span>
+<span style="color:green;">&gt; 	&quot;&amp;#x23bb;&quot;,&quot;&amp;#x2500;&quot;,&quot;&amp;#x23bc;&quot;,&quot;&amp;#x23bd;&quot;,&quot;&amp;#x251c;&quot;,&quot;&amp;#x2524;&quot;,&quot;&amp;#x2534;&quot;,&quot;&amp;#x252c;&quot;, //90..97</span>
+<span style="color:green;">&gt; 	&quot;&amp;#x2502;&quot;,&quot;&amp;#x2264;&quot;,&quot;&amp;#x2265;&quot;,&quot;&amp;pi;    &quot;,&quot;&amp;#x2260;&quot;,&quot;&amp;pound;&quot; ,&quot;&amp;#x0095;&quot;,&quot;&amp;#x2421;&quot;, //98..9f</span>
+<span style="color:green;">&gt; 	&quot;&amp;#x2588;&quot;,&quot;&amp;#x00a1;&quot;,&quot;&amp;#x00a2;&quot;,&quot;&amp;#x00a3;&quot;,&quot; &quot;       ,&quot;&amp;yen;&quot;   ,&quot; &quot;       ,&quot;&amp;#x00a7;&quot;, //a0..a7</span>
+<span style="color:green;">&gt; 	&quot;&amp;#x00a4;&quot;,&quot;&amp;#x00a9;&quot;,&quot;&amp;#x00ba;&quot;,&quot;&amp;#x00qb;&quot;,&quot; &quot;       ,&quot; &quot;       ,&quot; &quot;       ,&quot; &quot;       , //a8..af</span>
+<span style="color:green;">&gt; 	&quot;&amp;#x23bc;&quot;,&quot;&amp;#x23bd;&quot;,&quot;&amp;#x00b2;&quot;,&quot;&amp;#x00b3;&quot;,&quot;&amp;#x00b4;&quot;,&quot;&amp;#x00b5;&quot;,&quot;&amp;#x00b6;&quot;,&quot;&amp;#x00b7;&quot;, //b0..b7</span>
+<span style="color:green;">&gt; 	&quot;&amp;#x00b8;&quot;,&quot;&amp;#x00b9;&quot;,&quot;&amp;#x00ba;&quot;,&quot;&amp;#x00bb;&quot;,&quot;&amp;#x00bc;&quot;,&quot;&amp;#x00bd;&quot;,&quot;&amp;#x00be;&quot;,&quot;&amp;#x00bf;&quot;, //b8..bf</span>
+<span style="color:green;">&gt; 	&quot;&amp;#x00c0;&quot;,&quot;&amp;#x00c1;&quot;,&quot;&amp;#x00c2;&quot;,&quot;&amp;#x00c3;&quot;,&quot;&amp;#x00c4;&quot;,&quot;&amp;#x00c5;&quot;,&quot;&amp;#x00c6;&quot;,&quot;&amp;#x00c7;&quot;, //c0..c7</span>
+<span style="color:green;">&gt; 	&quot;&amp;#x00c8;&quot;,&quot;&amp;#x00c9;&quot;,&quot;&amp;#x00ca;&quot;,&quot;&amp;#x00cb;&quot;,&quot;&amp;#x00cc;&quot;,&quot;&amp;#x00cd;&quot;,&quot;&amp;#x00ce;&quot;,&quot;&amp;#x00cf;&quot;, //c8..cf</span>
+<span style="color:green;">&gt; 	&quot; &quot;       ,&quot;&amp;#x00d1;&quot;,&quot;&amp;#x00d2;&quot;,&quot;&amp;#x00d3;&quot;,&quot;&amp;#x00d4;&quot;,&quot;&amp;#x00d5;&quot;,&quot;&amp;#x00d6;&quot;,&quot;&amp;#x0152;&quot;, //d0..d7</span>
+<span style="color:green;">&gt; 	&quot;&amp;#x00d8;&quot;,&quot;&amp;#x00d9;&quot;,&quot;&amp;#x00da;&quot;,&quot;&amp;#x00db;&quot;,&quot;&amp;#x00dc;&quot;,&quot;&amp;#x0178;&quot;,&quot; &quot;       ,&quot;&amp;#x00df;&quot;, //d8..df</span>
+<span style="color:green;">&gt; 	&quot;&amp;#x00e0;&quot;,&quot;&amp;#x00e1;&quot;,&quot;&amp;#x00e2;&quot;,&quot;&amp;#x00e3;&quot;,&quot;&amp;#x00e4;&quot;,&quot;&amp;#x00e5;&quot;,&quot;&amp;#x00e6;&quot;,&quot;&amp;#x00e7;&quot;, //e0..e7</span>
+<span style="color:green;">&gt; 	&quot;&amp;#x00e8;&quot;,&quot;&amp;#x00e9;&quot;,&quot;&amp;#x00ea;&quot;,&quot;&amp;#x00eb;&quot;,&quot;&amp;#x00ec;&quot;,&quot;&amp;#x00ed;&quot;,&quot;&amp;#x00ee;&quot;,&quot;&amp;#x00ef;&quot;, //e8..ef</span>
+<span style="color:green;">&gt; 	&quot; &quot;       ,&quot;&amp;#x00f1;&quot;,&quot;&amp;#x00f2;&quot;,&quot;&amp;#x00f3;&quot;,&quot;&amp;#x00f4;&quot;,&quot;&amp;#x00f5;&quot;,&quot;&amp;#x00f6;&quot;,&quot;&amp;#x0153;&quot;, //f0..f7</span>
+<span style="color:green;">&gt; 	&quot;&amp;#x00f8;&quot;,&quot;&amp;#x00f9;&quot;,&quot;&amp;#x00fa;&quot;,&quot;&amp;#x00fb;&quot;,&quot;&amp;#x00fc;&quot;,&quot;&amp;#x00ff;&quot;,&quot; &quot;       ,&quot;&amp;#x2588;&quot;, //f8..ff</span>
+<span style="color:green;">&gt; };</span>
+<span style="color:teal;">74,78d68</span>
+<span style="color:red;">&lt; 	if (future)</span>
+<span style="color:red;">&lt; 	{</span>
+<span style="color:red;">&lt; 		future=0;</span>
+<span style="color:red;">&lt; 		return future_char;</span>
+<span style="color:red;">&lt; 	}</span>
+<span style="color:teal;">81,82c71,73</span>
+<span style="color:red;">&lt; 	fprintf(stderr,&quot;Unknown Error in File Parsing!\n&quot;);</span>
+<span style="color:red;">&lt; 	exit(1);</span>
+---
+<span style="color:green;">&gt; </span>
+<span style="color:green;">&gt; 	perror(&quot;Error while parsing input&quot;);</span>
+<span style="color:green;">&gt; 	exit(EXIT_FAILURE);</span>
+<span style="color:teal;">88a80</span>
+<span style="color:green;">&gt; 	long int value;</span>
+<span style="color:teal;">95a88</span>
+<span style="color:green;">&gt; 	</span>
+<span style="color:teal;">97a91,92</span>
+<span style="color:green;">&gt; 	long int value=0;</span>
+<span style="color:green;">&gt; 	</span>
+<span style="color:teal;">112,113c107,113</span>
+<span style="color:red;">&lt; 			for (unsigned char a=0;a&lt;8;a++)</span>
+<span style="color:red;">&lt; 				newelem-&gt;digit[a]=digit[a];</span>
+---
+<span style="color:green;">&gt; 			if (newelem==NULL) </span>
+<span style="color:green;">&gt; 			{</span>
+<span style="color:green;">&gt; 				perror(&quot;Failed to allocate memory for parseInsert()&quot;);</span>
+<span style="color:green;">&gt; 				exit(EXIT_FAILURE);</span>
+<span style="color:green;">&gt; 			}</span>
+<span style="color:green;">&gt; 			</span>
+<span style="color:green;">&gt; 			memcpy(newelem-&gt;digit, digit, sizeof(digit));</span>
+<span style="color:teal;">114a115</span>
+<span style="color:green;">&gt; 			newelem-&gt;value=value;</span>
+<span style="color:teal;">115a117</span>
+<span style="color:green;">&gt; 			</span>
+<span style="color:teal;">120a123</span>
+<span style="color:green;">&gt; 			</span>
+<span style="color:teal;">122c125,127</span>
+<span style="color:red;">&lt; 			memset(digit,0,8);</span>
+---
+<span style="color:green;">&gt; 			memset(digit,0,sizeof(digit));</span>
+<span style="color:green;">&gt; 			value=0;</span>
+<span style="color:green;">&gt; 			</span>
+<span style="color:teal;">127c132</span>
+<span style="color:red;">&lt; 		if (digitcount&lt;8)</span>
+---
+<span style="color:green;">&gt; 		if (digitcount &lt; sizeof(digit))</span>
+<span style="color:teal;">129a135</span>
+<span style="color:green;">&gt; 			value=(value*10)+digit[digitcount];</span>
+<span style="color:teal;">146,151c152,165</span>
+<span style="color:red;">&lt; int createIntegerFromStructure (pelem elem){</span>
+<span style="color:red;">&lt; 	int c, sign, offset, n;</span>
+<span style="color:red;">&lt; 	offset = 0;</span>
+<span style="color:red;">&lt; 	n = 0;</span>
+<span style="color:red;">&lt; 	for (c = offset; c &lt; elem-&gt;digitcount; c++){</span>
+<span style="color:red;">&lt; 	   n = n*10 + elem-&gt;digit[c] - 0;</span>
+---
+<span style="color:green;">&gt; void printHtml(char *text) {</span>
+<span style="color:green;">&gt; 	while(1) {</span>
+<span style="color:green;">&gt; 		switch(*text) {</span>
+<span style="color:green;">&gt; 			case '\0': return;</span>
+<span style="color:green;">&gt; </span>
+<span style="color:green;">&gt; 			case '&quot;': printf(&quot;&amp;quot;&quot;); break;</span>
+<span style="color:green;">&gt; 			case '&amp;': printf(&quot;&amp;amp;&quot;); break;</span>
+<span style="color:green;">&gt; 			case '&lt;': printf(&quot;&amp;lt;&quot;); break;</span>
+<span style="color:green;">&gt; 			case '&gt;': printf(&quot;&amp;gt;&quot;); break;</span>
+<span style="color:green;">&gt; </span>
+<span style="color:green;">&gt; 			default:</span>
+<span style="color:green;">&gt; 				putc(*text, stdout);</span>
+<span style="color:green;">&gt; 		}</span>
+<span style="color:green;">&gt; 		++text;</span>
+<span style="color:teal;">153,154d166</span>
+<span style="color:red;">&lt; 	//printf(&quot;\nJLPOOLE %d: n = %d\n&quot;,__LINE__,n);</span>
+<span style="color:red;">&lt;     return n;</span>
+<span style="color:teal;">155a168,187</span>
+<span style="color:green;">&gt; </span>
+<span style="color:green;">&gt; enum ColorScheme {</span>
+<span style="color:green;">&gt; 	SCHEME_WHITE,</span>
+<span style="color:green;">&gt; 	SCHEME_BLACK,</span>
+<span style="color:green;">&gt; 	SCHEME_PINK</span>
+<span style="color:green;">&gt; };</span>
+<span style="color:green;">&gt; </span>
+<span style="color:green;">&gt; struct Options {</span>
+<span style="color:green;">&gt; 	enum ColorScheme colorscheme;</span>
+<span style="color:green;">&gt; 	char* filename;</span>
+<span style="color:green;">&gt; 	FILE *fp;</span>
+<span style="color:green;">&gt; 	int htop_fix;</span>
+<span style="color:green;">&gt; 	int iso;</span>
+<span style="color:green;">&gt; 	int line_break;</span>
+<span style="color:green;">&gt; 	int no_header;</span>
+<span style="color:green;">&gt; 	int stylesheet;</span>
+<span style="color:green;">&gt; 	char *title;</span>
+<span style="color:green;">&gt; 	int word_wrap;</span>
+<span style="color:green;">&gt; };</span>
+<span style="color:green;">&gt; </span>
+<span style="color:teal;">159c191</span>
+<span style="color:red;">&lt; int main(int argc,char* args[])</span>
+---
+<span style="color:green;">&gt; struct Options parseArgs(int argc, char* args[])</span>
+<span style="color:teal;">161,170c193,205</span>
+<span style="color:red;">&lt; 	char* filename=NULL;</span>
+<span style="color:red;">&lt; 	register FILE *fp = stdin;</span>
+<span style="color:red;">&lt; 	int colorshema=0; //0:normal, 1:black, 2:pink</span>
+<span style="color:red;">&lt; 	int iso=-1; //utf8</span>
+<span style="color:red;">&lt; 	char stylesheet=0;</span>
+<span style="color:red;">&lt; 	char htop_fix=0;</span>
+<span style="color:red;">&lt; 	char line_break=0;</span>
+<span style="color:red;">&lt; 	char* title=NULL;</span>
+<span style="color:red;">&lt; 	char word_wrap=0;</span>
+<span style="color:red;">&lt; 	char no_header=0;</span>
+---
+<span style="color:green;">&gt; 	struct Options opts = (struct Options){</span>
+<span style="color:green;">&gt; 		.colorscheme = SCHEME_WHITE,</span>
+<span style="color:green;">&gt; 		.filename = NULL,</span>
+<span style="color:green;">&gt; 		.fp = stdin,</span>
+<span style="color:green;">&gt; 		.htop_fix = 0,</span>
+<span style="color:green;">&gt; 		.iso = -1,</span>
+<span style="color:green;">&gt; 		.line_break = 0,</span>
+<span style="color:green;">&gt; 		.no_header = 0,</span>
+<span style="color:green;">&gt; 		.stylesheet = 0,</span>
+<span style="color:green;">&gt; 		.title = NULL,</span>
+<span style="color:green;">&gt; 		.word_wrap = 0</span>
+<span style="color:green;">&gt; 	};</span>
+<span style="color:green;">&gt; </span>
+<span style="color:teal;">198,199c233,234</span>
+<span style="color:red;">&lt; 			printf(&quot;         \033[5;36mzizsdl@googlemail.com\033[0m\n&quot;);</span>
+<span style="color:red;">&lt; 			printf(&quot;         \033[5;36mhttp://ziz.delphigl.com/tool_aha.php\033[0m\n&quot;);</span>
+---
+<span style="color:green;">&gt; 			printf(&quot;         \033[5;36mziz@mailbox.org\033[0m\n&quot;);</span>
+<span style="color:green;">&gt; 			printf(&quot;         \033[5;36mhttps://github.com/theZiz/aha\033[0m\n&quot;);</span>
+<span style="color:teal;">201c236</span>
+<span style="color:red;">&lt; 			return 0;</span>
+---
+<span style="color:green;">&gt; 			exit(EXIT_SUCCESS);</span>
+<span style="color:teal;">207c242</span>
+<span style="color:red;">&lt; 			return 0;</span>
+---
+<span style="color:green;">&gt; 			exit(EXIT_SUCCESS);</span>
+<span style="color:teal;">215c250</span>
+<span style="color:red;">&lt; 				return 0;</span>
+---
+<span style="color:green;">&gt; 				exit(EXIT_FAILURE);</span>
+<span style="color:teal;">217c252</span>
+<span style="color:red;">&lt; 			title=args[p+1];</span>
+---
+<span style="color:green;">&gt; 			opts.title=args[p+1];</span>
+<span style="color:teal;">223c258</span>
+<span style="color:red;">&lt; 			htop_fix=1;</span>
+---
+<span style="color:green;">&gt; 			opts.htop_fix=1;</span>
+<span style="color:teal;">228c263</span>
+<span style="color:red;">&lt; 			no_header=1;</span>
+---
+<span style="color:green;">&gt; 			opts.no_header=1;</span>
+<span style="color:teal;">232c267</span>
+<span style="color:red;">&lt; 			word_wrap=1;</span>
+---
+<span style="color:green;">&gt; 			opts.word_wrap=1;</span>
+<span style="color:teal;">235c270</span>
+<span style="color:red;">&lt; 			colorshema=1;</span>
+---
+<span style="color:green;">&gt; 			opts.colorscheme=SCHEME_BLACK;</span>
+<span style="color:teal;">238c273</span>
+<span style="color:red;">&lt; 			colorshema=2;</span>
+---
+<span style="color:green;">&gt; 			opts.colorscheme=SCHEME_PINK;</span>
+<span style="color:teal;">241c276</span>
+<span style="color:red;">&lt; 			stylesheet=1;</span>
+---
+<span style="color:green;">&gt; 			opts.stylesheet=1;</span>
+<span style="color:teal;">248c283</span>
+<span style="color:red;">&lt; 				return 0;</span>
+---
+<span style="color:green;">&gt; 				exit(EXIT_FAILURE);</span>
+<span style="color:teal;">250,251c285,286</span>
+<span style="color:red;">&lt; 			iso = atoi(args[p+1]);</span>
+<span style="color:red;">&lt; 			if (iso&lt;1 || iso&gt;16)</span>
+---
+<span style="color:green;">&gt; 			opts.iso = atoi(args[p+1]);</span>
+<span style="color:green;">&gt; 			if (opts.iso&lt;1 || opts.iso&gt;16)</span>
+<span style="color:teal;">254c289</span>
+<span style="color:red;">&lt; 				return 0;</span>
+---
+<span style="color:green;">&gt; 				exit(EXIT_FAILURE);</span>
+<span style="color:teal;">264c299</span>
+<span style="color:red;">&lt; 				return 0;</span>
+---
+<span style="color:green;">&gt; 				exit(EXIT_FAILURE);</span>
+<span style="color:teal;">266,267c301,302</span>
+<span style="color:red;">&lt; 			fp = fopen(args[p+1],&quot;r&quot;);</span>
+<span style="color:red;">&lt; 			if (fp==NULL)</span>
+---
+<span style="color:green;">&gt; 			opts.fp = fopen(args[p+1],&quot;r&quot;);</span>
+<span style="color:green;">&gt; 			if (opts.fp==NULL)</span>
+<span style="color:teal;">269,270c304,306</span>
+<span style="color:red;">&lt; 				fprintf(stderr,&quot;file \&quot;%s\&quot; not found!\n&quot;,args[p+1]);</span>
+<span style="color:red;">&lt; 				return 0;</span>
+---
+<span style="color:green;">&gt; 				char *errstr = strerror(errno);</span>
+<span style="color:green;">&gt; 				fprintf(stderr,&quot;Failed to open file \&quot;%s\&quot;: %s\n&quot;,args[p+1],errstr);</span>
+<span style="color:green;">&gt; 				exit(EXIT_FAILURE);</span>
+<span style="color:teal;">273c309</span>
+<span style="color:red;">&lt; 			filename=args[p];</span>
+---
+<span style="color:green;">&gt; 			opts.filename=args[p];</span>
+<span style="color:teal;">278c314</span>
+<span style="color:red;">&lt; 			return 0;</span>
+---
+<span style="color:green;">&gt; 			exit(EXIT_FAILURE);</span>
+<span style="color:teal;">282c318,380</span>
+<span style="color:red;">&lt; 	if (no_header == 0)</span>
+---
+<span style="color:green;">&gt; 	return opts;</span>
+<span style="color:green;">&gt; }</span>
+<span style="color:green;">&gt; </span>
+<span style="color:green;">&gt; struct State {</span>
+<span style="color:green;">&gt; 	int fc, bc;</span>
+<span style="color:green;">&gt; 	int bold;</span>
+<span style="color:green;">&gt; 	int italic;</span>
+<span style="color:green;">&gt; 	int underline;</span>
+<span style="color:green;">&gt; 	int blink;</span>
+<span style="color:green;">&gt; 	int crossedout;</span>
+<span style="color:green;">&gt; };</span>
+<span style="color:green;">&gt; </span>
+<span style="color:green;">&gt; void swapColors(struct State *const state) {</span>
+<span style="color:green;">&gt; 	if (state-&gt;bc == -1)</span>
+<span style="color:green;">&gt; 		state-&gt;bc = 8;</span>
+<span style="color:green;">&gt; </span>
+<span style="color:green;">&gt; 	if (state-&gt;fc == -1)</span>
+<span style="color:green;">&gt; 		state-&gt;fc = 9;</span>
+<span style="color:green;">&gt; </span>
+<span style="color:green;">&gt; 	int temp = state-&gt;bc;</span>
+<span style="color:green;">&gt; 	state-&gt;bc = state-&gt;fc;</span>
+<span style="color:green;">&gt; 	state-&gt;fc = temp;</span>
+<span style="color:green;">&gt; }</span>
+<span style="color:green;">&gt; </span>
+<span style="color:green;">&gt; </span>
+<span style="color:green;">&gt; const struct State default_state = {</span>
+<span style="color:green;">&gt; 	.fc = -1, //Standard Foreground Color //IRC-Color+8</span>
+<span style="color:green;">&gt; 	.bc = -1, //Standard Background Color //IRC-Color+8</span>
+<span style="color:green;">&gt; 	.bold = 0,</span>
+<span style="color:green;">&gt; 	.italic = 0,</span>
+<span style="color:green;">&gt; 	.underline = 0,</span>
+<span style="color:green;">&gt; 	.blink = 0,</span>
+<span style="color:green;">&gt; 	.crossedout = 0,</span>
+<span style="color:green;">&gt; };</span>
+<span style="color:green;">&gt; </span>
+<span style="color:green;">&gt; int statesDiffer(const struct State *const old, const struct State *const new) {</span>
+<span style="color:green;">&gt; 	return</span>
+<span style="color:green;">&gt; 		(old-&gt;fc != new-&gt;fc) ||</span>
+<span style="color:green;">&gt; 		(old-&gt;bc != new-&gt;bc) || </span>
+<span style="color:green;">&gt; 		(old-&gt;bold != new-&gt;bold) ||</span>
+<span style="color:green;">&gt; 		(old-&gt;italic != new-&gt;italic) ||</span>
+<span style="color:green;">&gt; 		(old-&gt;underline != new-&gt;underline) ||</span>
+<span style="color:green;">&gt; 		(old-&gt;blink != new-&gt;blink) ||</span>
+<span style="color:green;">&gt; 		(old-&gt;crossedout != new-&gt;crossedout);</span>
+<span style="color:green;">&gt; }</span>
+<span style="color:green;">&gt; </span>
+<span style="color:green;">&gt; </span>
+<span style="color:green;">&gt; void printHeader(const struct Options *opts)</span>
+<span style="color:green;">&gt; {</span>
+<span style="color:green;">&gt; 	char encoding[16] = &quot;UTF-8&quot;;</span>
+<span style="color:green;">&gt; 	if(opts-&gt;iso&gt;0) snprintf(encoding, sizeof(encoding), &quot;ISO-8859-%i&quot;, opts-&gt;iso);</span>
+<span style="color:green;">&gt; </span>
+<span style="color:green;">&gt; 	printf(&quot;&lt;?xml version=\&quot;1.0\&quot; encoding=\&quot;%s\&quot; ?&gt;\n&lt;!DOCTYPE html PUBLIC \&quot;-//W3C//DTD XHTML 1.0 Strict//EN\&quot; \&quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\&quot;&gt;\n&quot;, encoding);</span>
+<span style="color:green;">&gt; 	printf(&quot;&lt;!-- This file was created with the aha Ansi HTML Adapter. https://github.com/theZiz/aha --&gt;\n&quot;);</span>
+<span style="color:green;">&gt; 	printf(&quot;&lt;html xmlns=\&quot;http://www.w3.org/1999/xhtml\&quot;&gt;\n&quot;);</span>
+<span style="color:green;">&gt; 	printf(&quot;&lt;head&gt;\n&lt;meta http-equiv=\&quot;Content-Type\&quot; content=\&quot;application/xml+xhtml; charset=%s\&quot; /&gt;\n&quot;, encoding);</span>
+<span style="color:green;">&gt; </span>
+<span style="color:green;">&gt; 	printf(&quot;&lt;title&gt;&quot;);</span>
+<span style="color:green;">&gt; 	printHtml(opts-&gt;title ? opts-&gt;title : opts-&gt;filename ? opts-&gt;filename : &quot;stdin&quot;);</span>
+<span style="color:green;">&gt; 	printf(&quot;&lt;/title&gt;\n&quot;);</span>
+<span style="color:green;">&gt; </span>
+<span style="color:green;">&gt; 	int style_tag = 0;</span>
+<span style="color:green;">&gt; 	if (opts-&gt;stylesheet)</span>
+<span style="color:teal;">284,301c382,385</span>
+<span style="color:red;">&lt; 		//Header:</span>
+<span style="color:red;">&lt; 		if (iso&lt;0)</span>
+<span style="color:red;">&lt; 			printf(&quot;&lt;?xml version=\&quot;1.0\&quot; encoding=\&quot;UTF-8\&quot; ?&gt;\n&lt;!DOCTYPE html PUBLIC \&quot;-//W3C//DTD XHTML 1.0 Strict//EN\&quot; \&quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\&quot;&gt;\n&quot;);</span>
+<span style="color:red;">&lt; 		else</span>
+<span style="color:red;">&lt; 			printf(&quot;&lt;?xml version=\&quot;1.0\&quot; encoding=\&quot;ISO-8859-%i\&quot; ?&gt;&lt;!DOCTYPE html PUBLIC \&quot;-//W3C//DTD XHTML 1.0 Strict//EN\&quot; \&quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\&quot;&gt;\n&quot;,iso);</span>
+<span style="color:red;">&lt; 		printf(&quot;&lt;!-- This file was created with the aha Ansi HTML Adapter. http://ziz.delphigl.com/tool_aha.php --&gt;\n&quot;);</span>
+<span style="color:red;">&lt; 		printf(&quot;&lt;html xmlns=\&quot;http://www.w3.org/1999/xhtml\&quot;&gt;\n&quot;);</span>
+<span style="color:red;">&lt; 		printf(&quot;&lt;head&gt;\n&lt;meta http-equiv=\&quot;Content-Type\&quot; content=\&quot;application/xml+xhtml; charset=UTF-8\&quot; /&gt;\n&quot;);</span>
+<span style="color:red;">&lt; 		if (title)</span>
+<span style="color:red;">&lt; 			printf(&quot;&lt;title&gt;%s&lt;/title&gt;\n&quot;,title);</span>
+<span style="color:red;">&lt; 		else</span>
+<span style="color:red;">&lt; 		{</span>
+<span style="color:red;">&lt; 			if (filename==NULL)</span>
+<span style="color:red;">&lt; 				printf(&quot;&lt;title&gt;stdin&lt;/title&gt;\n&quot;);</span>
+<span style="color:red;">&lt; 			else</span>
+<span style="color:red;">&lt; 				printf(&quot;&lt;title&gt;%s&lt;/title&gt;\n&quot;,filename);</span>
+<span style="color:red;">&lt; 		}</span>
+<span style="color:red;">&lt; 		if (stylesheet)</span>
+---
+<span style="color:green;">&gt; 		printf(&quot;&lt;style type=\&quot;text/css\&quot;&gt;\n&quot;);</span>
+<span style="color:green;">&gt; 		style_tag = 1;</span>
+<span style="color:green;">&gt; </span>
+<span style="color:green;">&gt; 		switch (opts-&gt;colorscheme)</span>
+<span style="color:teal;">302a387,451</span>
+<span style="color:green;">&gt; 			case SCHEME_BLACK:  printf(&quot;body         {color: white; background-color: black;}\n&quot;);</span>
+<span style="color:green;">&gt; 							 printf(&quot;.reset       {color: white;}\n&quot;);</span>
+<span style="color:green;">&gt; 							 printf(&quot;.bg-reset    {background-color: black;}\n&quot;);</span>
+<span style="color:green;">&gt; 							 printf(&quot;.inverted    {color: black;}\n&quot;);</span>
+<span style="color:green;">&gt; 							 printf(&quot;.bg-inverted {background-color: white;}\n&quot;);</span>
+<span style="color:green;">&gt; 							 break;</span>
+<span style="color:green;">&gt; 			case SCHEME_PINK:  printf(&quot;body         {background-color: pink;}\n&quot;);</span>
+<span style="color:green;">&gt; 							 printf(&quot;.reset       {color: black;}\n&quot;);</span>
+<span style="color:green;">&gt; 							 printf(&quot;.bg-reset    {background-color: pink;}\n&quot;);</span>
+<span style="color:green;">&gt; 							 printf(&quot;.inverted    {color: pink;}\n&quot;);</span>
+<span style="color:green;">&gt; 							 printf(&quot;.bg-inverted {background-color: black;}\n&quot;);</span>
+<span style="color:green;">&gt; 							 break;</span>
+<span style="color:green;">&gt; 			default: printf(&quot;.reset       {color: black;}\n&quot;);</span>
+<span style="color:green;">&gt; 					 printf(&quot;.bg-reset    {background-color: white;}\n&quot;);</span>
+<span style="color:green;">&gt; 					 printf(&quot;.inverted    {color: white;}\n&quot;);</span>
+<span style="color:green;">&gt; 					 printf(&quot;.bg-inverted {background-color: black;}\n&quot;);</span>
+<span style="color:green;">&gt; 		}</span>
+<span style="color:green;">&gt; 		if (opts-&gt;colorscheme != SCHEME_BLACK)</span>
+<span style="color:green;">&gt; 		{</span>
+<span style="color:green;">&gt; 			printf(&quot;.dimgray     {color: dimgray;}\n&quot;);</span>
+<span style="color:green;">&gt; 			printf(&quot;.red         {color: red;}\n&quot;);</span>
+<span style="color:green;">&gt; 			printf(&quot;.green       {color: green;}\n&quot;);</span>
+<span style="color:green;">&gt; 			printf(&quot;.yellow      {color: olive;}\n&quot;);</span>
+<span style="color:green;">&gt; 			printf(&quot;.blue        {color: blue;}\n&quot;);</span>
+<span style="color:green;">&gt; 			printf(&quot;.purple      {color: purple;}\n&quot;);</span>
+<span style="color:green;">&gt; 			printf(&quot;.cyan        {color: teal;}\n&quot;);</span>
+<span style="color:green;">&gt; 			printf(&quot;.white       {color: gray;}\n&quot;);</span>
+<span style="color:green;">&gt; 			printf(&quot;.bg-black    {background-color: black;}\n&quot;);</span>
+<span style="color:green;">&gt; 			printf(&quot;.bg-red      {background-color: red;}\n&quot;);</span>
+<span style="color:green;">&gt; 			printf(&quot;.bg-green    {background-color: green;}\n&quot;);</span>
+<span style="color:green;">&gt; 			printf(&quot;.bg-yellow   {background-color: olive;}\n&quot;);</span>
+<span style="color:green;">&gt; 			printf(&quot;.bg-blue     {background-color: blue;}\n&quot;);</span>
+<span style="color:green;">&gt; 			printf(&quot;.bg-purple   {background-color: purple;}\n&quot;);</span>
+<span style="color:green;">&gt; 			printf(&quot;.bg-cyan     {background-color: teal;}\n&quot;);</span>
+<span style="color:green;">&gt; 			printf(&quot;.bg-white    {background-color: gray;}\n&quot;);</span>
+<span style="color:green;">&gt; 		}</span>
+<span style="color:green;">&gt; 		else</span>
+<span style="color:green;">&gt; 		{</span>
+<span style="color:green;">&gt; 			printf(&quot;.dimgray     {color: dimgray;}\n&quot;);</span>
+<span style="color:green;">&gt; 			printf(&quot;.red         {color: red;}\n&quot;);</span>
+<span style="color:green;">&gt; 			printf(&quot;.green       {color: lime;}\n&quot;);</span>
+<span style="color:green;">&gt; 			printf(&quot;.yellow      {color: yellow;}\n&quot;);</span>
+<span style="color:green;">&gt; 			printf(&quot;.blue        {color: #3333FF;}\n&quot;);</span>
+<span style="color:green;">&gt; 			printf(&quot;.purple      {color: fuchsia;}\n&quot;);</span>
+<span style="color:green;">&gt; 			printf(&quot;.cyan        {color: aqua;}\n&quot;);</span>
+<span style="color:green;">&gt; 			printf(&quot;.white       {color: white;}\n&quot;);</span>
+<span style="color:green;">&gt; 			printf(&quot;.bg-black    {background-color: black;}\n&quot;);</span>
+<span style="color:green;">&gt; 			printf(&quot;.bg-red      {background-color: red;}\n&quot;);</span>
+<span style="color:green;">&gt; 			printf(&quot;.bg-green    {background-color: lime;}\n&quot;);</span>
+<span style="color:green;">&gt; 			printf(&quot;.bg-yellow   {background-color: yellow;}\n&quot;);</span>
+<span style="color:green;">&gt; 			printf(&quot;.bg-blue     {background-color: #3333FF;}\n&quot;);</span>
+<span style="color:green;">&gt; 			printf(&quot;.bg-purple   {background-color: fuchsia;}\n&quot;);</span>
+<span style="color:green;">&gt; 			printf(&quot;.bg-cyan     {background-color: aqua;}\n&quot;);</span>
+<span style="color:green;">&gt; 			printf(&quot;.bg-white    {background-color: white;}\n&quot;);</span>
+<span style="color:green;">&gt; 		}</span>
+<span style="color:green;">&gt; 		printf(&quot;.underline   {text-decoration: underline;}\n&quot;);</span>
+<span style="color:green;">&gt; 		printf(&quot;.bold        {font-weight: bold;}\n&quot;);</span>
+<span style="color:green;">&gt; 		printf(&quot;.italic      {font-style: italic;}\n&quot;);</span>
+<span style="color:green;">&gt; 		printf(&quot;.blink       {text-decoration: blink;}\n&quot;);</span>
+<span style="color:green;">&gt; 		printf(&quot;.crossed-out {text-decoration: line-through;}\n&quot;);</span>
+<span style="color:green;">&gt; 	}</span>
+<span style="color:green;">&gt; </span>
+<span style="color:green;">&gt; 	if (opts-&gt;word_wrap)</span>
+<span style="color:green;">&gt; 	{</span>
+<span style="color:green;">&gt; 		if (!style_tag) {</span>
+<span style="color:teal;">304,374c453</span>
+<span style="color:red;">&lt; 			switch (colorshema)</span>
+<span style="color:red;">&lt; 			{</span>
+<span style="color:red;">&lt; 				case 1:  printf(&quot;body       {color: white; background-color: black;}\n&quot;);</span>
+<span style="color:red;">&lt; 								 printf(&quot;.reset     {color: white;}\n&quot;);</span>
+<span style="color:red;">&lt; 								 printf(&quot;.bg-reset  {background-color: black;}\n&quot;);</span>
+<span style="color:red;">&lt; 								 break;</span>
+<span style="color:red;">&lt; 				case 2:  printf(&quot;body       {background-color: pink;}\n&quot;);</span>
+<span style="color:red;">&lt; 								 printf(&quot;.reset     {color: black;}\n&quot;);</span>
+<span style="color:red;">&lt; 								 printf(&quot;.bg-reset  {background-color: pink;}\n&quot;);</span>
+<span style="color:red;">&lt; 								 break;</span>
+<span style="color:red;">&lt; 				default: printf(&quot;.reset     {color: black;}\n&quot;);</span>
+<span style="color:red;">&lt; 				         printf(&quot;.bg-reset  {background-color: white;}\n&quot;);</span>
+<span style="color:red;">&lt; 			}</span>
+<span style="color:red;">&lt; 			if (colorshema!=1)</span>
+<span style="color:red;">&lt; 			{</span>
+<span style="color:red;">&lt; 				printf(&quot;.dimgray     {color: dimgray;}\n&quot;);</span>
+<span style="color:red;">&lt; 				printf(&quot;.red       {color: red;}\n&quot;);</span>
+<span style="color:red;">&lt; 				printf(&quot;.green     {color: green;}\n&quot;);</span>
+<span style="color:red;">&lt; 				printf(&quot;.yellow    {color: olive;}\n&quot;);</span>
+<span style="color:red;">&lt; 				printf(&quot;.blue      {color: blue;}\n&quot;);</span>
+<span style="color:red;">&lt; 				printf(&quot;.purple    {color: purple;}\n&quot;);</span>
+<span style="color:red;">&lt; 				printf(&quot;.cyan      {color: teal;}\n&quot;);</span>
+<span style="color:red;">&lt; 				printf(&quot;.white     {color: gray;}\n&quot;);</span>
+<span style="color:red;">&lt; 				printf(&quot;.bg-black  {background-color: black;}\n&quot;);</span>
+<span style="color:red;">&lt; 				printf(&quot;.bg-red    {background-color: red;}\n&quot;);</span>
+<span style="color:red;">&lt; 				printf(&quot;.bg-green  {background-color: green;}\n&quot;);</span>
+<span style="color:red;">&lt; 				printf(&quot;.bg-yellow {background-color: olive;}\n&quot;);</span>
+<span style="color:red;">&lt; 				printf(&quot;.bg-blue   {background-color: blue;}\n&quot;);</span>
+<span style="color:red;">&lt; 				printf(&quot;.bg-purple {background-color: purple;}\n&quot;);</span>
+<span style="color:red;">&lt; 				printf(&quot;.bg-cyan   {background-color: teal;}\n&quot;);</span>
+<span style="color:red;">&lt; 				printf(&quot;.bg-white  {background-color: gray;}\n&quot;);</span>
+<span style="color:red;">&lt; 			}</span>
+<span style="color:red;">&lt; 			else</span>
+<span style="color:red;">&lt; 			{</span>
+<span style="color:red;">&lt; 				printf(&quot;.dimgray     {color: dimgray;}\n&quot;);</span>
+<span style="color:red;">&lt; 				printf(&quot;.red       {color: red;}\n&quot;);</span>
+<span style="color:red;">&lt; 				printf(&quot;.green     {color: lime;}\n&quot;);</span>
+<span style="color:red;">&lt; 				printf(&quot;.yellow    {color: yellow;}\n&quot;);</span>
+<span style="color:red;">&lt; 				printf(&quot;.blue      {color: #3333FF;}\n&quot;);</span>
+<span style="color:red;">&lt; 				printf(&quot;.purple    {color: fuchsia;}\n&quot;);</span>
+<span style="color:red;">&lt; 				printf(&quot;.cyan      {color: aqua;}\n&quot;);</span>
+<span style="color:red;">&lt; 				printf(&quot;.white     {color: white;}\n&quot;);</span>
+<span style="color:red;">&lt; 				printf(&quot;.bg-black  {background-color: black;}\n&quot;);</span>
+<span style="color:red;">&lt; 				printf(&quot;.bg-red    {background-color: red;}\n&quot;);</span>
+<span style="color:red;">&lt; 				printf(&quot;.bg-green  {background-color: lime;}\n&quot;);</span>
+<span style="color:red;">&lt; 				printf(&quot;.bg-yellow {background-color: yellow;}\n&quot;);</span>
+<span style="color:red;">&lt; 				printf(&quot;.bg-blue   {background-color: #3333FF;}\n&quot;);</span>
+<span style="color:red;">&lt; 				printf(&quot;.bg-purple {background-color: fuchsia;}\n&quot;);</span>
+<span style="color:red;">&lt; 				printf(&quot;.bg-cyan   {background-color: aqua;}\n&quot;);</span>
+<span style="color:red;">&lt; 				printf(&quot;.bg-white  {background-color: white;}\n&quot;);</span>
+<span style="color:red;">&lt; 			}</span>
+<span style="color:red;">&lt; 			printf(&quot;.underline {text-decoration: underline;}\n&quot;);</span>
+<span style="color:red;">&lt; 			printf(&quot;.bold      {font-weight: bold;}\n&quot;);</span>
+<span style="color:red;">&lt; 			printf(&quot;.blink     {text-decoration: blink;}\n&quot;);</span>
+<span style="color:red;">&lt; 			printf(&quot;&lt;/style&gt;\n&quot;);</span>
+<span style="color:red;">&lt; 		}</span>
+<span style="color:red;">&lt; 		if (word_wrap)</span>
+<span style="color:red;">&lt; 		{</span>
+<span style="color:red;">&lt; 			printf(&quot;&lt;style type=\&quot;text/css\&quot;&gt;pre {white-space: pre-wrap; white-space: -moz-pre-wrap !important;\n&quot;);</span>
+<span style="color:red;">&lt; 			printf(&quot;white-space: -pre-wrap; white-space: -o-pre-wrap; word-wrap: break-word;}&lt;/style&gt;\n&quot;);</span>
+<span style="color:red;">&lt; 		}</span>
+<span style="color:red;">&lt; 		printf(&quot;&lt;/head&gt;\n&quot;);</span>
+<span style="color:red;">&lt; 		if (stylesheet || ! colorshema)</span>
+<span style="color:red;">&lt; 			printf(&quot;&lt;body&gt;\n&quot;);</span>
+<span style="color:red;">&lt; 		else</span>
+<span style="color:red;">&lt; 		{</span>
+<span style="color:red;">&lt; 			switch (colorshema)</span>
+<span style="color:red;">&lt; 			{</span>
+<span style="color:red;">&lt; 				case 1: printf(&quot;&lt;body style=\&quot;color:white; background-color:black\&quot;&gt;\n&quot;); break;</span>
+<span style="color:red;">&lt; 				case 2: printf(&quot;&lt;body style=\&quot;background-color:pink\&quot;&gt;\n&quot;);	break;</span>
+<span style="color:red;">&lt; 			}</span>
+---
+<span style="color:green;">&gt; 			style_tag = 1;</span>
+<span style="color:teal;">377,379c456,466</span>
+<span style="color:red;">&lt; 		//default values:</span>
+<span style="color:red;">&lt; 		//printf(&quot;&lt;div style=\&quot;font-family:monospace; white-space:pre\&quot;&gt;&quot;);</span>
+<span style="color:red;">&lt; 		printf(&quot;&lt;pre&gt;\n&quot;);</span>
+---
+<span style="color:green;">&gt; 		printf(&quot;pre {white-space: pre-wrap; white-space: -moz-pre-wrap !important;\n&quot;);</span>
+<span style="color:green;">&gt; 		printf(&quot;white-space: -pre-wrap; white-space: -o-pre-wrap; word-wrap: break-word;}\n&quot;);</span>
+<span style="color:green;">&gt; 	}</span>
+<span style="color:green;">&gt; </span>
+<span style="color:green;">&gt; 	if (style_tag)</span>
+<span style="color:green;">&gt; 		printf(&quot;&lt;/style&gt;\n&quot;);</span>
+<span style="color:green;">&gt; 	printf(&quot;&lt;/head&gt;\n&quot;);</span>
+<span style="color:green;">&gt; </span>
+<span style="color:green;">&gt; 	if (opts-&gt;stylesheet)</span>
+<span style="color:green;">&gt; 	{</span>
+<span style="color:green;">&gt; 		printf(&quot;&lt;body&gt;\n&quot;);</span>
+<span style="color:teal;">380a468,513</span>
+<span style="color:green;">&gt; 	else</span>
+<span style="color:green;">&gt; 	{</span>
+<span style="color:green;">&gt; 		switch (opts-&gt;colorscheme)</span>
+<span style="color:green;">&gt; 		{</span>
+<span style="color:green;">&gt; 			case SCHEME_BLACK: printf(&quot;&lt;body style=\&quot;color:white; background-color:black\&quot;&gt;\n&quot;); break;</span>
+<span style="color:green;">&gt; 			case SCHEME_PINK: printf(&quot;&lt;body style=\&quot;background-color:pink\&quot;&gt;\n&quot;);	break;</span>
+<span style="color:green;">&gt; 			case SCHEME_WHITE: printf(&quot;&lt;body&gt;\n&quot;); break;</span>
+<span style="color:green;">&gt; 		}</span>
+<span style="color:green;">&gt; 	}</span>
+<span style="color:green;">&gt; </span>
+<span style="color:green;">&gt; 	printf(&quot;&lt;pre&gt;\n&quot;);</span>
+<span style="color:green;">&gt; }</span>
+<span style="color:green;">&gt; </span>
+<span style="color:green;">&gt; int main(int argc,char* args[])</span>
+<span style="color:green;">&gt; {</span>
+<span style="color:green;">&gt; 	struct Options opts = parseArgs(argc, args);</span>
+<span style="color:green;">&gt; 	register FILE* fp = opts.fp;</span>
+<span style="color:green;">&gt; </span>
+<span style="color:green;">&gt; 	char* fcstyle[10] = {</span>
+<span style="color:green;">&gt; 		opts.stylesheet ? &quot;dimgray &quot; : &quot;color:dimgray;&quot;, //Black</span>
+<span style="color:green;">&gt; 		opts.stylesheet ? &quot;red &quot; : &quot;color:red;&quot;, //Red</span>
+<span style="color:green;">&gt; 		opts.stylesheet ? &quot;green &quot; : opts.colorscheme==SCHEME_BLACK ? &quot;color:lime;&quot; : &quot;color:green;&quot;, //Green</span>
+<span style="color:green;">&gt; 		opts.stylesheet ? &quot;yellow &quot; : opts.colorscheme==SCHEME_BLACK ? &quot;color:yellow;&quot; : &quot;color:olive;&quot;, //Yellow</span>
+<span style="color:green;">&gt; 		opts.stylesheet ? &quot;blue &quot; : opts.colorscheme==SCHEME_BLACK ? &quot;color:#3333FF;&quot; : &quot;color:blue;&quot;, //Blue</span>
+<span style="color:green;">&gt; 		opts.stylesheet ? &quot;purple &quot; : opts.colorscheme==SCHEME_BLACK ? &quot;color:fuchsia;&quot; : &quot;color:purple;&quot;, //Purple</span>
+<span style="color:green;">&gt; 		opts.stylesheet ? &quot;cyan &quot; : opts.colorscheme==SCHEME_BLACK ? &quot;color:aqua;&quot; : &quot;color:teal;&quot;, //Cyan</span>
+<span style="color:green;">&gt; 		opts.stylesheet ? &quot;white &quot; : opts.colorscheme==SCHEME_BLACK ? &quot;color:white;&quot; : &quot;color:gray;&quot;, //White</span>
+<span style="color:green;">&gt; 		opts.stylesheet ? &quot;inverted &quot; : opts.colorscheme==SCHEME_BLACK ? &quot;color:black;&quot; : opts.colorscheme==SCHEME_PINK ? &quot;color:pink;&quot; : &quot;color:white;&quot;, //Background</span>
+<span style="color:green;">&gt; 		opts.stylesheet ? &quot;reset &quot; : opts.colorscheme==SCHEME_BLACK ? &quot;color:white;&quot; : &quot;color:black;&quot; //Foreground</span>
+<span style="color:green;">&gt; 	};</span>
+<span style="color:green;">&gt; </span>
+<span style="color:green;">&gt; 	char* bcstyle[10] = {</span>
+<span style="color:green;">&gt; 		opts.stylesheet ? &quot;bg-black &quot; : &quot;background-color:black;&quot;, //Black</span>
+<span style="color:green;">&gt; 		opts.stylesheet ? &quot;bg-red &quot; : &quot;background-color:red;&quot;, //Red</span>
+<span style="color:green;">&gt; 		opts.stylesheet ? &quot;bg-green &quot; : opts.colorscheme==SCHEME_BLACK ? &quot;background-color:lime;&quot; : &quot;background-color:green;&quot;, //Green</span>
+<span style="color:green;">&gt; 		opts.stylesheet ? &quot;bg-yellow &quot; : opts.colorscheme==SCHEME_BLACK ? &quot;background-color:yellow;&quot; : &quot;background-color:olive;&quot;, //Yellow</span>
+<span style="color:green;">&gt; 		opts.stylesheet ? &quot;bg-blue &quot; : opts.colorscheme==SCHEME_BLACK ? &quot;background-color:#3333FF;&quot; : &quot;background-color:blue;&quot;, //Blue</span>
+<span style="color:green;">&gt; 		opts.stylesheet ? &quot;bg-purple &quot; : opts.colorscheme==SCHEME_BLACK ? &quot;background-color:fuchsia;&quot; : &quot;background-color:purple;&quot;, //Purple</span>
+<span style="color:green;">&gt; 		opts.stylesheet ? &quot;bg-cyan &quot; : opts.colorscheme==SCHEME_BLACK ? &quot;background-color:aqua;&quot; : &quot;background-color:teal;&quot;, //Cyan</span>
+<span style="color:green;">&gt; 		opts.stylesheet ? &quot;bg-white &quot; : opts.colorscheme==SCHEME_BLACK ? &quot;background-color:white;&quot; : &quot;background-color:gray;&quot;, //White</span>
+<span style="color:green;">&gt; 		opts.stylesheet ? &quot;bg-reset &quot; : opts.colorscheme==SCHEME_BLACK ? &quot;background-color:black;&quot; : opts.colorscheme==SCHEME_PINK ? &quot;background-color:pink;&quot; : &quot;background-color:white;&quot;, //Background</span>
+<span style="color:green;">&gt; 		opts.stylesheet ? &quot;bg-inverted &quot; : opts.colorscheme==SCHEME_BLACK ? &quot;background-color:white;&quot; : &quot;background-color:black;&quot;, //Foreground</span>
+<span style="color:green;">&gt; 	};</span>
+<span style="color:green;">&gt; </span>
+<span style="color:green;">&gt; 	if (!opts.no_header)</span>
+<span style="color:green;">&gt; 		printHeader(&amp;opts);</span>
+<span style="color:teal;">383,389c516,520</span>
+<span style="color:red;">&lt; 	unsigned int c;</span>
+<span style="color:red;">&lt; 	int fc = -1; //Standard Foreground Color //IRC-Color+8</span>
+<span style="color:red;">&lt; 	int bc = -1; //Standard Background Color //IRC-Color+8</span>
+<span style="color:red;">&lt; 	int ul = 0; //Not underlined</span>
+<span style="color:red;">&lt; 	int bo = 0; //Not bold</span>
+<span style="color:red;">&lt; 	int bl = 0; //No Blinking</span>
+<span style="color:red;">&lt; 	int ofc,obc,oul,obo,obl; //old values</span>
+---
+<span style="color:green;">&gt; 	struct State state = default_state;</span>
+<span style="color:green;">&gt; 	struct State oldstate;</span>
+<span style="color:green;">&gt; 	int c;</span>
+<span style="color:green;">&gt; 	int negative = 0; //No negative image</span>
+<span style="color:green;">&gt; 	int special_char = 0; //No special characters</span>
+<span style="color:teal;">393d523</span>
+<span style="color:red;">&lt; 	int temp;</span>
+<span style="color:teal;">398,403c528</span>
+<span style="color:red;">&lt; 			//Saving old values</span>
+<span style="color:red;">&lt; 			ofc=fc;</span>
+<span style="color:red;">&lt; 			obc=bc;</span>
+<span style="color:red;">&lt; 			oul=ul;</span>
+<span style="color:red;">&lt; 			obo=bo;</span>
+<span style="color:red;">&lt; 			obl=bl;</span>
+---
+<span style="color:green;">&gt; 			oldstate = state;</span>
+<span style="color:teal;">405,423c530,531</span>
+<span style="color:red;">&lt; 			c='0';</span>
+<span style="color:red;">&lt; 			char buffer[1024];</span>
+<span style="color:red;">&lt; 			int counter=0;</span>
+<span style="color:red;">&lt; 			while ((c&lt;'A') || ((c&gt;'Z') &amp;&amp; (c&lt;'a')) || (c&gt;'z'))</span>
+<span style="color:red;">&lt; 			{</span>
+<span style="color:red;">&lt; 				c=getNextChar(fp);</span>
+<span style="color:red;">&lt; 				//printf(&quot;JLPOOLEDEBUG %d: %c\n&quot;,__LINE__,c);</span>
+<span style="color:red;">&lt; 				buffer[counter]=c;</span>
+<span style="color:red;">&lt; 				if (c=='&gt;') //end of htop</span>
+<span style="color:red;">&lt; 					break;</span>
+<span style="color:red;">&lt; 				counter++;</span>
+<span style="color:red;">&lt; 				if (counter&gt;1022)</span>
+<span style="color:red;">&lt; 					break;</span>
+<span style="color:red;">&lt; 			}</span>
+<span style="color:red;">&lt; 			//printf(&quot;JLPOOLE %d: after while\n&quot;,__LINE__);</span>
+<span style="color:red;">&lt; 			buffer[counter-1]=0;</span>
+<span style="color:red;">&lt; 			pelem elem;</span>
+<span style="color:red;">&lt; 			int colorCode = 0;</span>
+<span style="color:red;">&lt; 			switch (c)</span>
+---
+<span style="color:green;">&gt; 			c=getNextChar(fp);</span>
+<span style="color:green;">&gt; 			if ( c == '[' ) // CSI code, see https://en.wikipedia.org/wiki/ANSI_escape_code#Colors</span>
+<span style="color:teal;">425,441c533,553</span>
+<span style="color:red;">&lt; 				case 'm':</span>
+<span style="color:red;">&lt; </span>
+<span style="color:red;">&lt; 					//printf(&quot;\n[%d] Control Code: %s\n&quot;,__LINE__,buffer); //DEBUG</span>
+<span style="color:red;">&lt; 					elem=parseInsert(buffer);</span>
+<span style="color:red;">&lt; 					pelem momelem=elem;</span>
+<span style="color:red;">&lt; </span>
+<span style="color:red;">&lt; 					while (momelem!=NULL)</span>
+<span style="color:red;">&lt; 					{</span>
+<span style="color:red;">&lt; 						//jump over zeros</span>
+<span style="color:red;">&lt; 						int mompos=0;</span>
+<span style="color:red;">&lt; 						while (mompos&lt;momelem-&gt;digitcount &amp;&amp; momelem-&gt;digit[mompos]==0)</span>
+<span style="color:red;">&lt; 							mompos++;</span>
+<span style="color:red;">&lt; 						if (mompos==momelem-&gt;digitcount) //only zeros =&gt; delete all</span>
+<span style="color:red;">&lt; 						{</span>
+<span style="color:red;">&lt; 							bo=0;ul=0;bl=0;fc=-1;bc=-1;</span>
+<span style="color:red;">&lt; 						}</span>
+<span style="color:red;">&lt; 						else</span>
+---
+<span style="color:green;">&gt; 				char buffer[1024];</span>
+<span style="color:green;">&gt; 				buffer[0] = '[';</span>
+<span style="color:green;">&gt; 				int counter=1;</span>
+<span style="color:green;">&gt; 				while ((c&lt;'A') || ((c&gt;'Z') &amp;&amp; (c&lt;'a')) || (c&gt;'z'))</span>
+<span style="color:green;">&gt; 				{</span>
+<span style="color:green;">&gt; 					c=getNextChar(fp);</span>
+<span style="color:green;">&gt; 					buffer[counter]=c;</span>
+<span style="color:green;">&gt; 					if (c=='&gt;') //end of htop</span>
+<span style="color:green;">&gt; 						break;</span>
+<span style="color:green;">&gt; 					counter++;</span>
+<span style="color:green;">&gt; 					if (counter&gt;1022)</span>
+<span style="color:green;">&gt; 						break;</span>
+<span style="color:green;">&gt; 				}</span>
+<span style="color:green;">&gt; 				buffer[counter-1]=0;</span>
+<span style="color:green;">&gt; 				pelem elem;</span>
+<span style="color:green;">&gt; 				switch (c)</span>
+<span style="color:green;">&gt; 				{</span>
+<span style="color:green;">&gt; 					case 'm':</span>
+<span style="color:green;">&gt; 						elem=parseInsert(buffer);</span>
+<span style="color:green;">&gt; 						pelem momelem=elem;</span>
+<span style="color:green;">&gt; 						while (momelem!=NULL)</span>
+<span style="color:teal;">443,446c555</span>
+<span style="color:red;">&lt; 							// determkne the  Select Graphic Rendition) parameter</span>
+<span style="color:red;">&lt; 							//printf(&quot;JLPOOLE %d: momelem-&gt;digit = %d \n&quot;,__LINE__,</span>
+<span style="color:red;">&lt; 							//		momelem-&gt;digit[mompos]);</span>
+<span style="color:red;">&lt; 							switch (momelem-&gt;digit[mompos])</span>
+---
+<span style="color:green;">&gt; 							switch (momelem-&gt;value)</span>
+<span style="color:teal;">448,546c557,646</span>
+<span style="color:red;">&lt; 								case 1: bo=1; break;</span>
+<span style="color:red;">&lt; 								case 2: if (mompos+1&lt;momelem-&gt;digitcount)</span>
+<span style="color:red;">&lt; 												switch (momelem-&gt;digit[mompos+1])</span>
+<span style="color:red;">&lt; 												{</span>
+<span style="color:red;">&lt; 													case 1: //Reset blink and bold</span>
+<span style="color:red;">&lt; 														bo=0;</span>
+<span style="color:red;">&lt; 														bl=0;</span>
+<span style="color:red;">&lt; 														break;</span>
+<span style="color:red;">&lt; 													case 4: //Reset underline</span>
+<span style="color:red;">&lt; 														ul=0;</span>
+<span style="color:red;">&lt; 														break;</span>
+<span style="color:red;">&lt; 														case 7: //Reset Inverted</span>
+<span style="color:red;">&lt; 														temp = bc;</span>
+<span style="color:red;">&lt; 														if (fc == -1 || fc == 9)</span>
+<span style="color:red;">&lt; 														{</span>
+<span style="color:red;">&lt; 															if (colorshema!=1)</span>
+<span style="color:red;">&lt; 																bc = 0;</span>
+<span style="color:red;">&lt; 															else</span>
+<span style="color:red;">&lt; 																bc = 7;</span>
+<span style="color:red;">&lt; 														}</span>
+<span style="color:red;">&lt; 														else</span>
+<span style="color:red;">&lt; 															bc = fc;</span>
+<span style="color:red;">&lt; 														if (temp == -1 || temp == 9)</span>
+<span style="color:red;">&lt; 														{</span>
+<span style="color:red;">&lt; 															if (colorshema!=1)</span>
+<span style="color:red;">&lt; 																fc = 7;</span>
+<span style="color:red;">&lt; 															else</span>
+<span style="color:red;">&lt; 																fc = 0;</span>
+<span style="color:red;">&lt; 														}</span>
+<span style="color:red;">&lt; 														else</span>
+<span style="color:red;">&lt; 															fc = temp;</span>
+<span style="color:red;">&lt; 														break;</span>
+<span style="color:red;">&lt; 												}</span>
+<span style="color:red;">&lt; 												break;</span>
+<span style="color:red;">&lt; 				        // Case 3: set foreground color</span>
+<span style="color:red;">&lt; 						case 3: if (mompos+1 &lt; momelem-&gt;digitcount){</span>
+<span style="color:red;">&lt; 										//printf(&quot;\nJLPOOLE %d fc = %d\n&quot;,__LINE__,fc);</span>
+<span style="color:red;">&lt; 										fc=momelem-&gt;digit[mompos+1];</span>
+<span style="color:red;">&lt; 										//printf(&quot;\nJLPOOLE %d digitcount = %d fc = %d mompos = %d\n&quot;,</span>
+<span style="color:red;">&lt; 										//		__LINE__,momelem-&gt;digitcount,fc,mompos);</span>
+<span style="color:red;">&lt; 								}</span>
+<span style="color:red;">&lt; 							            if (fc == 8){</span>
+<span style="color:red;">&lt; 							            	//printf(&quot;\nJLPOOLE %d: Flag of 8 \n&quot;,__LINE__);</span>
+<span style="color:red;">&lt; 							            	// we have an RGB flag, look to the next flag to determine</span>
+<span style="color:red;">&lt; 							            	// if 5 for 256 color table, or 2 for real RGB</span>
+<span style="color:red;">&lt; 							            	pelem momelem2=momelem-&gt;next;</span>
+<span style="color:red;">&lt; 							            	int mompos2 = 0;</span>
+<span style="color:red;">&lt; 							            	if (mompos2 &lt; momelem2-&gt;digitcount){</span>
+<span style="color:red;">&lt; 							            		//printf(&quot;JLPOOLE %d: Have 3+ \n&quot;,__LINE__);</span>
+<span style="color:red;">&lt; 							            		int rgbFlag = momelem2-&gt;digit[mompos2];</span>
+<span style="color:red;">&lt; 							            		//printf(&quot;JLPOOLE %d: rgbFlag = %d \n&quot;,__LINE__,rgbFlag);</span>
+<span style="color:red;">&lt; 							            	    // peak ahead to get the color code starting at position +5</span>
+<span style="color:red;">&lt; 							            	    if (rgbFlag ==  5){</span>
+<span style="color:red;">&lt; 							            	    	// we have a color table [3/4_bit]</span>
+<span style="color:red;">&lt; 							            	    	//printf(&quot;\nJLPOOLE %d: We have a flag of 5 \n&quot;,__LINE__);</span>
+<span style="color:red;">&lt; 							            	    	pelem momelem3=momelem2-&gt;next;</span>
+<span style="color:red;">&lt; 							            	    	int mompos3 = 0;</span>
+<span style="color:red;">&lt; 							            	    	//printf(&quot;About to call createInteger...\n&quot;);</span>
+<span style="color:red;">&lt; 							            	    	colorCode = createIntegerFromStructure(momelem3);</span>
+<span style="color:red;">&lt; 							            	    	//printf(&quot;After calling createInteger...\n&quot;);</span>
+<span style="color:red;">&lt; 							            	    }</span>
+<span style="color:red;">&lt; 							            	} else {</span>
+<span style="color:red;">&lt; 							            		//printf(&quot;JLPOOLE %d: NO Flag of 5 \n&quot;,__LINE__);</span>
+<span style="color:red;">&lt; 							            	}</span>
+<span style="color:red;">&lt; 							            	// dispose of the RGB field lest it be read</span>
+<span style="color:red;">&lt; 							            	// at the beginning of this switch statement and</span>
+<span style="color:red;">&lt; 							            	// then misinterpreted as a color setting code</span>
+<span style="color:red;">&lt; 							            	momelem-&gt;next=NULL;</span>
+<span style="color:red;">&lt; </span>
+<span style="color:red;">&lt; 							            }</span>
+<span style="color:red;">&lt; 										break;</span>
+<span style="color:red;">&lt; 						// Case 4: set background color</span>
+<span style="color:red;">&lt; 						case 4: if (mompos+1==momelem-&gt;digitcount)</span>
+<span style="color:red;">&lt; 											ul=1;</span>
+<span style="color:red;">&lt; 										else</span>
+<span style="color:red;">&lt; 											bc=momelem-&gt;digit[mompos+1];</span>
+<span style="color:red;">&lt; 										break;</span>
+<span style="color:red;">&lt; 						case 5: bl=1; break;</span>
+<span style="color:red;">&lt; 						case 7: //TODO: Inverse</span>
+<span style="color:red;">&lt; 										temp = bc;</span>
+<span style="color:red;">&lt; 										if (fc == -1 || fc == 9)</span>
+<span style="color:red;">&lt; 										{</span>
+<span style="color:red;">&lt; 											if (colorshema!=1)</span>
+<span style="color:red;">&lt; 												bc = 0;</span>
+<span style="color:red;">&lt; 											else</span>
+<span style="color:red;">&lt; 												bc = 7;</span>
+<span style="color:red;">&lt; 										}</span>
+<span style="color:red;">&lt; 										else</span>
+<span style="color:red;">&lt; 											bc = fc;</span>
+<span style="color:red;">&lt; 										if (temp == -1 || temp == 9)</span>
+<span style="color:red;">&lt; 										{</span>
+<span style="color:red;">&lt; 											if (colorshema!=1)</span>
+<span style="color:red;">&lt; 												fc = 7;</span>
+<span style="color:red;">&lt; 											else</span>
+<span style="color:red;">&lt; 												fc = 0;</span>
+<span style="color:red;">&lt; 										}</span>
+<span style="color:red;">&lt; 										else</span>
+<span style="color:red;">&lt; 											fc = temp;</span>
+<span style="color:red;">&lt; 										break;</span>
+---
+<span style="color:green;">&gt; 								case 0: // 0 - Reset all</span>
+<span style="color:green;">&gt; 									state = default_state;</span>
+<span style="color:green;">&gt; 									negative=0; special_char=0;</span>
+<span style="color:green;">&gt; 									break;</span>
+<span style="color:green;">&gt; </span>
+<span style="color:green;">&gt; 								case 1: // 1 - Enable Bold</span>
+<span style="color:green;">&gt; 									state.bold=1;</span>
+<span style="color:green;">&gt; 									break;</span>
+<span style="color:green;">&gt; </span>
+<span style="color:green;">&gt; 								case 3: // 3 - Enable Italic</span>
+<span style="color:green;">&gt; 									state.italic=1;</span>
+<span style="color:green;">&gt; 									break;</span>
+<span style="color:green;">&gt; </span>
+<span style="color:green;">&gt; 								case 4: // 4 - Enable underline</span>
+<span style="color:green;">&gt; 									state.underline=1;</span>
+<span style="color:green;">&gt; 									break;</span>
+<span style="color:green;">&gt; </span>
+<span style="color:green;">&gt; 								case 5: // 5 - Slow Blink</span>
+<span style="color:green;">&gt; 									state.blink=1;</span>
+<span style="color:green;">&gt; 									break;</span>
+<span style="color:green;">&gt; </span>
+<span style="color:green;">&gt; 								case 7: // 7 - Inverse video</span>
+<span style="color:green;">&gt; 									swapColors(&amp;state);</span>
+<span style="color:green;">&gt; 									negative = !negative;</span>
+<span style="color:green;">&gt; 									break;</span>
+<span style="color:green;">&gt; </span>
+<span style="color:green;">&gt; 								case 9: // 9 - Enable Crossed-out</span>
+<span style="color:green;">&gt; 									state.crossedout=1;</span>
+<span style="color:green;">&gt; 									break;</span>
+<span style="color:green;">&gt; </span>
+<span style="color:green;">&gt; 								case 21: // 21 - Reset bold</span>
+<span style="color:green;">&gt; 								case 22: // 22 - Not bold, not &quot;high intensity&quot; color</span>
+<span style="color:green;">&gt; 									state.bold=0;</span>
+<span style="color:green;">&gt; 									break;</span>
+<span style="color:green;">&gt; </span>
+<span style="color:green;">&gt; 								case 23: // 23 - Reset italic</span>
+<span style="color:green;">&gt; 									state.italic=0;</span>
+<span style="color:green;">&gt; 									break;</span>
+<span style="color:green;">&gt; </span>
+<span style="color:green;">&gt; 								case 24: // 23 - Reset underline</span>
+<span style="color:green;">&gt; 									state.underline=0;</span>
+<span style="color:green;">&gt; 									break;</span>
+<span style="color:green;">&gt; </span>
+<span style="color:green;">&gt; 								case 25: // 25 - Reset blink</span>
+<span style="color:green;">&gt; 									state.blink=0;</span>
+<span style="color:green;">&gt; 									break;</span>
+<span style="color:green;">&gt; </span>
+<span style="color:green;">&gt; 								case 27: // 27 - Reset Inverted</span>
+<span style="color:green;">&gt; 									if (negative)</span>
+<span style="color:green;">&gt; 									{</span>
+<span style="color:green;">&gt; 										swapColors(&amp;state); //7, 7X is not defined (and supported)</span>
+<span style="color:green;">&gt; 										negative = 0;</span>
+<span style="color:green;">&gt; 									}</span>
+<span style="color:green;">&gt; 									break;</span>
+<span style="color:green;">&gt; </span>
+<span style="color:green;">&gt; 								case 29: // 29 - Reset crossed-out</span>
+<span style="color:green;">&gt; 									state.crossedout=0;</span>
+<span style="color:green;">&gt; 									break;</span>
+<span style="color:green;">&gt; </span>
+<span style="color:green;">&gt; 								case 30:</span>
+<span style="color:green;">&gt; 								case 31:</span>
+<span style="color:green;">&gt; 								case 32:</span>
+<span style="color:green;">&gt; 								case 33:</span>
+<span style="color:green;">&gt; 								case 34:</span>
+<span style="color:green;">&gt; 								case 35:</span>
+<span style="color:green;">&gt; 								case 36:</span>
+<span style="color:green;">&gt; 								case 37:</span>
+<span style="color:green;">&gt; 								case 38:</span>
+<span style="color:green;">&gt; 								case 39: // 3X - Set foreground color</span>
+<span style="color:green;">&gt; 									if (negative == 0)</span>
+<span style="color:green;">&gt; 										state.fc=momelem-&gt;value-30;</span>
+<span style="color:green;">&gt; 									else</span>
+<span style="color:green;">&gt; 										state.bc=momelem-&gt;value-30;</span>
+<span style="color:green;">&gt; 									break;</span>
+<span style="color:green;">&gt; </span>
+<span style="color:green;">&gt; 								case 40:</span>
+<span style="color:green;">&gt; 								case 41:</span>
+<span style="color:green;">&gt; 								case 42:</span>
+<span style="color:green;">&gt; 								case 43:</span>
+<span style="color:green;">&gt; 								case 44:</span>
+<span style="color:green;">&gt; 								case 45:</span>
+<span style="color:green;">&gt; 								case 46:</span>
+<span style="color:green;">&gt; 								case 47:</span>
+<span style="color:green;">&gt; 								case 48:</span>
+<span style="color:green;">&gt; 								case 49: // 4X - Set background color</span>
+<span style="color:green;">&gt; 									if (negative == 0)</span>
+<span style="color:green;">&gt; 										state.bc=momelem-&gt;value-40;</span>
+<span style="color:green;">&gt; 									else</span>
+<span style="color:green;">&gt; 										state.fc=momelem-&gt;value-40;</span>
+<span style="color:green;">&gt; 									break;</span>
+<span style="color:teal;">547a648</span>
+<span style="color:green;">&gt; 							momelem=momelem-&gt;next;</span>
+<span style="color:teal;">549,564d649</span>
+<span style="color:red;">&lt; 						momelem=momelem-&gt;next;</span>
+<span style="color:red;">&lt; 					}</span>
+<span style="color:red;">&lt; 					deleteParse(elem);</span>
+<span style="color:red;">&lt; 				break;</span>
+<span style="color:red;">&lt; 				case 'H':</span>
+<span style="color:red;">&lt; 					if (htop_fix) //a little dirty ...</span>
+<span style="color:red;">&lt; 					{</span>
+<span style="color:red;">&lt; 						elem=parseInsert(buffer);</span>
+<span style="color:red;">&lt; 						pelem second=elem-&gt;next;</span>
+<span style="color:red;">&lt; 						if (second==NULL)</span>
+<span style="color:red;">&lt; 							second=elem;</span>
+<span style="color:red;">&lt; 						newline=second-&gt;digit[0]-1;</span>
+<span style="color:red;">&lt; 						if (second-&gt;digitcount&gt;1)</span>
+<span style="color:red;">&lt; 							newline=(newline+1)*10+second-&gt;digit[1]-1;</span>
+<span style="color:red;">&lt; 						if (second-&gt;digitcount&gt;2)</span>
+<span style="color:red;">&lt; 							newline=(newline+1)*10+second-&gt;digit[2]-1;</span>
+<span style="color:teal;">566,575c651,668</span>
+<span style="color:red;">&lt; 						if (newline&lt;line)</span>
+<span style="color:red;">&lt; 							line_break=1;</span>
+<span style="color:red;">&lt; 					}</span>
+<span style="color:red;">&lt; 				break;</span>
+<span style="color:red;">&lt; 			}</span>
+<span style="color:red;">&lt; 			if (htop_fix)</span>
+<span style="color:red;">&lt; 				if (line_break)</span>
+<span style="color:red;">&lt; 				{</span>
+<span style="color:red;">&lt; 					for (;line&lt;80;line++)</span>
+<span style="color:red;">&lt; 						printf(&quot; &quot;);</span>
+---
+<span style="color:green;">&gt; 					break;</span>
+<span style="color:green;">&gt; 					case 'H':</span>
+<span style="color:green;">&gt; 						if (opts.htop_fix) //a little dirty ...</span>
+<span style="color:green;">&gt; 						{</span>
+<span style="color:green;">&gt; 							elem=parseInsert(buffer);</span>
+<span style="color:green;">&gt; 							pelem second=elem-&gt;next;</span>
+<span style="color:green;">&gt; 							if (second==NULL)</span>
+<span style="color:green;">&gt; 								second=elem;</span>
+<span style="color:green;">&gt; 							newline=second-&gt;digit[0]-1;</span>
+<span style="color:green;">&gt; 							if (second-&gt;digitcount&gt;1)</span>
+<span style="color:green;">&gt; 								newline=(newline+1)*10+second-&gt;digit[1]-1;</span>
+<span style="color:green;">&gt; 							if (second-&gt;digitcount&gt;2)</span>
+<span style="color:green;">&gt; 								newline=(newline+1)*10+second-&gt;digit[2]-1;</span>
+<span style="color:green;">&gt; 							deleteParse(elem);</span>
+<span style="color:green;">&gt; 							if (newline&lt;line)</span>
+<span style="color:green;">&gt; 								opts.line_break=1;</span>
+<span style="color:green;">&gt; 						}</span>
+<span style="color:green;">&gt; 					break;</span>
+<span style="color:teal;">577,659c670,671</span>
+<span style="color:red;">&lt; 			//Checking the differences</span>
+<span style="color:red;">&lt; 			if ((fc!=ofc) || (bc!=obc) || (ul!=oul) || (bo!=obo) || (bl!=obl)) //ANY Change</span>
+<span style="color:red;">&lt; 			{</span>
+<span style="color:red;">&lt; 				if ((ofc!=-1) || (obc!=-1) || (oul!=0) || (obo!=0) || (obl!=0))</span>
+<span style="color:red;">&lt; 					printf(&quot;&lt;/span&gt;&quot;);</span>
+<span style="color:red;">&lt; 				if ((fc!=-1) || (bc!=-1) || (ul!=0) || (bo!=0) || (bl!=0))</span>
+<span style="color:red;">&lt; 				{</span>
+<span style="color:red;">&lt; 					if (stylesheet)</span>
+<span style="color:red;">&lt; 						printf(&quot;&lt;span class=\&quot;&quot;);</span>
+<span style="color:red;">&lt; 					else</span>
+<span style="color:red;">&lt; 						printf(&quot;&lt;span style=\&quot;&quot;);</span>
+<span style="color:red;">&lt; 					//printf(&quot;\nJLPOOLE %d: fc = %d \n&quot;,__LINE__,fc);</span>
+<span style="color:red;">&lt; 					char rgb[11];</span>
+<span style="color:red;">&lt; 					switch (fc)</span>
+<span style="color:red;">&lt; 					{</span>
+<span style="color:red;">&lt; 						case	0: if (stylesheet)</span>
+<span style="color:red;">&lt; 											 printf(&quot;dimgray &quot;);</span>
+<span style="color:red;">&lt; 										 else</span>
+<span style="color:red;">&lt; 											 printf(&quot;color:dimgray;&quot;);</span>
+<span style="color:red;">&lt; 										 break; //Black</span>
+<span style="color:red;">&lt; 						case	1: if (stylesheet)</span>
+<span style="color:red;">&lt; 											 printf(&quot;red &quot;);</span>
+<span style="color:red;">&lt; 										 else</span>
+<span style="color:red;">&lt; 											 printf(&quot;color:red;&quot;);</span>
+<span style="color:red;">&lt; 										 break; //Red</span>
+<span style="color:red;">&lt; 						case	2: if (stylesheet)</span>
+<span style="color:red;">&lt; 											 printf(&quot;green &quot;);</span>
+<span style="color:red;">&lt; 										 else if (colorshema!=1)</span>
+<span style="color:red;">&lt; 											 printf(&quot;color:green;&quot;);</span>
+<span style="color:red;">&lt; 										 else</span>
+<span style="color:red;">&lt; 											 printf(&quot;color:lime;&quot;);</span>
+<span style="color:red;">&lt; 										 break; //Green</span>
+<span style="color:red;">&lt; 						case	3: if (stylesheet)</span>
+<span style="color:red;">&lt; 											 printf(&quot;yellow &quot;);</span>
+<span style="color:red;">&lt; 										 else if (colorshema!=1)</span>
+<span style="color:red;">&lt; 											 printf(&quot;color:olive;&quot;);</span>
+<span style="color:red;">&lt; 										 else</span>
+<span style="color:red;">&lt; 											 printf(&quot;color:yellow;&quot;);</span>
+<span style="color:red;">&lt; 										 break; //Yellow</span>
+<span style="color:red;">&lt; 						case	4: if (stylesheet)</span>
+<span style="color:red;">&lt; 											 printf(&quot;blue &quot;);</span>
+<span style="color:red;">&lt; 										 else if (colorshema!=1)</span>
+<span style="color:red;">&lt; 											 printf(&quot;color:blue;&quot;);</span>
+<span style="color:red;">&lt; 										 else</span>
+<span style="color:red;">&lt; 											 printf(&quot;color:#3333FF;&quot;);</span>
+<span style="color:red;">&lt; 										 break; //Blue</span>
+<span style="color:red;">&lt; 						case	5: if (stylesheet)</span>
+<span style="color:red;">&lt; 											 printf(&quot;purple &quot;);</span>
+<span style="color:red;">&lt; 										 else if (colorshema!=1)</span>
+<span style="color:red;">&lt; 											 printf(&quot;color:purple;&quot;);</span>
+<span style="color:red;">&lt; 										 else</span>
+<span style="color:red;">&lt; 											 printf(&quot;color:fuchsia;&quot;);</span>
+<span style="color:red;">&lt; 										 break; //Purple</span>
+<span style="color:red;">&lt; 						case	6: if (stylesheet)</span>
+<span style="color:red;">&lt; 											 printf(&quot;cyan &quot;);</span>
+<span style="color:red;">&lt; 										 else if (colorshema!=1)</span>
+<span style="color:red;">&lt; 											 printf(&quot;color:teal;&quot;);</span>
+<span style="color:red;">&lt; 										 else</span>
+<span style="color:red;">&lt; 											 printf(&quot;color:aqua;&quot;);</span>
+<span style="color:red;">&lt; 										 break; //Cyan</span>
+<span style="color:red;">&lt; 						case	7: if (stylesheet)</span>
+<span style="color:red;">&lt; 											 printf(&quot;white &quot;);</span>
+<span style="color:red;">&lt; 										 else if (colorshema!=1)</span>
+<span style="color:red;">&lt; 											 printf(&quot;color:gray;&quot;);</span>
+<span style="color:red;">&lt; 										 else</span>
+<span style="color:red;">&lt; 											 printf(&quot;color:white;&quot;);</span>
+<span style="color:red;">&lt; 										 break; //White</span>
+<span style="color:red;">&lt; 						case    8:</span>
+<span style="color:red;">&lt;                                 // the &quot;196&quot; is a test, need to have a variable</span>
+<span style="color:red;">&lt; 							    // here that represents the N of the code 8 trigger.</span>
+<span style="color:red;">&lt; 						        make_rgb(colorCode,rgb);</span>
+<span style="color:red;">&lt; 						        printf(&quot;color: rgb(%s);&quot;,rgb);</span>
+<span style="color:red;">&lt; 						        break;</span>
+<span style="color:red;">&lt; </span>
+<span style="color:red;">&lt; 						case	9: if (stylesheet)</span>
+<span style="color:red;">&lt; 											 printf(&quot;reset &quot;);</span>
+<span style="color:red;">&lt; 										 else if (colorshema!=1)</span>
+<span style="color:red;">&lt; 											 printf(&quot;color:black;&quot;);</span>
+<span style="color:red;">&lt; 										 else</span>
+<span style="color:red;">&lt; 											 printf(&quot;color:white;&quot;);</span>
+<span style="color:red;">&lt; 										 break; //Reset</span>
+<span style="color:red;">&lt; 					}</span>
+<span style="color:red;">&lt; 					switch (bc)</span>
+---
+<span style="color:green;">&gt; 				if (opts.htop_fix)</span>
+<span style="color:green;">&gt; 					if (opts.line_break)</span>
+<span style="color:teal;">661,721c673,674</span>
+<span style="color:red;">&lt; 						case	0: if (stylesheet)</span>
+<span style="color:red;">&lt; 											 printf(&quot;bg-black &quot;);</span>
+<span style="color:red;">&lt; 										 else</span>
+<span style="color:red;">&lt; 											 printf(&quot;background-color:black;&quot;);</span>
+<span style="color:red;">&lt; 										 break; //Black</span>
+<span style="color:red;">&lt; 						case	1: if (stylesheet)</span>
+<span style="color:red;">&lt; 											 printf(&quot;bg-red &quot;);</span>
+<span style="color:red;">&lt; 										 else</span>
+<span style="color:red;">&lt; 											 printf(&quot;background-color:red;&quot;);</span>
+<span style="color:red;">&lt; 										 break; //Red</span>
+<span style="color:red;">&lt; 						case	2: if (stylesheet)</span>
+<span style="color:red;">&lt; 											 printf(&quot;bg-green &quot;);</span>
+<span style="color:red;">&lt; 										 else if (colorshema!=1)</span>
+<span style="color:red;">&lt; 											 printf(&quot;background-color:green;&quot;);</span>
+<span style="color:red;">&lt; 										 else</span>
+<span style="color:red;">&lt; 											 printf(&quot;background-color:lime;&quot;);</span>
+<span style="color:red;">&lt; 										 break; //Green</span>
+<span style="color:red;">&lt; 						case	3: if (stylesheet)</span>
+<span style="color:red;">&lt; 											 printf(&quot;bg-yellow &quot;);</span>
+<span style="color:red;">&lt; 										 else if (colorshema!=1)</span>
+<span style="color:red;">&lt; 											 printf(&quot;background-color:olive;&quot;);</span>
+<span style="color:red;">&lt; 										 else</span>
+<span style="color:red;">&lt; 											 printf(&quot;background-color:yellow;&quot;);</span>
+<span style="color:red;">&lt; 										 break; //Yellow</span>
+<span style="color:red;">&lt; 						case	4: if (stylesheet)</span>
+<span style="color:red;">&lt; 											 printf(&quot;bg-blue &quot;);</span>
+<span style="color:red;">&lt; 										 else if (colorshema!=1)</span>
+<span style="color:red;">&lt; 											 printf(&quot;background-color:blue;&quot;);</span>
+<span style="color:red;">&lt; 										 else</span>
+<span style="color:red;">&lt; 											 printf(&quot;background-color:#3333FF;&quot;);</span>
+<span style="color:red;">&lt; 										 break; //Blue</span>
+<span style="color:red;">&lt; 						case	5: if (stylesheet)</span>
+<span style="color:red;">&lt; 											 printf(&quot;bg-purple &quot;);</span>
+<span style="color:red;">&lt; 										 else if (colorshema!=1)</span>
+<span style="color:red;">&lt; 											 printf(&quot;background-color:purple;&quot;);</span>
+<span style="color:red;">&lt; 										 else</span>
+<span style="color:red;">&lt; 											 printf(&quot;background-color:fuchsia;&quot;);</span>
+<span style="color:red;">&lt; 										 break; //Purple</span>
+<span style="color:red;">&lt; 						case	6: if (stylesheet)</span>
+<span style="color:red;">&lt; 											 printf(&quot;bg-cyan &quot;);</span>
+<span style="color:red;">&lt; 										 else if (colorshema!=1)</span>
+<span style="color:red;">&lt; 											 printf(&quot;background-color:teal;&quot;);</span>
+<span style="color:red;">&lt; 										 else</span>
+<span style="color:red;">&lt; 											 printf(&quot;background-color:aqua;&quot;);</span>
+<span style="color:red;">&lt; 										 break; //Cyan</span>
+<span style="color:red;">&lt; 						case	7: if (stylesheet)</span>
+<span style="color:red;">&lt; 											 printf(&quot;bg-white &quot;);</span>
+<span style="color:red;">&lt; 										 else if (colorshema!=1)</span>
+<span style="color:red;">&lt; 											 printf(&quot;background-color:gray;&quot;);</span>
+<span style="color:red;">&lt; 										 else</span>
+<span style="color:red;">&lt; 											 printf(&quot;background-color:white;&quot;);</span>
+<span style="color:red;">&lt; 										 break; //White</span>
+<span style="color:red;">&lt; 						case	9: if (stylesheet)</span>
+<span style="color:red;">&lt; 											 printf(&quot;bg-reset &quot;);</span>
+<span style="color:red;">&lt; 										 else if (colorshema==1)</span>
+<span style="color:red;">&lt; 											 printf(&quot;background-color:black;&quot;);</span>
+<span style="color:red;">&lt; 										 else if (colorshema==2)</span>
+<span style="color:red;">&lt; 											 printf(&quot;background-color:pink;&quot;);</span>
+<span style="color:red;">&lt; 										 else</span>
+<span style="color:red;">&lt; 											 printf(&quot;background-color:white;&quot;);</span>
+<span style="color:red;">&lt; 										 break; //Reset</span>
+---
+<span style="color:green;">&gt; 						for (;line&lt;80;line++)</span>
+<span style="color:green;">&gt; 							printf(&quot; &quot;);</span>
+<span style="color:teal;">723,740c676,686</span>
+<span style="color:red;">&lt; 					if (ul)</span>
+<span style="color:red;">&lt;           {</span>
+<span style="color:red;">&lt; 						if (stylesheet)</span>
+<span style="color:red;">&lt; 							printf(&quot;underline &quot;);</span>
+<span style="color:red;">&lt; 						else</span>
+<span style="color:red;">&lt; 							printf(&quot;text-decoration:underline;&quot;);</span>
+<span style="color:red;">&lt;           }</span>
+<span style="color:red;">&lt; 					if (bo)</span>
+<span style="color:red;">&lt;           {</span>
+<span style="color:red;">&lt; 						if (stylesheet)</span>
+<span style="color:red;">&lt; 							printf(&quot;bold &quot;);</span>
+<span style="color:red;">&lt; 						else</span>
+<span style="color:red;">&lt; 							printf(&quot;font-weight:bold;&quot;);</span>
+<span style="color:red;">&lt;           }</span>
+<span style="color:red;">&lt; 					if (bl)</span>
+<span style="color:red;">&lt;           {</span>
+<span style="color:red;">&lt; 						if (stylesheet)</span>
+<span style="color:red;">&lt; 							printf(&quot;blink &quot;);</span>
+---
+<span style="color:green;">&gt; 				//Checking the differences</span>
+<span style="color:green;">&gt; 				if ( statesDiffer(&amp;state, &amp;oldstate) ) //ANY Change</span>
+<span style="color:green;">&gt; 				{</span>
+<span style="color:green;">&gt; 					// If old state was different than the default one, close the current &lt;span&gt;</span>
+<span style="color:green;">&gt; 					if (statesDiffer(&amp;oldstate, &amp;default_state))</span>
+<span style="color:green;">&gt; 						printf(&quot;&lt;/span&gt;&quot;);</span>
+<span style="color:green;">&gt; 					// Open new &lt;span&gt; if current state differs from the default one</span>
+<span style="color:green;">&gt; 					if (statesDiffer(&amp;state, &amp;default_state))</span>
+<span style="color:green;">&gt; 						{</span>
+<span style="color:green;">&gt; 						if (opts.stylesheet)</span>
+<span style="color:green;">&gt; 							printf(&quot;&lt;span class=\&quot;&quot;);</span>
+<span style="color:teal;">742,743c688</span>
+<span style="color:red;">&lt; 							printf(&quot;text-decoration:blink;&quot;);</span>
+<span style="color:red;">&lt;           }</span>
+---
+<span style="color:green;">&gt; 							printf(&quot;&lt;span style=\&quot;&quot;);</span>
+<span style="color:teal;">745c690,729</span>
+<span style="color:red;">&lt; 					printf(&quot;\&quot;&gt;&quot;);</span>
+---
+<span style="color:green;">&gt; 						if(state.fc&gt;=0 &amp;&amp; state.fc&lt;=9) printf(&quot;%s&quot;, fcstyle[state.fc]);</span>
+<span style="color:green;">&gt; 						if(state.bc&gt;=0 &amp;&amp; state.bc&lt;=9) printf(&quot;%s&quot;, bcstyle[state.bc]);</span>
+<span style="color:green;">&gt; </span>
+<span style="color:green;">&gt; 						if (state.underline)</span>
+<span style="color:green;">&gt; 						{</span>
+<span style="color:green;">&gt; 							if (opts.stylesheet)</span>
+<span style="color:green;">&gt; 								printf(&quot;underline &quot;);</span>
+<span style="color:green;">&gt; 							else</span>
+<span style="color:green;">&gt; 								printf(&quot;text-decoration:underline;&quot;);</span>
+<span style="color:green;">&gt; 						}</span>
+<span style="color:green;">&gt; 						if (state.bold)</span>
+<span style="color:green;">&gt; 						{</span>
+<span style="color:green;">&gt; 							if (opts.stylesheet)</span>
+<span style="color:green;">&gt; 								printf(&quot;bold &quot;);</span>
+<span style="color:green;">&gt; 							else</span>
+<span style="color:green;">&gt; 								printf(&quot;font-weight:bold;&quot;);</span>
+<span style="color:green;">&gt; 						}</span>
+<span style="color:green;">&gt; 						if (state.italic)</span>
+<span style="color:green;">&gt; 						{</span>
+<span style="color:green;">&gt; 							if (opts.stylesheet)</span>
+<span style="color:green;">&gt; 								printf(&quot;italic &quot;);</span>
+<span style="color:green;">&gt; 							else</span>
+<span style="color:green;">&gt; 								printf(&quot;font-weight:italic;&quot;);</span>
+<span style="color:green;">&gt; 						}</span>
+<span style="color:green;">&gt; 						if (state.blink)</span>
+<span style="color:green;">&gt; 						{</span>
+<span style="color:green;">&gt; 							if (opts.stylesheet)</span>
+<span style="color:green;">&gt; 								printf(&quot;blink &quot;);</span>
+<span style="color:green;">&gt; 							else</span>
+<span style="color:green;">&gt; 								printf(&quot;text-decoration:blink;&quot;);</span>
+<span style="color:green;">&gt; 						}</span>
+<span style="color:green;">&gt; 						if (state.crossedout)</span>
+<span style="color:green;">&gt; 						{</span>
+<span style="color:green;">&gt; 							if (opts.stylesheet)</span>
+<span style="color:green;">&gt; 								printf(&quot;crossed-out &quot;);</span>
+<span style="color:green;">&gt; 							else</span>
+<span style="color:green;">&gt; 								printf(&quot;text-decoration:line-through;&quot;);</span>
+<span style="color:green;">&gt; 						}</span>
+<span style="color:green;">&gt; 						printf(&quot;\&quot;&gt;&quot;);</span>
+<span style="color:green;">&gt; 					}</span>
+<span style="color:teal;">747a732,749</span>
+<span style="color:green;">&gt; 			else</span>
+<span style="color:green;">&gt; 			if ( c == ']' ) //Operating System Command (OSC), ignoring for now</span>
+<span style="color:green;">&gt; 			{</span>
+<span style="color:green;">&gt; 				while (c != 2 &amp;&amp; c != 7) //STX and BEL end an OSC.</span>
+<span style="color:green;">&gt; 					c = getNextChar(fp);</span>
+<span style="color:green;">&gt; 			}</span>
+<span style="color:green;">&gt; 			else</span>
+<span style="color:green;">&gt; 			if ( c == '(' ) //Some VT100 ESC sequences, which should be ignored</span>
+<span style="color:green;">&gt; 			{</span>
+<span style="color:green;">&gt; 				//Reading (and ignoring!) one character should work for &quot;(B&quot;</span>
+<span style="color:green;">&gt; 				//(US ASCII character set), &quot;(A&quot; (UK ASCII character set) and</span>
+<span style="color:green;">&gt; 				//&quot;(0&quot; (Graphic). This whole &quot;standard&quot; is fucked up. Really...</span>
+<span style="color:green;">&gt; 				c = getNextChar(fp);</span>
+<span style="color:green;">&gt; 				if (c == '0') //we do not ignore ESC(0 ;)</span>
+<span style="color:green;">&gt; 					special_char=1;</span>
+<span style="color:green;">&gt; 				else</span>
+<span style="color:green;">&gt; 					special_char=0;</span>
+<span style="color:green;">&gt; 			}</span>
+<span style="color:teal;">750c752</span>
+<span style="color:red;">&lt; 		if (c==13 &amp;&amp; htop_fix)</span>
+---
+<span style="color:green;">&gt; 		if (c==13 &amp;&amp; opts.htop_fix)</span>
+<span style="color:teal;">761c763</span>
+<span style="color:red;">&lt; 			if (line_break)</span>
+---
+<span style="color:green;">&gt; 			if (opts.line_break)</span>
+<span style="color:teal;">765c767</span>
+<span style="color:red;">&lt; 				line_break=0;</span>
+---
+<span style="color:green;">&gt; 				opts.line_break=0;</span>
+<span style="color:teal;">776a779,781</span>
+<span style="color:green;">&gt; 			//I want fall throught, so I ignore the gcc warning for this switch</span>
+<span style="color:green;">&gt; 			#pragma GCC diagnostic push</span>
+<span style="color:green;">&gt; 			#pragma GCC diagnostic ignored &quot;-Wimplicit-fallthrough=&quot;</span>
+<span style="color:teal;">780c785</span>
+<span style="color:red;">&lt; 				case '\&quot;': printf(&quot;&amp;quot;&quot;); break;</span>
+---
+<span style="color:green;">&gt; 				case '\&quot;':	printf(&quot;&amp;quot;&quot;); break;</span>
+<span style="color:teal;">783,785c788,795</span>
+<span style="color:red;">&lt; 				case '\n':case 13: momline++;</span>
+<span style="color:red;">&lt; 									 line=0;</span>
+<span style="color:red;">&lt; 				default:	 printf(&quot;%c&quot;,c);</span>
+---
+<span style="color:green;">&gt; 				case '\n':case 13:</span>
+<span style="color:green;">&gt; 					momline++;</span>
+<span style="color:green;">&gt; 					line=0;</span>
+<span style="color:green;">&gt; 				default:</span>
+<span style="color:green;">&gt; 					if (special_char)</span>
+<span style="color:green;">&gt; 						printf(&quot;%s&quot;,ansi_vt220_character_set[((int)c+32) &amp; 255]);</span>
+<span style="color:green;">&gt; 					else</span>
+<span style="color:green;">&gt; 						printf(&quot;%c&quot;,c);</span>
+<span style="color:teal;">787c797,798</span>
+<span style="color:red;">&lt; 			if (iso&gt;0) //only at ISOS</span>
+---
+<span style="color:green;">&gt; 			#pragma GCC diagnostic pop</span>
+<span style="color:green;">&gt; 			if (opts.iso&gt;0) //only at ISOS</span>
+<span style="color:teal;">802,803c813,814</span>
+<span style="color:red;">&lt; 	//Footer</span>
+<span style="color:red;">&lt; 	if ((fc!=-1) || (bc!=-1) || (ul!=0) || (bo!=0) || (bl!=0))</span>
+---
+<span style="color:green;">&gt; 	// If current state is different than the default, there is a &lt;span&gt; open - close it</span>
+<span style="color:green;">&gt; 	if (statesDiffer(&amp;state, &amp;default_state))</span>
+<span style="color:teal;">806c817,818</span>
+<span style="color:red;">&lt; 	if (no_header == 0)</span>
+---
+<span style="color:green;">&gt; 	//Footer</span>
+<span style="color:green;">&gt; 	if (opts.no_header == 0)</span>
+</pre>
+</body>
+</html>

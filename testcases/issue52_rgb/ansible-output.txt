@@ -1,0 +1,85 @@
+Script started on 2018-09-28 13:58:09-07:00
+ffmpeg version 4.0.2 Copyright (c) 2000-2018 the FFmpeg developers
+  built with gcc 7.3.0 (Gentoo 7.3.0-r3 p1.4)
+  configuration: --prefix=/usr --libdir=/usr/lib64 --shlibdir=/usr/lib64 --docdir=/usr/share/doc/ffmpeg-4.0.2/html --mandir=/usr/share/man --enable-shared --cc=x86_64-pc-linux-gnu-gcc --cxx=x86_64-pc-linux-gnu-g++ --ar=x86_64-pc-linux-gnu-ar --optflags='-march=native -O2 -pipe' --disable-static --enable-avfilter --enable-avresample --disable-stripping --enable-nonfree --disable-indev=v4l2 --disable-outdev=v4l2 --disable-indev=alsa --disable-indev=oss --disable-indev=jack --disable-outdev=alsa --disable-outdev=oss --enable-bzlib --disable-runtime-cpudetect --disable-debug --disable-gcrypt --disable-gnutls --disable-gmp --enable-gpl --enable-hardcoded-tables --enable-iconv --disable-libtls --disable-lzma --enable-network --disable-opencl --enable-openssl --enable-postproc --disable-libsmbclient --enable-ffplay --enable-sdl2 --disable-vaapi --disable-vdpau --enable-xlib --disable-libxcb --disable-libxcb-shm --disable-libxcb-xfixes --enable-zlib --disable-libcdio --disable-libiec61883 --disable-libdc1394 --disable-libcaca --disable-openal --disable-opengl --disable-libv4l2 --disable-libpulse --disable-libdrm --disable-libopencore-amrwb --disable-libopencore-amrnb --disable-libcodec2 --disable-libfdk-aac --disable-libopenjpeg --disable-libbluray --disable-libcelt --disable-libgme --disable-libgsm --disable-mmal --disable-libmodplug --disable-libopus --disable-libilbc --disable-librtmp --disable-libssh --disable-libspeex --disable-librsvg --disable-ffnvcodec --disable-libvorbis --disable-libvpx --disable-libzvbi --disable-appkit --disable-libbs2b --disable-chromaprint --disable-libflite --disable-frei0r --disable-libfribidi --disable-fontconfig --disable-ladspa --disable-libass --disable-lv2 --disable-libfreetype --disable-librubberband --disable-libzmq --disable-libzimg --disable-libsoxr --enable-pthreads --disable-libvo-amrwbenc --enable-libmp3lame --disable-libkvazaar --disable-libaom --enable-libopenh264 --disable-libsnappy --disable-libtheora --disable-libtwolame --disable-libwavpack --disable-libwebp --enable-libx264 --enable-libx265 --enable-libxvid --disable-gnutls --disable-armv5te --disable-armv6 --disable-armv6t2 --disable-neon --disable-vfp --disable-vfpv3 --disable-armv8 --disable-mipsdsp --disable-mipsdspr2 --disable-mipsfpu --disable-altivec --disable-amd3dnow --disable-amd3dnowext --disable-aesni --disable-avx --disable-avx2 --disable-fma3 --disable-fma4 --disable-xop --cpu=host --disable-doc --disable-htmlpages --enable-manpages
+  libavutil      56. 14.100 / 56. 14.100
+  libavcodec     58. 18.100 / 58. 18.100
+  libavformat    58. 12.100 / 58. 12.100
+  libavdevice    58.  3.100 / 58.  3.100
+  libavfilter     7. 16.100 /  7. 16.100
+  libavresample   4.  0.  0 /  4.  0.  0
+  libswscale      5.  1.100 /  5.  1.100
+  libswresample   3.  1.100 /  3.  1.100
+  libpostproc    55.  1.100 / 55.  1.100
+[48;5;0m[38;5;207m[rtsp @ 0x558f9c984a50] [0m[48;5;0m[38;5;226mmax delay reached. need to consume packet
+[0m[48;5;0m[38;5;207m[rtsp @ 0x558f9c984a50] [0m[48;5;0m[38;5;226mRTP: missed 193 packets
+[0m[48;5;0m[38;5;39m[h264 @ 0x558f9c987f30] [0m[48;5;0m[38;5;196merror while decoding MB 128 28, bytestream -11
+[0m[48;5;0m[38;5;39m[h264 @ 0x558f9c987f30] [0mconcealing 9841 DC, 9841 AC, 9841 MV errors in P frame
+[48;5;0m[38;5;207m[rtsp @ 0x558f9c984a50] [0m[48;5;0m[38;5;226mmax delay reached. need to consume packet
+[0m[48;5;0m[38;5;207m[rtsp @ 0x558f9c984a50] [0m[48;5;0m[38;5;226mRTP: missed 57 packets
+[0m[48;5;0m[38;5;39m[h264 @ 0x558f9c987f30] [0mconcealing 4576 DC, 4576 AC, 4576 MV errors in P frame
+[48;5;0m[38;5;207m[rtsp @ 0x558f9c984a50] [0m[48;5;0m[38;5;226mmax delay reached. need to consume packet
+[0m[48;5;0m[38;5;207m[rtsp @ 0x558f9c984a50] [0m[48;5;0m[38;5;226mRTP: missed 491 packets
+[0m[48;5;0m[38;5;207m[rtsp @ 0x558f9c984a50] [0m[48;5;0m[38;5;226mmax delay reached. need to consume packet
+[0m[48;5;0m[38;5;207m[rtsp @ 0x558f9c984a50] [0m[48;5;0m[38;5;226mRTP: missed 74 packets
+[0m[48;5;0m[38;5;39m[h264 @ 0x558f9c987f30] [0m[48;5;0m[38;5;196mleft block unavailable for requested intra mode
+[0m[48;5;0m[38;5;39m[h264 @ 0x558f9c987f30] [0m[48;5;0m[38;5;196merror while decoding MB 0 84, bytestream 1023
+[0m[48;5;0m[38;5;39m[h264 @ 0x558f9c987f30] [0mconcealing 1009 DC, 1009 AC, 1009 MV errors in P frame
+[48;5;0m[38;5;207m[rtsp @ 0x558f9c984a50] [0m[48;5;0m[38;5;226mmax delay reached. need to consume packet
+[0m[48;5;0m[38;5;207m[rtsp @ 0x558f9c984a50] [0m[48;5;0m[38;5;226mRTP: missed 208 packets
+[0mInput #0, rtsp, from 'rtsp://admin:@192.168.1.49:554/h264Preview_01_main':
+  Metadata:
+    title           : Session streamed by "preview"
+    comment         : h264Preview_01_main
+  Duration: N/A, start: 0.000000, bitrate: N/A
+    Stream #0:0: Video: h264 (Main), yuv420p(progressive), 2560x1440, 30 tbr, 90k tbn, 180k tbc
+    Stream #0:1: Audio: aac (LC), 16000 Hz, mono, fltp
+File '/tmp/video/test.mp4' already exists. Overwrite ? [y/N] y
+Stream mapping:
+  Stream #0:0 -> #0:0 (h264 (native) -> h264 (libx264))
+  Stream #0:1 -> #0:1 (aac (native) -> aac (native))
+Press [q] to stop, [?] for help
+[48;5;0m[38;5;39m[h264 @ 0x558f9cf3b430] [0m[48;5;0m[38;5;196merror while decoding MB 128 28, bytestream -11
+[0m[48;5;0m[38;5;39m[h264 @ 0x558f9cf3b430] [0mconcealing 9841 DC, 9841 AC, 9841 MV errors in P frame
+[48;5;0m[38;5;51m[libx264 @ 0x558f9ca1b380] [0musing cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2
+[48;5;0m[38;5;51m[libx264 @ 0x558f9ca1b380] [0mprofile High, level 5.0
+[48;5;0m[38;5;51m[libx264 @ 0x558f9ca1b380] [0m264 - core 152 - H.264/MPEG-4 AVC codec - Copyleft 2003-2017 - http://www.videolan.org/x264.html - options: cabac=1 ref=3 deblock=1:0:0 analyse=0x3:0x113 me=hex subme=7 psy=1 psy_rd=1.00:0.00 mixed_ref=1 me_range=16 chroma_me=1 trellis=1 8x8dct=1 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=-2 threads=6 lookahead_threads=1 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=3 b_pyramid=2 b_adapt=1 b_bias=0 direct=1 weightb=1 open_gop=0 weightp=2 keyint=250 keyint_min=25 scenecut=40 intra_refresh=0 rc_lookahead=40 rc=crf mbtree=1 crf=23.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 ip_ratio=1.40 aq=1:1.00
+Output #0, mp4, to '/tmp/video/test.mp4':
+  Metadata:
+    title           : Session streamed by "preview"
+    comment         : h264Preview_01_main
+    encoder         : Lavf58.12.100
+    Stream #0:0: Video: h264 (libx264) (avc1 / 0x31637661), yuv420p, 2560x1440, q=-1--1, 30 fps, 15360 tbn, 30 tbc
+    Metadata:
+      encoder         : Lavc58.18.100 libx264
+    Side data:
+      cpb: bitrate max/min/avg: 0/0/0 buffer size: 0 vbv_delay: -1
+    Stream #0:1: Audio: aac (LC) (mp4a / 0x6134706D), 16000 Hz, mono, fltp, 69 kb/s
+    Metadata:
+      encoder         : Lavc58.18.100 aac
+[48;5;0m[38;5;39m[h264 @ 0x558f9c9f4d90] [0mconcealing 4576 DC, 4576 AC, 4576 MV errors in P frame
+[48;5;0m[38;5;51m[aac @ 0x558f9c9e9c30] [0m[48;5;0m[38;5;226mQueue input is backward in time
+[0mframe=    1 fps=1.0 q=0.0 size=       0kB time=00:00:00.64 bitrate=   0.6kbits/s speed=0.635x    [48;5;0m[38;5;213m[mp4 @ 0x558f9c9f3160] [0m[48;5;0m[38;5;226mNon-monotonous DTS in output stream 0:1; previous: 10240, current: 9794; [0m[48;5;0m[38;5;226mchanging to 10241. This may result in incorrect timestamps in the output file.
+[0m[48;5;0m[38;5;39m[h264 @ 0x558f9ca19c10] [0m[48;5;0m[38;5;196mleft block unavailable for requested intra mode
+[0m[48;5;0m[38;5;39m[h264 @ 0x558f9ca19c10] [0m[48;5;0m[38;5;196merror while decoding MB 0 84, bytestream 1023
+[0m[48;5;0m[38;5;39m[h264 @ 0x558f9ca19c10] [0mconcealing 1009 DC, 1009 AC, 1009 MV errors in P frame
+frame=   17 fps=8.3 q=0.0 size=       0kB time=00:00:01.50 bitrate=   0.3kbits/s dup=12 drop=0 speed=0.737x    [48;5;0m[38;5;39m[h264 @ 0x558f9c9e65b0] [0mconcealing 4 DC, 4 AC, 4 MV errors in P frame
+frame=   46 fps= 12 q=0.0 size=       0kB time=00:00:01.89 bitrate=   0.2kbits/s dup=38 drop=0 speed=0.482x    frame=   46 fps=6.3 q=0.0 size=       0kB time=00:00:01.95 bitrate=   0.2kbits/s dup=38 drop=0 speed=0.267x    frame=   60 fps=3.6 q=29.0 size=     256kB time=00:00:01.95 bitrate=1072.3kbits/s dup=48 drop=0 speed=0.117x    frame=   62 fps=3.4 q=29.0 size=     512kB time=00:00:02.08 bitrate=2012.7kbits/s dup=48 drop=0 speed=0.116x    frame=   63 fps=3.3 q=29.0 size=     512kB time=00:00:02.08 bitrate=2012.7kbits/s dup=48 drop=0 speed=0.108x    frame=   64 fps=3.2 q=29.0 size=     512kB time=00:00:02.08 bitrate=2012.7kbits/s dup=48 drop=0 speed=0.104x    frame=   66 fps=3.2 q=29.0 size=     512kB time=00:00:02.21 bitrate=1896.2kbits/s dup=48 drop=0 speed=0.106x    frame=   67 fps=3.1 q=29.0 size=     512kB time=00:00:02.21 bitrate=1896.2kbits/s dup=48 drop=0 speed=0.102x    frame=   67 fps=3.0 q=29.0 size=     512kB time=00:00:02.27 bitrate=1842.9kbits/s dup=48 drop=0 speed=0.102x    frame=   69 fps=2.8 q=29.0 size=     512kB time=00:00:02.34 bitrate=1792.5kbits/s dup=48 drop=0 speed=0.0963x    frame=   70 fps=2.8 q=29.0 size=     512kB time=00:00:02.34 bitrate=1792.5kbits/s dup=48 drop=0 speed=0.0943x    frame=   71 fps=2.8 q=29.0 size=     512kB time=00:00:02.34 bitrate=1792.5kbits/s dup=48 drop=0 speed=0.0924x    frame=   73 fps=2.7 q=29.0 size=     512kB time=00:00:02.53 bitrate=1656.6kbits/s dup=48 drop=0 speed=0.0944x    [48;5;0m[38;5;207m[rtsp @ 0x558f9c984a50] [0m[48;5;0m[38;5;226mmax delay reached. need to consume packet
+[0m[48;5;0m[38;5;207m[rtsp @ 0x558f9c984a50] [0m[48;5;0m[38;5;226mRTP: missed -45173 packets
+[0m[48;5;0m[38;5;207m[rtsp @ 0x558f9c984a50] [0m[48;5;0m[38;5;196mRTP: PT=60: bad cseq 0549 expected=b5be
+[0m[48;5;0m[38;5;207m[rtsp @ 0x558f9c984a50] [0m[48;5;0m[38;5;226mmax delay reached. need to consume packet
+[0m[48;5;0m[38;5;207m[rtsp @ 0x558f9c984a50] [0m[48;5;0m[38;5;226mRTP: missed -45172 packets
+[0m[48;5;0m[38;5;207m[rtsp @ 0x558f9c984a50] [0m[48;5;0m[38;5;226mmax delay reached. need to consume packet
+[0m[48;5;0m[38;5;207m[rtsp @ 0x558f9c984a50] [0m[48;5;0m[38;5;226mRTP: missed 837 packets
+[0m[48;5;0m[38;5;39m[h264 @ 0x558f9c9e65b0] [0mconcealing 7879 DC, 7879 AC, 7879 MV errors in P frame
+frame=   75 fps=2.6 q=29.0 size=     512kB time=00:00:04.19 bitrate= 999.6kbits/s dup=48 drop=0 speed=0.148x    frame=   76 fps=2.6 q=29.0 size=     512kB time=00:00:04.19 bitrate= 999.6kbits/s dup=48 drop=0 speed=0.143x    frame=   78 fps=2.6 q=29.0 size=     512kB time=00:00:04.19 bitrate= 999.6kbits/s dup=48 drop=0 speed=0.139x    [48;5;0m[38;5;207m[rtsp @ 0x558f9c984a50] [0m[48;5;0m[38;5;226mmax delay reached. need to consume packet
+[0m[48;5;0m[38;5;207m[rtsp @ 0x558f9c984a50] [0m[48;5;0m[38;5;226mRTP: missed 428 packets
+[0mframe=   78 fps=2.5 q=29.0 size=     512kB time=00:00:04.26 bitrate= 984.6kbits/s dup=48 drop=0 speed=0.138x    [48;5;0m[38;5;207m[rtsp @ 0x558f9c984a50] [0m[48;5;0m[38;5;226mmax delay reached. need to consume packet
+[0m[48;5;0m[38;5;207m[rtsp @ 0x558f9c984a50] [0m[48;5;0m[38;5;226mRTP: missed 2787 packets
+[0m[48;5;0m[38;5;39m[h264 @ 0x558f9c9e65b0] [0m[48;5;0m[38;5;196merror while decoding MB 74 88, bytestream -5
+[0m[48;5;0m[38;5;39m[h264 @ 0x558f9c9e65b0] [0mconcealing 295 DC, 295 AC, 295 MV errors in P frame
+
+
+
+^C
+

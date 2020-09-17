@@ -1,0 +1,20 @@
+[?25l[[90m..................[0m] - : [32minfo[0m [35musing[0m node@v6.9.2[K
+[[90m..................[0m] - : [32minfo[0m [35musing[0m node@v6.9.2[K
+
+[[90m07:08:03[39m] Requiring external module [35mbabel-register[39m
+[[90m07:08:05[39m] Starting '[36mtemplates[39m'...
+[[90m07:08:05[39m] Finished '[36mclean[39m' after [35m368 ms[39m
+[[90m07:08:05[39m] Starting '[36mcopy[39m'...
+[[34mBS[39m] [1mAccess URLs:[22m
+[90m --------------------------------------[39m
+       Local: [35mhttp://localhost:4000[39m
+    External: [35mhttp://192.168.0.106:4000[39m
+[90m --------------------------------------[39m
+          UI: [35mhttp://localhost:3001[39m
+ UI External: [35mhttp://192.168.0.106:3001[39m
+[90m --------------------------------------[39m
+[[34mBS[39m] Serving files from: [35m./dist/[39m
+[[34mBS[39m] Watching files...
+[[90m07:08:06[39m] Finished '[36mcopy[39m' after [35m946 ms[39m
+[[90m07:08:07[39m] Finished '[36mtemplates[39m' after [35m1.45 s[39m
+[[90m07:08:12[39m] Finished '[36mdefault[39m' after [35m3.34 μs[39m

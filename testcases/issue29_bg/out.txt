@@ -1,0 +1,6 @@
+[7m[30m [0m 0.000 [7m[36m [0m[35m w_init[30m [34mwarpcore.c:416 [0men0 addr 78:4f:43:5f:59:aa, MTU 1500, speed 0G, link up
+[7m[30m [0m 0.000 [7m[36m [0m[35m w_init[30m [34mwarpcore.c:462 [0men0 has IP addr 131.179.37.163/255.255.254.0
+[7m[30m [0m 0.069 [7m[32m [0m[35m backend_init[30m [34mbackend_sock.c:106 [0mbackend using kqueue, sendmsg, recvmsg
+[7m[30m [0m 0.069 [7m[34m [0m[35m w_init[30m [34mwarpcore.c:477 [0mwarpcore/socket 0.13.0 using 500000 1500-byte buffers on en0
+[7m[30m [0m 0.069 [7m[36m [0m[35m w_bind[30m [34mwarpcore.c:304 [0msocket bound to port 55555
+[7m[30m [0m 2.668 [7m[36m [0m[35m w_cleanup[30m [34mwarpcore.c:341 [0mwarpcore shutting down

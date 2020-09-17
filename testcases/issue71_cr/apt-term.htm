@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!-- This file was created with the aha Ansi HTML Adapter. https://github.com/theZiz/aha -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="application/xml+xhtml; charset=UTF-8"/>
+<title>apt-term.txt</title>
+</head>
+<body>
+<pre>
+root@test-ubuntu64:/tmp# script apt.out
+Script started, file is apt.out
+root@test-ubuntu64:/tmp# apt-get install kobodeluxe
+Reading package lists... Done
+Building dependency tree       
+Reading state information... Done
+The following additional packages will be installed:
+  kobodeluxe-data
+The following NEW packages will be installed:
+  kobodeluxe kobodeluxe-data
+0 upgraded, 2 newly installed, 0 to remove and 0 not upgraded.
+Need to get 1,549 kB of archives.
+After this operation, 2,091 kB of additional disk space will be used.
+Do you want to continue? [Y/n] 
+Get:1 http://apt.example.com/ubuntu focal/universe amd64 kobodeluxe-data all 0.5.1-10build1 [1,335 kB]
+Get:2 http://apt.example.com/ubuntu focal/universe amd64 kobodeluxe amd64 0.5.1-10build1 [214 kB]
+Fetched 1,549 kB in 0s (11.7 MB/s)
+Selecting previously unselected package kobodeluxe-data.
+(Reading database ... 254942 files and directories currently installed.)
+Preparing to unpack .../kobodeluxe-data_0.5.1-10build1_all.deb ...
+Unpacking kobodeluxe-data (0.5.1-10build1) ...
+Selecting previously unselected package kobodeluxe.
+Preparing to unpack .../kobodeluxe_0.5.1-10build1_amd64.deb ...
+Unpacking kobodeluxe (0.5.1-10build1) ...
+Setting up kobodeluxe-data (0.5.1-10build1) ...
+Setting up kobodeluxe (0.5.1-10build1) ...
+Processing triggers for desktop-file-utils (0.24-1ubuntu2) ...
+Processing triggers for mime-support (3.64ubuntu1) ...
+Processing triggers for gnome-menus (3.36.0-1ubuntu1) ...
+Processing triggers for man-db (2.9.1-1) ...
+root@test-ubuntu64:/tmp# exit
+Script done, file is apt.out
+</pre>
+</body>
+</html>
