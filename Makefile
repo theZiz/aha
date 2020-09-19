@@ -19,7 +19,5 @@ clean:
 	rm -f aha
 
 install: aha
-	$(INSTALL) -d $(DESTDIR)$(PREFIX)/bin
-	$(INSTALL) -m $(BINMODE) aha $(DESTDIR)$(PREFIX)/bin
-	$(INSTALL) -d $(DESTDIR)$(MANDIR)/man1
-	$(INSTALL) -m $(MANMODE) aha.1 $(DESTDIR)$(MANDIR)/man1
+	$(INSTALL) -D -m $(BINMODE) aha $(DESTDIR)$(PREFIX)/bin/aha
+	$(INSTALL) -D -m $(MANMODE) aha.1 $(DESTDIR)$(MANDIR)/man1/aha.1
