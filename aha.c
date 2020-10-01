@@ -511,17 +511,29 @@ void printHeader(const struct Options *opts)
 	if (opts->no_xml)
 	{
 		if (opts->lang)
-			printf("<html lang=\"%s\">\n",opts->lang);
+		{
+			printf("<html lang=\"");
+			printHtml(opts->lang);
+			printf("\">\n");
+		}
 		else
+		{
 			printf("<html>\n");
+		}
 		printf("<head>\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=%s\">\n", encoding);
 	}
 	else
 	{
 		if (opts->lang)
-			printf("<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\"%s\">\n",opts->lang);
+		{
+			printf("<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\"");
+			printHtml(opts->lang);
+			printf("\">\n");
+		}
 		else
+		{
 			printf("<html xmlns=\"http://www.w3.org/1999/xhtml\">\n");
+		}
 		printf("<head>\n<meta http-equiv=\"Content-Type\" content=\"application/xml+xhtml; charset=%s\"/>\n", encoding);
 	}
 	printf("<title>");
