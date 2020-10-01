@@ -541,7 +541,11 @@ void printHeader(const struct Options *opts)
 	printf("</title>\n");
 
 	if (opts->css)
-		printf("<link rel=\"stylesheet\" href=\"%s\" />\n", opts->css );
+	{
+		printf("<link rel=\"stylesheet\" href=\"");
+		printHtml(opts->css);
+		printf("\">\n");
+	}
 
 	int style_tag = 0;
 	if (opts->stylesheet)
