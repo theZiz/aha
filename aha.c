@@ -637,7 +637,7 @@ void printHeader(const struct Options *opts)
 		    }
 		    if(opts->bodystyle) {
 			if(styles) printf(";");
-			fputs(opts->bodystyle, stdout);
+			printHtml(opts->bodystyle);
 		    }
 		    printf("\"");
 		}
