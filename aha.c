@@ -540,13 +540,6 @@ void printHeader(const struct Options *opts)
 	printHtml(opts->title ? opts->title : opts->filename ? opts->filename : "stdin");
 	printf("</title>\n");
 
-	if (opts->css)
-	{
-		printf("<link rel=\"stylesheet\" href=\"");
-		printHtml(opts->css);
-		printf("\">\n");
-	}
-
 	int style_tag = 0;
 	if (opts->stylesheet)
 	{
@@ -631,6 +624,14 @@ void printHeader(const struct Options *opts)
 
 	if (style_tag)
 		printf("</style>\n");
+
+	if (opts->css)
+	{
+		printf("<link rel=\"stylesheet\" href=\"");
+		printHtml(opts->css);
+		printf("\">\n");
+	}
+
 	printf("</head>\n");
 
 	if (opts->stylesheet)
