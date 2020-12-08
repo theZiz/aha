@@ -18,9 +18,11 @@ all: aha
 
 aha: aha.c
 	$(CC) $(CFLAGS) $(LDFLAGS) $(CPPFLAGS) aha.c -o $@
+test_print: test_print.c
+	$(CC) $(CFLAGS) $(LDFLAGS) $(CPPFLAGS) test_print.c -o $@
 
 clean:
-	rm -f aha
+	rm -f aha aha_test
 
 install: aha
 ifeq ($(platform), Darwin)
