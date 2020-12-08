@@ -436,7 +436,7 @@ struct Options parseArgs(int argc, char* args[])
 }
 
 enum ColorMode {
-	MODE_3BIT,
+	MODE_4BIT,
 	MODE_8BIT,
 	MODE_24BIT
 };
@@ -450,17 +450,14 @@ struct State {
 	int crossedout;
 	enum ColorMode fc_colormode;
 	enum ColorMode bc_colormode;
-	int highlighted; //for fc AND bc although not correct...
-	int fc_highlighted;
-	int bc_highlighted;
 };
 
 void swapColors(struct State *const state) {
-	if (state->bc_colormode == MODE_3BIT && state->bc == -1)
-		state->bc = 8;
+	if (state->bc_colormode == MODE_4BIT && state->bc == -1)
+		state->bc = 16;
 
-	if (state->fc_colormode == MODE_3BIT && state->fc == -1)
-		state->fc = 9;
+	if (state->fc_colormode == MODE_4BIT && state->fc == -1)
+		state->fc = 17;
 
 	int temp = state->bc;
 	state->bc = state->fc;
@@ -480,11 +477,8 @@ const struct State default_state = {
 	.underline = 0,
 	.blink = 0,
 	.crossedout = 0,
-	.fc_colormode = MODE_3BIT,
-	.bc_colormode = MODE_3BIT,
-	.highlighted = 0,
-	.fc_highlighted = 0,
-	.bc_highlighted = 0,
+	.fc_colormode = MODE_4BIT,
+	.bc_colormode = MODE_4BIT,
 };
 
 int statesDiffer(const struct State *const old, const struct State *const new) {
@@ -497,17 +491,13 @@ int statesDiffer(const struct State *const old, const struct State *const new) {
 		(old->blink != new->blink) ||
 		(old->crossedout != new->crossedout) ||
 		(old->fc_colormode != new->fc_colormode) ||
-		(old->bc_colormode != new->bc_colormode) ||
-		(old->highlighted != new->highlighted) ||
-		(old->fc_highlighted != new->fc_highlighted) ||
-		(old->bc_highlighted != new->bc_highlighted);
+		(old->bc_colormode != new->bc_colormode);
 }
 
 struct ColorStyle {
 	char* fg_default;
 	char* bg_default;
-	char* colors[10];
-	char* bright_colors[10];
+	char* colors[18];
 };
 
 const struct ColorStyle styles[3] = {
@@ -523,10 +513,6 @@ const struct ColorStyle styles[3] = {
 			"purple", // Magenta
 			"teal", // Cyan
 			"gray", // White
-			"white", // Default Background
-			"black"  // Default Foreground
-		},
-		.bright_colors = {
 			"dimgray", // Bright Black
 			"red", // Bright Red
 			"green", // Bright Green
@@ -552,10 +538,6 @@ const struct ColorStyle styles[3] = {
 			"fuchsia", // Magenta
 			"aqua", // Cyan
 			"white", // White
-			"black", // Default Background
-			"white"  // Default Foreground
-		},
-		.bright_colors = {
 			"black", // Bright Black
 			"red", // Bright Red
 			"lime", // Bright Green
@@ -581,10 +563,6 @@ const struct ColorStyle styles[3] = {
 			"purple", // Magenta
 			"teal", // Cyan
 			"gray", // White
-			"pink", // Default Background
-			"black"  // Default Foreground
-		},
-		.bright_colors = {
 			"dimgray", // Bright Black
 			"red", // Bright Red
 			"green", // Bright Green
@@ -663,29 +641,46 @@ void printHeader(const struct Options *opts)
 		printf(".inverted    {color: %s;}\n", style.bg_default);
 		printf(".bg-inverted {background-color: %s;}\n", style.fg_default);
 
-		printf(".dimgray     {color: %s;}\n", style.colors[0]);
-		printf(".red         {color: %s;}\n", style.colors[1]);
-		printf(".green       {color: %s;}\n", style.colors[2]);
-		printf(".yellow      {color: %s;}\n", style.colors[3]);
-		printf(".blue        {color: %s;}\n", style.colors[4]);
-		printf(".purple      {color: %s;}\n", style.colors[5]);
-		printf(".cyan        {color: %s;}\n", style.colors[6]);
-		printf(".white       {color: %s;}\n", style.colors[7]);
-		printf(".bg-black    {background-color: %s;}\n", style.colors[0]);
-		printf(".bg-red      {background-color: %s;}\n", style.colors[1]);
-		printf(".bg-green    {background-color: %s;}\n", style.colors[2]);
-		printf(".bg-yellow   {background-color: %s;}\n", style.colors[3]);
-		printf(".bg-blue     {background-color: %s;}\n", style.colors[4]);
-		printf(".bg-purple   {background-color: %s;}\n", style.colors[5]);
-		printf(".bg-cyan     {background-color: %s;}\n", style.colors[6]);
-		printf(".bg-white    {background-color: %s;}\n", style.colors[7]);
+		printf(".dimgray {color: %s;}\n", style.colors[0]);
+		printf(".red     {color: %s;}\n", style.colors[1]);
+		printf(".green   {color: %s;}\n", style.colors[2]);
+		printf(".yellow  {color: %s;}\n", style.colors[3]);
+		printf(".blue    {color: %s;}\n", style.colors[4]);
+		printf(".purple  {color: %s;}\n", style.colors[5]);
+		printf(".cyan    {color: %s;}\n", style.colors[6]);
+		printf(".white   {color: %s;}\n", style.colors[7]);
+		printf(".dimgray.highlighted {color: %s;}\n", style.colors[8]);
+		printf(".red    .highlighted {color: %s;}\n", style.colors[9]);
+		printf(".green  .highlighted {color: %s;}\n", style.colors[10]);
+		printf(".yellow .highlighted {color: %s;}\n", style.colors[11]);
+		printf(".blue   .highlighted {color: %s;}\n", style.colors[12]);
+		printf(".purple .highlighted {color: %s;}\n", style.colors[13]);
+		printf(".cyan   .highlighted {color: %s;}\n", style.colors[14]);
+		printf(".white  .highlighted {color: %s;}\n", style.colors[15]);
+
+		printf(".bg-black  {background-color: %s;}\n", style.colors[0]);
+		printf(".bg-red    {background-color: %s;}\n", style.colors[1]);
+		printf(".bg-green  {background-color: %s;}\n", style.colors[2]);
+		printf(".bg-yellow {background-color: %s;}\n", style.colors[3]);
+		printf(".bg-blue   {background-color: %s;}\n", style.colors[4]);
+		printf(".bg-purple {background-color: %s;}\n", style.colors[5]);
+		printf(".bg-cyan   {background-color: %s;}\n", style.colors[6]);
+		printf(".bg-white  {background-color: %s;}\n", style.colors[7]);
+		printf(".bg-black .bg-highlighted {color: %s;}\n", style.colors[8]);
+		printf(".bg-red   .bg-highlighted {color: %s;}\n", style.colors[9]);
+		printf(".bg-green .bg-highlighted {color: %s;}\n", style.colors[10]);
+		printf(".bg-yellow.bg-highlighted {color: %s;}\n", style.colors[11]);
+		printf(".bg-blue  .bg-highlighted {color: %s;}\n", style.colors[12]);
+		printf(".bg-purple.bg-highlighted {color: %s;}\n", style.colors[13]);
+		printf(".bg-cyan  .bg-highlighted {color: %s;}\n", style.colors[14]);
+		printf(".bg-white .bg-highlighted {color: %s;}\n", style.colors[15]);
+
 
 		printf(".underline   {text-decoration: underline;}\n");
 		printf(".bold        {font-weight: bold;}\n");
 		printf(".italic      {font-style: italic;}\n");
 		printf(".blink       {text-decoration: blink;}\n");
 		printf(".crossed-out {text-decoration: line-through;}\n");
-		printf(".highlighted {filter: contrast(70%%) brightness(190%%);}\n");
 	}
 
 	if (opts->word_wrap)
@@ -728,7 +723,7 @@ int main(int argc,char* args[])
 
 	struct ColorStyle style = styles[opts.colorscheme];
 
-	char* fcclass[10] = {
+	char* fcclass[18] = {
 		"dimgray", // Black
 		"red", // Red
 		"green", // Green
@@ -737,11 +732,19 @@ int main(int argc,char* args[])
 		"purple", // Magenta
 		"cyan", // Cyan
 		"white", // White
+		"highlighted dimgray", // Bright Black
+		"highlighted red", // Bright Red
+		"highlighted green", // Bright Green
+		"highlighted yellow", // Bright Yellow
+		"highlighted blue", // Bright Blue
+		"highlighted purple", // Bright Magenta
+		"highlighted cyan", // Bright Cyan
+		"highlighted white", // Bright White
 		"inverted", // Default Background
 		"reset" // Default Foreground
 	};
 
-	char* bcclass[10] = {
+	char* bcclass[18] = {
 		"bg-black", // Black
 		"bg-red", // Red
 		"bg-green", // Green
@@ -750,6 +753,14 @@ int main(int argc,char* args[])
 		"bg-purple", // Magenta
 		"bg-cyan", // Cyan
 		"bg-white", // White
+		"bg-highlighted bg-black", // Bright Black
+		"bg-highlighted bg-red", // Bright Red
+		"bg-highlighted bg-green", // Bright Green
+		"bg-highlighted bg-yellow", // Bright Yellow
+		"bg-highlighted bg-blue", // Bright Blue
+		"bg-highlighted bg-purple", // Bright Magenta
+		"bg-highlighted bg-cyan", // Bright Cyan
+		"bg-highlighted bg-white", // Bright White
 		"bg-reset", // Default Background
 		"bg-inverted" // Default Foreground
 	};
@@ -878,16 +889,7 @@ int main(int argc,char* args[])
 										{
 											momelem = momelem->next->next;
 											state.fc_colormode = MODE_8BIT;
-											if (momelem->value >=8 && momelem->value <=15)
-											{
-												state.fc_highlighted = 1;
-												*dest = momelem->value-8;
-											}
-											else
-											{
-												state.fc_highlighted = 0;
-												*dest = momelem->value;
-											}
+											*dest = momelem->value;
 										}
 										else
 										if (momelem->value == 38 &&
@@ -905,7 +907,6 @@ int main(int argc,char* args[])
 											b = momelem;
 											if ( r && g && b )
 											{
-												state.fc_highlighted = 0;
 												state.fc_colormode = MODE_24BIT;
 												*dest =
 													(r->value & 255) * 65536 +
@@ -915,15 +916,13 @@ int main(int argc,char* args[])
 										}
 										else
 										{
-											state.fc_colormode = MODE_3BIT;
-											state.fc_highlighted = 0;
+											state.fc_colormode = MODE_4BIT;
 											*dest=momelem->value-30;
 										}
 									}
 									break;
 								case 39: // Set foreground color to default
-									state.fc_colormode = MODE_3BIT;
-									state.fc_highlighted = 0;
+									state.fc_colormode = MODE_4BIT;
 									state.fc = -1;
 									break;
 								case 40:
@@ -946,16 +945,7 @@ int main(int argc,char* args[])
 										{
 											momelem = momelem->next->next;
 											state.bc_colormode = MODE_8BIT;
-											if (momelem->value >=8 && momelem->value <=15)
-											{
-												state.bc_highlighted = 1;
-												*dest = momelem->value-8;
-											}
-											else
-											{
-												state.bc_highlighted = 0;
-												*dest = momelem->value;
-											}
+											*dest = momelem->value;
 										}
 										else
 										if (momelem->value == 48 &&
@@ -974,7 +964,6 @@ int main(int argc,char* args[])
 											if ( r && g && b )
 											{
 												state.bc_colormode = MODE_24BIT;
-												state.bc_highlighted = 0;
 												*dest =
 													(r->value & 255) * 65536 +
 													(g->value & 255) * 256 +
@@ -983,15 +972,13 @@ int main(int argc,char* args[])
 										}
 										else
 										{
-											state.bc_colormode = MODE_3BIT;
-											state.bc_highlighted = 0;
+											state.bc_colormode = MODE_4BIT;
 											*dest=momelem->value-40;
 										}
 									}
 									break;
 								case 49: // Set background color to default
-									state.bc_colormode = MODE_3BIT;
-									state.bc_highlighted = 0;
+									state.bc_colormode = MODE_4BIT;
 									state.bc = -1;
 									break;
 								case 90:
@@ -1006,9 +993,8 @@ int main(int argc,char* args[])
 										int *dest = &(state.fc);
 										if (negative != 0)
 											dest=&(state.bc);
-										state.fc_colormode = MODE_3BIT;
-										state.fc_highlighted = 1;
-										*dest=momelem->value-90;
+										state.fc_colormode = MODE_4BIT;
+										*dest=momelem->value-90+8;
 									}
 									break;
 
@@ -1024,9 +1010,8 @@ int main(int argc,char* args[])
 										int *dest = &(state.bc);
 										if (negative != 0)
 											dest=&(state.fc);
-										state.bc_colormode = MODE_3BIT;
-										state.bc_highlighted = 1;
-										*dest=momelem->value-100;
+										state.bc_colormode = MODE_4BIT;
+										*dest=momelem->value-100+8;
 									}
 									break;
 							}
@@ -1080,19 +1065,17 @@ int main(int argc,char* args[])
 								printf("blink ");
 							if(state.crossedout)
 								printf("crossed-out ");
-							if(state.fc_highlighted || state.bc_highlighted)
-								printf("highlighted ");
 
 							int needs_style = 0;
 							// classes first
 							switch (state.fc_colormode)
 							{
-								case MODE_3BIT:
-									if (state.fc>=0 && state.fc<=9)
+								case MODE_4BIT:
+									if (state.fc>=0 && state.fc<=17)
 										printf("%s ", fcclass[state.fc]);
 									break;
 								case MODE_8BIT:
-									if (state.fc>=0 && state.fc<=7)
+									if (state.fc>=0 && state.fc<=15)
 										printf("%s ", fcclass[state.fc]);
 									else
 										needs_style = 1;
@@ -1104,12 +1087,12 @@ int main(int argc,char* args[])
 
 							switch (state.bc_colormode)
 							{
-								case MODE_3BIT:
-									if (state.bc>=0 && state.bc<=9)
+								case MODE_4BIT:
+									if (state.bc>=0 && state.bc<=17)
 										printf("%s ", bcclass[state.bc]);
 									break;
 								case MODE_8BIT:
-									if (state.bc>=0 && state.bc<=7)
+									if (state.bc>=0 && state.bc<=15)
 										printf("%s ", bcclass[state.bc]);
 									else
 										needs_style = 1;
@@ -1126,10 +1109,10 @@ int main(int argc,char* args[])
 
 								switch (state.fc_colormode)
 								{
-									case MODE_3BIT:
+									case MODE_4BIT:
 										break;
 									case MODE_8BIT:
-										if (state.fc>=0 && state.fc<=7)
+										if (state.fc>=0 && state.fc<=15)
 											break;
 										char rgb[12];
 										make_rgb(state.fc,rgb);
@@ -1141,10 +1124,10 @@ int main(int argc,char* args[])
 								}
 								switch (state.bc_colormode)
 								{
-									case MODE_3BIT:
+									case MODE_4BIT:
 										break;
 									case MODE_8BIT:
-										if (state.bc>=0 && state.bc<=7)
+										if (state.bc>=0 && state.bc<=15)
 											break;
 										char rgb[12];
 										make_rgb(state.bc,rgb);
@@ -1168,17 +1151,15 @@ int main(int argc,char* args[])
 								printf("font-style:italic;");
 							if(state.blink)
 								printf("text-decoration:blink;");
-							if(state.fc_highlighted || state.bc_highlighted)
-								printf("filter: contrast(70%%) brightness(190%%);");
 
 							switch (state.fc_colormode)
 							{
-								case MODE_3BIT:
-									if (state.fc>=0 && state.fc<=9)
+								case MODE_4BIT:
+									if (state.fc>=0 && state.fc<=17)
 										printf("color:%s;", style.colors[state.fc]);
 									break;
 								case MODE_8BIT:
-									if (state.fc>=0 && state.fc<=7)
+									if (state.fc>=0 && state.fc<=15)
 										printf("color:%s;", style.colors[state.fc]);
 									else
 									{
@@ -1194,12 +1175,12 @@ int main(int argc,char* args[])
 
 							switch (state.bc_colormode)
 							{
-								case MODE_3BIT:
-									if (state.bc>=0 && state.bc<=9)
+								case MODE_4BIT:
+									if (state.bc>=0 && state.bc<=17)
 										printf("background-color:%s", style.colors[state.bc]);
 									break;
 								case MODE_8BIT:
-									if (state.bc>=0 && state.bc<=7)
+									if (state.bc>=0 && state.bc<=15)
 										printf("background-color:%s;", style.colors[state.bc]);
 									else
 									{
