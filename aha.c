@@ -1172,6 +1172,8 @@ int main(int argc,char* args[])
 								printf("font-style:italic;");
 							if(state.blink)
 								printf("text-decoration:blink;");
+							if(state.crossedout)
+								printf("text-decoration: line-through;");
 
 							switch (state.fc_colormode)
 							{
