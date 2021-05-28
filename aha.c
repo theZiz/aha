@@ -1158,8 +1158,10 @@ int main(int argc,char* args[])
 				newline=-1;
 			}
 			//I want fall throught, so I ignore the gcc warning for this switch
+			#if defined(__GNUC__) && __GNUC__ >= 5
 			#pragma GCC diagnostic push
 			#pragma GCC diagnostic ignored "-Wimplicit-fallthrough="
+			#endif
 			switch (c)
 			{
 				case '&':	printf("&amp;"); break;
@@ -1175,7 +1177,9 @@ int main(int argc,char* args[])
 					else
 						printf("%c",c);
 			}
+			#if defined(__GNUC__) && __GNUC__ >= 5
 			#pragma GCC diagnostic pop
+			#endif
 			if (opts.iso>0) //only at ISOS
 				if ((c & 128)==128) //first bit set => there must be followbytes
 				{
