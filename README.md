@@ -22,8 +22,22 @@ Examples
 Compilation / Installation
 ==========================
 
+## Installation Options
+
+### OSX - Homebrew
+
+* `brew install aha`
+
+### Conda
+
+* `conda install -n YOURENV -c conda-forge aha` (and if you wish to make conda 10x faster, <a href=https://github.com/mamba-org/mamba >use mamba</a>).
+
+### Build From Source
+
 Aha has no dependencies except for a C compiler and `make`.
 
+Clone this repo `git clone https://github.com/theZiz/aha.git`.
+Move into the repo directory `cd aha`.
 To compile just type `make`.
 To install aha to `/usr/local/` type `make install`.
 You can change the installation directory with `make install PREFIX=/your/path`.
