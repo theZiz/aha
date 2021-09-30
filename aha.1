@@ -21,6 +21,10 @@ The options are as follows:
 .Bl -tag -width Ds
 .It Fl b , Fl Fl black
 Style HTML output to use a black background with white text.
+.It Fl Fl colors
+Style HTML output to use a black background with white text.
+Set a custom color scheme. X must be a comma-separated list of 18 CSS colors representing the default colors and all 16 4-bit color codes:
+"foreground, background, black, red, green, yellow, blue, magenta, cyan, white, (+ bright versions of those eight)"
 .It Fl c Ar file , Fl Fl css Ar file
 Adds the given css
 .Ar file
@@ -95,6 +99,12 @@ Create an HTML file with a white background using the output of
 .Xr diff 1 :
 .Pp
 .Dl $ diff -u --color=always oldfile.c newfile.c | aha > diff.html
+.Pp
+Create an HTML file with a white foreground, blue background, and mapping every 4-bit color code to red using
+.Nm Ap s
+help:
+.Pp
+.Dl $ aha -h | aha --colors '#fff,#00f,red,red,red,red,red,red,red,red,red,red,red,red,red,red,red,red' > aha-help.html
 .Pp
 Create an HTML file with a black background from the output of
 .Xr htop 1 .
