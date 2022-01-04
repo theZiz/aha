@@ -175,6 +175,7 @@ struct Options {
 	enum ColorScheme colorscheme;
 	char* filename;
 	FILE *fp;
+    char buffer_mode;
 	int htop_fix;
 	int iso;
 	int line_break;
@@ -241,6 +242,7 @@ struct Options parseArgs(int argc, char* args[])
 		.colorscheme = SCHEME_WHITE,
 		.filename = NULL,
 		.fp = stdin,
+        .buffer_mode = 'W',
 		.htop_fix = 0,
 		.iso = -1,
 		.line_break = 0,
@@ -287,6 +289,9 @@ struct Options parseArgs(int argc, char* args[])
 			printf("                         <link rel=\"stylesheet\" href=\"X\" /> to the header.\n");
 			printf("      --ignore-cr,   -r: Ignore all carriage-returns (ASCII sign 13, \\r)\n");
 			printf("                         which may lead to double new lines in html.\n");
+			printf("      --buffer-mode    : Set the buffering mode on the output stream.\n");
+            printf("                         'N'o buffering, 'L'ine-buffering, 'F'ull buffering,\n");
+            printf("                         and 'W'hatever(the default) which leaves it as is.");
 			printf("\033[4mExamples\033[0m:\n");
 			printf("          Create an HTML file with a black background, a custom title and\n");
 			printf("          a larger font-size using \033[1maha\033[0m's help:\n");
@@ -386,6 +391,25 @@ struct Options parseArgs(int argc, char* args[])
 			p++;
 			opts.filename=args[p];
 		}
+        else
+        if (strcmp(args[p],"--buffer-mode")==0)  // TODO maybe a shorthand alternative?
+        {
+			if (p+1>=argc)
+			{
+				fprintf(stderr,"Missing buffer mode after \"%s\"!\n", args[p]);
+				exit(EXIT_FAILURE);
+			}
+            if( strlen(args[p+1]) != 1 ) {  // TODO other option is permitting numbers giving the size too?
+				fprintf(stderr,"\"%s\": buffer mode one character L(ine),F(ull), N(one) or O(mit)\n", args[p]);
+				exit(EXIT_FAILURE);
+            }
+            opts.buffer_mode = args[p+1][0];
+            if( opts.buffer_mode != 'L' && opts.buffer_mode != 'F' && opts.buffer_mode != 'N' && opts.buffer_mode != '0' ) {
+				fprintf(stderr,"\"%s\": buffer mode L(ine),F(ull), N(one) or O(mit)\n", args[p]);
+				exit(EXIT_FAILURE);
+            }
+            p++;
+        }
 		else
 		if ((strcmp(args[p],"--no-xml")==0) || (strcmp(args[p],"-x")==0))
 			opts.no_xml=1;
@@ -667,6 +691,14 @@ int main(int argc,char* args[])
 {
 	struct Options opts = parseArgs(argc, args);
 	register FILE* fp = opts.fp;
+
+    switch( opts.buffer_mode ) {
+        case 'N': case '0': setvbuf(stdout, NULL, _IONBF, 1024); break;  // No buffering.
+        case 'L': setvbuf(stdout, NULL, _IOLBF, 1024); break;  // Line buffering.
+        case 'F': setvbuf(stdout, NULL, _IOFBF, 1024); break;  // Full buffering.
+// Omit setting it. (line buffered if outputting _straight_ to user, full otherwise (i.e. appending |cat) )
+        case 'W': break;  
+    }
 
 	char* fcstyle[10] = {
 		opts.stylesheet ? "dimgray " : "color:dimgray;", //Black
