@@ -702,7 +702,8 @@ int main(int argc,char* args[])
 	struct State oldstate;
 	int c;
 	int negative = 0; //No negative image
-	int special_char = 0; //No special characters
+	int special_char[2] = {0, 1}; //No special characters
+	int shift=0;
 	int line=0;
 	int momline=0;
 	int newline=-1;
@@ -741,7 +742,7 @@ int main(int argc,char* args[])
 							{
 								case 0: // 0 - Reset all
 									state = default_state;
-									negative=0; special_char=0;
+									negative=0; special_char[0]=0; special_char[1]=1; shift=0;
 									break;
 
 								case 1: // 1 - Enable Bold
@@ -1113,16 +1114,17 @@ int main(int argc,char* args[])
 					c = getNextChar(fp);
 			}
 			else
-			if ( c == '(' ) //Some VT100 ESC sequences, which should be ignored
+			if ( c == '(' || c == ')' ) //Some VT100 ESC sequences, which should be ignored
 			{
+				int slot = c == '(' ? 0 : 1;
 				//Reading (and ignoring!) one character should work for "(B"
 				//(US ASCII character set), "(A" (UK ASCII character set) and
 				//"(0" (Graphic). This whole "standard" is fucked up. Really...
 				c = getNextChar(fp);
 				if (c == '0') //we do not ignore ESC(0 ;)
-					special_char=1;
+					special_char[slot]=1;
 				else
-					special_char=0;
+					special_char[slot]=0;
 			}
 		}
 		else
@@ -1137,6 +1139,14 @@ int main(int argc,char* args[])
 		else
 		if (c==13 && opts.ignore_cr)
 		{
+		}
+		else if (c==14) // SO
+		{
+			shift=1;
+		}
+		else if (c==15) // SI
+		{
+			shift=0;
 		}
 		else if (c!=8)
 		{
@@ -1172,7 +1182,7 @@ int main(int argc,char* args[])
 					momline++;
 					line=0;
 				default:
-					if (special_char)
+					if (special_char[shift])
 						printf("%s",ansi_vt220_character_set[((int)c+32) & 255]);
 					else
 						printf("%c",c);
