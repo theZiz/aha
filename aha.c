@@ -138,6 +138,15 @@ pelem parseInsert(char* s)
 	return firstelem;
 }
 
+int parseDepthAtLeast(pelem elem, unsigned int wanted) {
+	while (elem != NULL) {
+		if (wanted == 0) return 1;
+		elem = elem->next;
+		--wanted;
+	}
+	return 0;
+}
+
 void deleteParse(pelem elem)
 {
 	while (elem!=NULL)
@@ -831,11 +840,8 @@ int main(int argc,char* args[])
 										}
 										else
 										if (momelem->value == 38 &&
-											momelem->next &&
-											momelem->next->value == 2 &&
-											momelem->next->next &&
-											momelem->next->next->next &&
-											momelem->next->next->next->next)// 38;2;<r>;<g>;<b> -> 24 Bit
+											parseDepthAtLeast(momelem, 4) &&
+											momelem->next->value == 2)// 38;2;<r>;<g>;<b> -> 24 Bit
 										{
 											pelem r = momelem->next->next;
 											pelem g = r->next;
@@ -895,11 +901,8 @@ int main(int argc,char* args[])
 										}
 										else
 										if (momelem->value == 48 &&
-											momelem->next &&
-											momelem->next->value == 2 &&
-											momelem->next->next &&
-											momelem->next->next->next &&
-											momelem->next->next->next->next)// 48;2;<r>;<g>;<b> -> 24 Bit
+											parseDepthAtLeast(momelem, 4) &&
+											momelem->next->value == 2)// 48;2;<r>;<g>;<b> -> 24 Bit
 										{
 											pelem r = momelem->next->next;
 											pelem g = r->next;
