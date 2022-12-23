@@ -444,6 +444,7 @@ enum ColorMode {
 struct State {
 	int fc, bc;
 	int bold;
+	int faint;
 	int italic;
 	int underline;
 	int blink;
@@ -474,6 +475,7 @@ const struct State default_state = {
 	.fc = -1, //Standard Foreground Color //IRC-Color+8
 	.bc = -1, //Standard Background Color //IRC-Color+8
 	.bold = 0,
+	.faint = 0,
 	.italic = 0,
 	.underline = 0,
 	.blink = 0,
@@ -488,6 +490,7 @@ int statesDiffer(const struct State *const old, const struct State *const new) {
 		(old->fc != new->fc) ||
 		(old->bc != new->bc) ||
 		(old->bold != new->bold) ||
+		(old->faint != new->faint) ||
 		(old->italic != new->italic) ||
 		(old->underline != new->underline) ||
 		(old->blink != new->blink) ||
@@ -612,6 +615,7 @@ void printHeader(const struct Options *opts)
 		}
 		printf(".underline   {text-decoration: underline;}\n");
 		printf(".bold        {font-weight: bold;}\n");
+		printf(".faint       {opacity: 0.33;}\n");
 		printf(".italic      {font-style: italic;}\n");
 		printf(".blink       {text-decoration: blink;}\n");
 		printf(".crossed-out {text-decoration: line-through;}\n");
@@ -748,6 +752,10 @@ int main(int argc,char* args[])
 									state.bold=1;
 									break;
 
+								case 2: // 2 - Enable Faint
+									state.faint=1;
+									break;
+
 								case 3: // 3 - Enable Italic
 									state.italic=1;
 									break;
@@ -770,8 +778,9 @@ int main(int argc,char* args[])
 									break;
 
 								case 21: // 21 - Reset bold
-								case 22: // 22 - Not bold, not "high intensity" color
+								case 22: // 22 - Not bold, not "high intensity" or "low intensity" color
 									state.bold=0;
+									state.faint=0;
 									break;
 
 								case 23: // 23 - Reset italic
@@ -1024,6 +1033,13 @@ int main(int argc,char* args[])
 								printf("bold ");
 							else
 								printf("font-weight:bold;");
+						}
+						if (state.faint)
+						{
+							if (opts.stylesheet)
+								printf("opacity ");
+							else
+								printf("opacity:0.33;");
 						}
 						if (state.italic)
 						{
