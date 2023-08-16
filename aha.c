@@ -17,12 +17,21 @@
  For feedback and questions about my Files and Projects please mail me,
  Alexander Matthes (Ziz) , ziz_at_mailbox.org
 */
-#define AHA_VERSION "0.5.1"
-#define AHA_YEAR "2020"
+#define AHA_VERSION "0.5.2"
+#define AHA_YEAR "2023"
 #include <errno.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+
+// Enable escape sequences on Windows-based platforms.
+// Thanks to: https://stackoverflow.com/a/47158348/21885072
+// Docs: https://learn.microsoft.com/windows/console/setconsolemode
+#ifdef _WIN32
+#include <Windows.h>
+#define ENABLE_PROCESSED_OUTPUT            0x1
+#define ENABLE_VIRTUAL_TERMINAL_PROCESSING 0x4
+#endif
 
 // table for vt220 character set, see also
 // https://whitefiles.org/b1_s/1_free_guides/fg2cd/pgs/c03b.htm
@@ -665,6 +674,17 @@ void printHeader(const struct Options *opts)
 
 int main(int argc,char* args[])
 {
+    // Enable escape sequences on Windows-based platforms.
+    #ifdef _WIN32
+
+    HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
+    DWORD consoleMode;
+    GetConsoleMode(console, &consoleMode);
+    consoleMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING | ENABLE_PROCESSED_OUTPUT;
+    SetConsoleMode(console, consoleMode);
+
+    #endif
+
 	struct Options opts = parseArgs(argc, args);
 	register FILE* fp = opts.fp;
 
