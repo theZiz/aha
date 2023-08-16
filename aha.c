@@ -680,7 +680,7 @@ int main(int argc,char* args[])
     HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
     DWORD consoleMode;
     GetConsoleMode(console, &consoleMode);
-    consoleMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+    consoleMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING | ENABLE_PROCESSED_OUTPUT;
     SetConsoleMode(console, consoleMode);
 
     #endif
